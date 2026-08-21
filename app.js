@@ -1248,14 +1248,46 @@ function closeCashShift() {
 // =====================================================================
 // 13. CONFIGURACIÓN & PERFIL
 // =====================================================================
+// =====================================================================
+// 13. CONFIGURACIÓN & PERFIL (EXACT MATCH SCREENSHOT)
+// =====================================================================
+function switchSettingsTab(tabName, btnEl) {
+  document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.settings-tab-pane').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = 'none';
+  });
+
+  if (btnEl) btnEl.classList.add('active');
+  const pane = document.getElementById('settings-tab-' + tabName);
+  if (pane) {
+    pane.classList.add('active');
+    pane.style.display = 'block';
+  }
+}
+
 function loadConfigInputs() {
   const state = getState();
   const user = JSON.parse(localStorage.getItem('syncops_user') || '{}');
   
-  const nameEl = document.getElementById('cfgUserName');
-  const emailEl = document.getElementById('cfgUserEmail');
-  if (nameEl) nameEl.value = user.name || 'Luis Bravo';
-  if (emailEl) emailEl.value = user.email || 'luisb@gmail.com';
+  const displayName = user.name || 'Luis Brito';
+  const displayEmail = user.email || 'luisb@gmail.com';
+  const nameParts = displayName.split(' ');
+  const firstName = nameParts[0] || 'Luis';
+  const lastName = nameParts.slice(1).join(' ') || 'Brito';
+  const avatarText = (firstName[0] + (lastName[0] || '')).toUpperCase() || 'LB';
+
+  const avatarCircle = document.getElementById('cfgAvatarCircle');
+  const dispName = document.getElementById('cfgDisplayName');
+  const dispEmail = document.getElementById('cfgDisplayEmail');
+  if (avatarCircle) avatarCircle.innerText = avatarText;
+  if (dispName) dispName.innerText = displayName;
+  if (dispEmail) dispEmail.innerText = displayEmail;
+
+  if (document.getElementById('cfgFirstName')) document.getElementById('cfgFirstName').value = firstName;
+  if (document.getElementById('cfgLastName')) document.getElementById('cfgLastName').value = lastName;
+  if (document.getElementById('cfgUserEmailExact')) document.getElementById('cfgUserEmailExact').value = displayEmail;
+  if (document.getElementById('cfgJobTitle')) document.getElementById('cfgJobTitle').value = user.role || 'Ingeniero de Software (Google)';
 
   const cfg = state.config || DEFAULT_STATE.config;
   if (document.getElementById('cfgBusinessName')) document.getElementById('cfgBusinessName').value = cfg.businessName;
@@ -1266,21 +1298,32 @@ function loadConfigInputs() {
   if (document.getElementById('cfgTicketFooter')) document.getElementById('cfgTicketFooter').value = cfg.ticketFooter;
 }
 
-function saveUserProfile() {
-  const name = document.getElementById('cfgUserName').value.trim();
-  const email = document.getElementById('cfgUserEmail').value.trim();
+function saveUserProfileExact(e) {
+  e.preventDefault();
+  const first = document.getElementById('cfgFirstName').value.trim();
+  const last = document.getElementById('cfgLastName').value.trim();
+  const email = document.getElementById('cfgUserEmailExact').value.trim();
+  const job = document.getElementById('cfgJobTitle').value.trim();
 
-  if (!name || !email) {
+  if (!first || !email) {
     showToast('Nombre y correo son obligatorios.', 'error');
     return;
   }
 
-  const user = { name, email, role: 'Administrador', avatar: name.split(' ').map(n=>n[0]).join('').slice(0,2) };
+  const fullName = last ? `${first} ${last}` : first;
+  const avatar = (first[0] + (last ? last[0] : '')).toUpperCase() || 'LB';
+  const user = { name: fullName, email, role: job || 'Administrador', avatar };
+  
   localStorage.setItem('syncops_user', JSON.stringify(user));
   sessionStorage.setItem('syncops_user', JSON.stringify(user));
 
   checkAuth();
-  showToast('Perfil de usuario actualizado.', 'success');
+  loadConfigInputs();
+  showToast('Cambios guardados con éxito.', 'success');
+}
+
+function saveUserProfile() {
+  saveUserProfileExact({ preventDefault: () => {} });
 }
 
 function saveBusinessConfig() {
@@ -1295,8 +1338,9 @@ function saveBusinessConfig() {
   };
 
   saveState(state);
-  showToast('Configuración del negocio guardada.', 'success');
+  showToast('Configuración de la empresa guardada.', 'success');
 }
+
 
 // =====================================================================
 // 14. FAQ & AYUDA QA

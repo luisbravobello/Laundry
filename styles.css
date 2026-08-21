@@ -934,3 +934,133 @@ body {
   .split-blue-side { clip-path: none; width: 100%; }
 }
 
+/* ================================================================
+   SETTINGS PAGE (EXACT MATCH SCREENSHOT)
+   ================================================================ */
+.settings-page-header {
+  margin-bottom: 1.5rem;
+}
+.settings-main-title {
+  font-size: 1.6rem; font-weight: 800;
+  color: var(--text-main); margin: 0 0 .25rem 0;
+  letter-spacing: -0.4px;
+}
+.settings-main-subtitle {
+  font-size: .84rem; color: var(--text-muted);
+  margin: 0;
+}
+
+.settings-layout-exact {
+  display: flex; gap: 1.5rem;
+  align-items: flex-start;
+}
+
+/* Menú de Pestañas Izquierdo */
+.settings-tabs-sidebar {
+  width: 220px; flex-shrink: 0;
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: .75rem;
+  display: flex; flex-direction: column; gap: .35rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.settings-tab-btn {
+  display: flex; align-items: center; gap: .75rem;
+  width: 100%; padding: .65rem .85rem;
+  background: transparent; border: none;
+  border-radius: var(--r-md);
+  font-size: .84rem; font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer; text-align: left;
+  transition: all var(--ease);
+}
+.settings-tab-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-main);
+}
+.settings-tab-btn.active {
+  background: #EEF2FF;
+  color: #4F46E5;
+}
+.settings-tab-btn svg {
+  color: inherit; opacity: .85;
+}
+
+.settings-tab-btn-danger {
+  display: flex; align-items: center; gap: .75rem;
+  width: 100%; padding: .65rem .85rem;
+  background: transparent; border: none;
+  border-radius: var(--r-md);
+  font-size: .84rem; font-weight: 700;
+  color: #E11D48;
+  cursor: pointer; text-align: left;
+  transition: all var(--ease);
+}
+.settings-tab-btn-danger:hover {
+  background: #FFF1F2;
+}
+
+/* Tarjeta de Contenido Derecha */
+.settings-content-card {
+  flex: 1;
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 2.25rem 2.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  min-height: 520px;
+}
+
+/* Banner de Perfil */
+.profile-header-banner {
+  background: #F8FAFC;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 1.35rem 1.5rem;
+  display: flex; align-items: center; gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+.profile-avatar-large {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: #2563EB; color: #FFFFFF;
+  font-size: 1.25rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+.profile-header-meta {
+  display: flex; flex-direction: column; gap: .2rem;
+}
+.profile-header-meta h3 {
+  font-size: 1.05rem; font-weight: 800;
+  color: var(--text-main); margin: 0;
+}
+.profile-header-meta span {
+  font-size: .82rem; color: var(--text-muted);
+}
+.btn-change-photo {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: .3rem .75rem;
+  font-size: .75rem; font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer; margin-top: .4rem;
+  width: fit-content;
+  transition: all var(--ease);
+}
+.btn-change-photo:hover {
+  background: var(--bg-hover);
+  border-color: #CBD5E1;
+}
+
+.settings-section-subtitle {
+  font-size: .95rem; font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 1.25rem 0;
+}
+
+
