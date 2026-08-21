@@ -479,6 +479,17 @@ function renderPos() {
 }
 
 
+function getCategoryIconSvg(category) {
+  if (category === 'Sastrería') {
+    return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>`;
+  } else if (category === 'Autoservicio') {
+    return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><rect width="18" height="20" x="3" y="2" rx="2"/><circle cx="12" cy="13" r="5"/><path d="M12 18a5 5 0 0 0 5-5"/></svg>`;
+  } else if (category === 'Hotelería') {
+    return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9333EA" stroke-width="2"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>`;
+  }
+  return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>`;
+}
+
 function filterCatalog(category, btnElement) {
   const state = getState();
   if (btnElement) {
@@ -493,12 +504,21 @@ function filterCatalog(category, btnElement) {
     ? state.catalog 
     : state.catalog.filter(i => i.category === category);
 
-  grid.innerHTML = items.map(item => `
-    <div class="catalog-item-card" onclick="selectCatalogItem('${item.id}')" title="Clic para cargar y ajustar precio">
-      <div class="catalog-item-name">${item.name}</div>
-      <div class="catalog-item-price">RD$${item.price.toLocaleString('es-DO')}</div>
-    </div>
-  `).join('');
+  grid.innerHTML = items.map(item => {
+    const cleanName = item.name.replace(/^[^\w\s\u00C0-\u017F]+/i, '').trim();
+    const iconSvg = getCategoryIconSvg(item.category);
+    return `
+      <div class="catalog-item-card" onclick="selectCatalogItem('${item.id}')" title="Clic para cargar y personalizar">
+        <div style="display: flex; align-items: flex-start; gap: .5rem;">
+          <div style="width: 24px; height: 24px; border-radius: 6px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;">
+            ${iconSvg}
+          </div>
+          <div class="catalog-item-name">${cleanName}</div>
+        </div>
+        <div class="catalog-item-price">RD$${item.price.toLocaleString('es-DO', {minimumFractionDigits: 2})}</div>
+      </div>
+    `;
+  }).join('');
 }
 
 function selectCatalogItem(itemId) {
@@ -512,10 +532,35 @@ function selectCatalogItem(itemId) {
   document.getElementById('builderDesc').value = cleanName;
   document.getElementById('builderPrice').value = item.price;
   document.getElementById('builderService').value = item.service;
-  document.getElementById('builderItemName').innerText = `Configuración: ${cleanName}`;
+  document.getElementById('builderItemName').innerText = `Personalización: ${cleanName}`;
   
   toggleTailoringDrawer(item.service);
   showToast(`Ítem "${cleanName}" cargado. Puedes personalizar su precio.`, 'info');
+}
+
+function resetPosOrder() {
+  currentOrderItems = [];
+  const discountInput = document.getElementById('posDiscount');
+  const paidInput = document.getElementById('posAmountPaid');
+  const urgentCheck = document.getElementById('posIsUrgent');
+  const descInput = document.getElementById('builderDesc');
+  const colorInput = document.getElementById('builderColor');
+  const defectsInput = document.getElementById('builderDefects');
+  const qtyInput = document.getElementById('builderQty');
+  const itemNameEl = document.getElementById('builderItemName');
+
+  if (discountInput) discountInput.value = 0;
+  if (paidInput) paidInput.value = 0;
+  if (urgentCheck) urgentCheck.checked = false;
+  if (descInput) descInput.value = '';
+  if (colorInput) colorInput.value = '';
+  if (defectsInput) defectsInput.value = '';
+  if (qtyInput) qtyInput.value = 1;
+  if (itemNameEl) itemNameEl.innerText = 'Personalización del Artículo / Servicio';
+
+  renderPosItems();
+  calculatePosTotal();
+  showToast('Orden de Punto de Venta reiniciada limpiamente.', 'info');
 }
 
 function toggleTailoringDrawer(service) {

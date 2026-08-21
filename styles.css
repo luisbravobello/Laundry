@@ -717,106 +717,327 @@ body {
   transition: all var(--ease);
 }
 .pos-step-header {
-  display: flex; align-items: center; gap: .85rem;
-  margin-bottom: 1.15rem; padding-bottom: .85rem;
-  border-bottom: 1px solid var(--border);
+/* ================================================================
+   MÓDULO POS: ESTILO FORTEXA ERP EXACT MATCH
+   ================================================================ */
+.pos-layout {
+  display: grid;
+  grid-template-columns: 1.65fr 1.05fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.pos-step-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--r-xl);
+  padding: 1.35rem 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.pos-step-header {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  margin-bottom: 1.15rem;
+  padding-bottom: .85rem;
+  border-bottom: 1px solid #F1F5F9;
 }
 .pos-step-badge {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: #2563EB; color: #FFFFFF;
-  font-weight: 900; font-size: .95rem;
-  display: flex; align-items: center; justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #DBEAFE;
+  font-weight: 900;
+  font-size: .85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+  font-family: 'JetBrains Mono', monospace;
 }
 .pos-step-title {
-  font-size: 1.05rem; font-weight: 800; color: #0F172A; margin: 0; line-height: 1.2;
+  font-size: .95rem;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+  line-height: 1.2;
 }
 .pos-step-sub {
-  font-size: .75rem; color: var(--text-muted); margin: 2px 0 0;
+  font-size: .75rem;
+  color: #64748B;
+  margin: 2px 0 0;
 }
 
 .pos-step1-grid {
-  display: grid; grid-template-columns: 1.1fr 1.4fr 1.3fr; gap: .85rem;
+  display: grid;
+  grid-template-columns: 1fr 1.35fr 1.25fr;
+  gap: .85rem;
   margin-bottom: .85rem;
 }
+
 .pos-urgent-row {
-  background: #FFF1F2; border: 1px solid #FECDD3;
-  padding: .65rem 1rem; border-radius: var(--r-md);
-  display: flex; align-items: center;
+  background: #FFF1F2;
+  border: 1px solid #FFE4E6;
+  padding: .65rem 1rem;
+  border-radius: var(--r-md);
+  display: flex;
+  align-items: center;
 }
 
-.catalog-tabs { display: flex; gap: .4rem; overflow-x: auto; margin-bottom: 1rem; padding-bottom: 4px; }
-.catalog-tab {
-  padding: .45rem .95rem; border-radius: 99px; background: #F1F5F9;
-  border: 1px solid #E2E8F0; color: #475569; font-size: .8rem; font-weight: 700;
-  cursor: pointer; white-space: nowrap; transition: all var(--ease);
+.catalog-tabs {
+  display: flex;
+  gap: 4px;
+  background: #F1F5F9;
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid #E2E8F0;
+  margin-bottom: 1rem;
+  overflow-x: auto;
 }
-.catalog-tab:hover { background: #E2E8F0; color: #0F172A; }
-.catalog-tab.active { background: #2563EB; color: #FFFFFF; border-color: #2563EB; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25); }
+.catalog-tab {
+  padding: .45rem .85rem;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: #64748B;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--ease);
+}
+.catalog-tab:hover {
+  color: #0F172A;
+  background: #E2E8F0;
+}
+.catalog-tab.active {
+  background: #1D4ED8;
+  color: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(29, 78, 216, 0.25);
+}
 
 .catalog-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem;
-  max-height: 220px; overflow-y: auto; margin-bottom: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .75rem;
+  max-height: 240px;
+  overflow-y: auto;
+  margin-bottom: 1.25rem;
   padding-right: 4px;
 }
 .catalog-item-card {
-  background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: var(--r-lg);
-  padding: .85rem; cursor: pointer; transition: all var(--ease);
-  display: flex; flex-direction: column; justify-content: space-between;
-  min-height: 75px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: .85rem 1rem;
+  cursor: pointer;
+  transition: all var(--ease);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 80px;
 }
 .catalog-item-card:hover {
-  border-color: #2563EB;
+  border-color: #3B82F6;
   background: #F8FAFC;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.08);
+}
+.catalog-item-card.active-selected {
+  border-color: #1D4ED8;
+  background: #EFF6FF;
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.2);
 }
 .catalog-item-name {
-  font-size: .82rem; font-weight: 700; color: #1E293B; line-height: 1.35; margin-bottom: .45rem;
+  font-size: .82rem;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.35;
+  margin-bottom: .45rem;
 }
 .catalog-item-price {
-  font-size: .9rem; font-weight: 900; color: #2563EB;
+  font-size: .88rem;
+  font-weight: 900;
+  color: #1D4ED8;
   font-family: 'JetBrains Mono', monospace;
 }
 
+/* Drawer de Personalización Fortexa */
 .item-builder-box {
-  background: #F8FAFC; border: 1px solid #E2E8F0;
-  border-radius: var(--r-xl); padding: 1.25rem;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 1.25rem;
 }
 .item-builder-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 1rem; padding-bottom: .65rem; border-bottom: 1px solid #E2E8F0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: .65rem;
+  border-bottom: 1px solid #E2E8F0;
 }
-.tailoring-drawer {
-  background: #FFFFFF; border: 1px solid #CBD5E1;
-  border-radius: var(--r-md); padding: .85rem; margin-bottom: .85rem;
-}
-.drawer-header { font-size: .78rem; font-weight: 800; color: #2563EB; margin-bottom: .5rem; }
 
-.pos-summary-card { display: flex; flex-direction: column; border-radius: var(--r-xl); }
+/* Columna Derecha: Ticket & Checkout Fortexa */
+.pos-summary-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--r-xl);
+  padding: 1.35rem 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: calc(var(--topbar-h) + 1.5rem);
+}
+
 .pos-items-list {
-  flex: 1; max-height: 250px; overflow-y: auto; border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: .75rem; margin-bottom: 1rem; background: #F8FAFC;
+  flex: 1;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: .65rem;
+  margin-bottom: 1rem;
+  background: #F8FAFC;
 }
-.empty-state-pos { text-align: center; color: var(--text-dim); font-size: .84rem; padding: 2.5rem 0; }
+.empty-state-pos {
+  text-align: center;
+  color: #94A3B8;
+  font-size: .84rem;
+  padding: 2rem 0;
+}
 .pos-item-row {
-  display: flex; align-items: center; justify-content: space-between;
-  background: #FFFFFF; border: 1px solid var(--border);
-  border-radius: var(--r-md); padding: .75rem .95rem; margin-bottom: .5rem;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: .65rem .85rem;
+  margin-bottom: .45rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 }
-.pos-item-info strong { display: block; font-size: .85rem; color: var(--text-main); }
-.pos-item-info span { font-size: .74rem; color: var(--text-muted); }
+.pos-item-info strong {
+  display: block;
+  font-size: .84rem;
+  color: #0F172A;
+  font-weight: 700;
+}
+.pos-item-info span {
+  font-size: .72rem;
+  color: #64748B;
+}
 .btn-remove-item {
-  background: #FEE2E2; border: 1px solid #FECDD3; color: #DC2626; font-weight: 900; font-size: .85rem;
-  cursor: pointer; padding: 4px 8px; border-radius: var(--r-sm); transition: all var(--ease);
+  background: #FFF1F2;
+  border: 1px solid #FECDD3;
+  color: #E11D48;
+  font-weight: 800;
+  font-size: .78rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all var(--ease);
 }
-.btn-remove-item:hover { background: #DC2626; color: #FFFFFF; }
+.btn-remove-item:hover {
+  background: #E11D48;
+  color: #FFFFFF;
+}
 
-.pos-totals-box { border-top: 1px solid var(--border); padding-top: 1rem; }
-.total-row { display: flex; justify-content: space-between; font-size: .88rem; margin-bottom: .4rem; }
-.input-inline { width: 90px; padding: 4px 8px; text-align: right; border: 1px solid var(--border); border-radius: var(--r-sm); }
+.pos-totals-box {
+  border-top: 1px solid #E2E8F0;
+  padding-top: 1rem;
+}
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .85rem;
+  color: #475569;
+  margin-bottom: .45rem;
+}
+
+/* Card Total General Destacada Fortexa ERP */
+.total-row-highlight {
+  background: #0F172A;
+  color: #FFFFFF;
+  border-radius: 12px;
+  padding: .9rem 1.25rem;
+  margin: .85rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+.total-row-highlight span {
+  color: #94A3B8;
+  font-size: .88rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.total-row-highlight strong {
+  font-size: 1.55rem;
+  font-weight: 900;
+  color: #38BDF8;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.pos-payment-methods {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .5rem;
+  margin: .85rem 0;
+}
+.btn-pay-method {
+  padding: .55rem;
+  border-radius: 8px;
+  border: 1px solid #CBD5E1;
+  background: #FFFFFF;
+  color: #334155;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--ease);
+}
+.btn-pay-method:hover {
+  background: #F8FAFC;
+  border-color: #94A3B8;
+}
+.btn-pay-method.active {
+  background: #1D4ED8;
+  border-color: #1D4ED8;
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
+}
+
+.btn-emit-ticket-fortexa {
+  width: 100%;
+  padding: .95rem 1rem;
+  background: #059669;
+  border: 1px solid #047857;
+  border-radius: 10px;
+  color: #FFFFFF;
+  font-size: .95rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  transition: all var(--ease);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+  margin-top: .65rem;
+}
+.btn-emit-ticket-fortexa:hover {
+  background: #047857;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(5, 150, 105, 0.35);
+}
+
 
 .payment-tabs { display: flex; gap: .5rem; margin-top: .35rem; }
 .payment-tab {

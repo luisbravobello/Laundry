@@ -407,24 +407,54 @@
       </section>
 
       <!-- ====================================================
-           2. SECCIÓN: PUNTO DE VENTA (POS)
+           2. SECCIÓN: PUNTO DE VENTA (POS FORTEXA ERP)
            ==================================================== -->
       <section class="content-section" id="section-pos">
+        
+        <!-- CABECERA FORTEXA ERP POS -->
+        <div class="fortexa-page-header">
+          <div class="fortexa-header-left">
+            <button class="btn-fortexa-back" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Volver al Panel</span>
+            </button>
+            <div class="fortexa-title-row">
+              <h2 class="fortexa-title">Punto de Venta &amp; Emisión POS</h2>
+              <span class="badge-live-pill">((•)) EN VIVO</span>
+            </div>
+            <p class="fortexa-subtitle">Terminal POS 01 • Facturación rápida de prendas, máquinas y autoservicio</p>
+          </div>
+          <div class="fortexa-actions-group">
+            <button class="btn-fortexa-outline" onclick="resetPosOrder()" title="Limpiar orden">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              <span>Reiniciar Orden</span>
+            </button>
+            <button class="btn-fortexa-outline" onclick="openNewClientModal()" title="Registrar nuevo cliente">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+              <span>+ Registrar Cliente</span>
+            </button>
+            <button class="btn-fortexa-outline" onclick="testEpsonT20II()" title="Prueba de impresión TM-T20II">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+              <span>Probar TM-T20II</span>
+            </button>
+          </div>
+        </div>
+
         <div class="pos-layout">
           
           <!-- LADO IZQUIERDO: CLIENTE, CATÁLOGO Y PERSONALIZACIÓN DE PRENDAS -->
           <div class="pos-left">
             
             <!-- PASO 1: DATOS DE LA FACTURA & CLIENTE -->
-            <div class="card pos-step-card" style="margin-bottom: 1.25rem;">
+            <div class="pos-step-card">
               <div class="pos-step-header">
-                <div class="pos-step-badge">1</div>
+                <div class="pos-step-badge">01</div>
                 <div>
                   <h4 class="pos-step-title">Cliente &amp; Número de Factura</h4>
-                  <p class="pos-step-sub">Define el cliente y la secuencia de la orden</p>
+                  <p class="pos-step-sub">Secuencia correlativa y datos de recepción de prendas</p>
                 </div>
-                <button class="btn btn-sm btn-outline" style="margin-left: auto;" onclick="openNewClientModal()">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                <button class="btn-fortexa-outline" style="margin-left: auto; padding: .35rem .75rem; font-size: .76rem;" onclick="openNewClientModal()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
                   <span>+ Registrar Cliente</span>
                 </button>
               </div>
@@ -433,7 +463,7 @@
               <div class="pos-step1-grid">
                 <div class="form-group">
                   <label class="field-label">Nº de Factura Actual:</label>
-                  <input type="text" id="posInvoiceNumber" class="form-input font-mono font-bold text-blue" style="background: #EFF6FF; border-color: #BFDBFE;" placeholder="FAC-001001" />
+                  <input type="text" id="posInvoiceNumber" class="form-input font-mono font-bold text-blue" style="background: #EFF6FF; border-color: #BFDBFE;" placeholder="FAC-001001" readonly />
                 </div>
                 <div class="form-group">
                   <label class="field-label">Seleccionar Cliente:</label>
@@ -446,28 +476,28 @@
               </div>
 
               <div class="pos-urgent-row">
-                <label class="checkbox-label" style="color: #DC2626; font-weight: 700;">
+                <label class="checkbox-label" style="color: #E11D48; font-weight: 700; font-size: .82rem; display: flex; align-items: center; gap: 8px;">
                   <input type="checkbox" id="posIsUrgent" onchange="calculatePosTotal()" />
-                  <span>Servicio Urgente / Prioritario (+15% Recargo por Entrega Inmediata)</span>
+                  <span>⚡ Servicio Prioritario / Urgente (+15% Recargo por Entrega Inmediata)</span>
                 </label>
               </div>
             </div>
 
             <!-- PASO 2: CATÁLOGO Y PERSONALIZACIÓN DE PRECIOS -->
-            <div class="card pos-step-card">
+            <div class="pos-step-card">
               <div class="pos-step-header">
-                <div class="pos-step-badge">2</div>
+                <div class="pos-step-badge">02</div>
                 <div>
                   <h4 class="pos-step-title">Catálogo de Servicios &amp; Máquinas</h4>
-                  <p class="pos-step-sub">Haz clic en cualquier ítem para cargarlo y personalizar su precio</p>
+                  <p class="pos-step-sub">Haz clic en cualquier servicio para cargarlo y personalizar su precio</p>
                 </div>
               </div>
 
-              <!-- Pestañas de Categoría Limpias -->
+              <!-- Pestañas de Categoría Limpias Fortexa ERP -->
               <div class="catalog-tabs">
                 <button class="catalog-tab active" onclick="filterCatalog('Todos', this)">Todos</button>
-                <button class="catalog-tab" onclick="filterCatalog('Lavandería', this)">Lavandería</button>
-                <button class="catalog-tab" onclick="filterCatalog('Sastrería', this)">Sastrería</button>
+                <button class="catalog-tab" onclick="filterCatalog('Lavandería', this)">Lavandería &amp; Secado</button>
+                <button class="catalog-tab" onclick="filterCatalog('Sastrería', this)">Sastrería &amp; Taller</button>
                 <button class="catalog-tab" onclick="filterCatalog('Autoservicio', this)">Autoservicio &amp; Máquinas</button>
                 <button class="catalog-tab" onclick="filterCatalog('Hotelería', this)">Hotelería (x Kg)</button>
               </div>
@@ -480,9 +510,9 @@
                 <div class="item-builder-header">
                   <div style="display: flex; align-items: center; gap: .5rem;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                    <span id="builderItemName" style="font-weight: 800; color: #1E293B;">Configuración del Artículo / Servicio</span>
+                    <span id="builderItemName" style="font-weight: 800; color: #0F172A; font-size: .88rem;">Personalización del Artículo / Servicio</span>
                   </div>
-                  <span class="badge-pill bg-blue" style="font-size: .74rem; font-weight: 700;">Precio Editable al Instante</span>
+                  <span class="badge-pill bg-blue" style="font-size: .72rem; font-weight: 800;">Precio Editable al Instante</span>
                 </div>
 
                 <div class="form-row-3" style="display: grid; grid-template-columns: 1.5fr 1fr 0.8fr; gap: .75rem; margin-bottom: .75rem;">
@@ -510,7 +540,7 @@
                 <div class="form-row-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .75rem; margin-bottom: .85rem;">
                   <!-- PRECIO PERSONALIZABLE POR EL USUARIO -->
                   <div class="form-group">
-                    <label class="field-label" style="color: #2563EB; font-weight: 800;">Precio Unitario Personalizado (RD$) *</label>
+                    <label class="field-label" style="color: #1D4ED8; font-weight: 800;">Precio Unitario Personalizado (RD$) *</label>
                     <input type="number" id="builderPrice" class="form-input font-mono font-bold" value="180" style="border: 2px solid #2563EB; background: #EFF6FF; color: #1D4ED8; font-size: 1.05rem;" />
                   </div>
                   <div class="form-group">
@@ -537,21 +567,21 @@
                   </div>
                 </div>
 
-                <button type="button" class="btn btn-primary btn-add-item" onclick="addItemToOrder()" style="width: 100%; padding: .85rem; font-size: .92rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: .5rem;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <button type="button" class="btn-fortexa-primary" onclick="addItemToOrder()" style="width: 100%; padding: .8rem; font-size: .88rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: .5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                   <span>Agregar Artículo a la Factura</span>
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- LADO DERECHO: RESUMEN DE FACTURA, TOTALES & COBRO -->
+          <!-- LADO DERECHO: RESUMEN DE FACTURA, TOTALES & COBRO (FORTEXA ERP) -->
           <div class="pos-right">
-            <div class="card pos-summary-card">
-              <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: .85rem;">
+            <div class="pos-summary-card">
+              <div class="card-header" style="border-bottom: 1px solid #E2E8F0; padding-bottom: .85rem;">
                 <div>
-                  <h3 style="font-size: 1.05rem;">Resumen de Factura</h3>
-                  <span style="font-size: .75rem; color: var(--text-muted);">Comprobante en tiempo real</span>
+                  <h3 style="font-size: 1rem; font-weight: 800; color: #0F172A; margin: 0;">Factura en Curso</h3>
+                  <span style="font-size: .74rem; color: #64748B;">Comprobante y cobro en vivo</span>
                 </div>
                 <span class="badge-pill bg-blue" id="posItemsCount">0 artículos</span>
               </div>
@@ -565,26 +595,26 @@
               <div class="pos-totals-box">
                 <div class="total-row">
                   <span>Subtotal:</span>
-                  <strong id="posSubtotal" class="font-mono">RD$0.00</strong>
+                  <strong id="posSubtotal" class="font-mono font-bold" style="color: #0F172A;">RD$0.00</strong>
                 </div>
                 <div class="total-row">
                   <span>Descuento Especial (RD$):</span>
-                  <input type="number" id="posDiscount" class="input-inline font-mono" value="0" min="0" oninput="calculatePosTotal()" />
+                  <input type="number" id="posDiscount" class="input-inline font-mono font-bold" value="0" min="0" oninput="calculatePosTotal()" />
                 </div>
                 
-                <!-- TOTAL DESTACADO -->
-                <div class="total-row-highlight" style="background: #1E293B; color: #FFFFFF; border-radius: var(--r-md); padding: .85rem 1.15rem; margin: .85rem 0;">
-                  <span style="color: #94A3B8; font-size: .95rem; font-weight: 800;">TOTAL GENERAL:</span>
-                  <strong id="posTotal" class="font-mono" style="font-size: 1.45rem; font-weight: 900; color: #38BDF8;">RD$0.00</strong>
+                <!-- TOTAL GENERAL DESTACADO FORTEXA ERP -->
+                <div class="total-row-highlight">
+                  <span>TOTAL GENERAL:</span>
+                  <strong id="posTotal" class="font-mono">RD$0.00</strong>
                 </div>
 
                 <!-- Método de Pago -->
                 <div style="margin-top: .75rem;">
-                  <label class="field-label" style="font-size: .78rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Método de Cobro:</label>
-                  <div class="payment-tabs">
-                    <button type="button" class="payment-tab active" onclick="selectPaymentMethod('Efectivo', this)">Efectivo</button>
-                    <button type="button" class="payment-tab" onclick="selectPaymentMethod('Tarjeta', this)">Tarjeta POS</button>
-                    <button type="button" class="payment-tab" onclick="selectPaymentMethod('Transferencia', this)">Transferencia</button>
+                  <label class="field-label" style="font-size: .74rem; font-weight: 800; color: #64748B; text-transform: uppercase;">Método de Cobro:</label>
+                  <div class="pos-payment-methods">
+                    <button type="button" class="btn-pay-method active" onclick="selectPaymentMethod('Efectivo', this)">💵 Efectivo</button>
+                    <button type="button" class="btn-pay-method" onclick="selectPaymentMethod('Tarjeta', this)">💳 Tarjeta POS</button>
+                    <button type="button" class="btn-pay-method" onclick="selectPaymentMethod('Transferencia', this)">📲 Transferencia</button>
                   </div>
                 </div>
 
@@ -592,24 +622,25 @@
                 <div class="form-group" style="margin-top: .85rem;">
                   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                     <label class="field-label">Monto Cobrado / Abono (RD$):</label>
-                    <button type="button" class="btn-link" style="font-size: .74rem; font-weight: 800; color: #2563EB;" onclick="payFullOrder()">Pagar Total Completo</button>
+                    <button type="button" class="btn-link" style="font-size: .74rem; font-weight: 800; color: #1D4ED8;" onclick="payFullOrder()">Pagar Total Completo</button>
                   </div>
                   <input type="number" id="posAmountPaid" class="form-input font-mono font-bold" value="0" min="0" oninput="calculatePosTotal()" style="font-size: 1.05rem;" />
                 </div>
 
                 <!-- Saldo Pendiente -->
-                <div class="total-row" style="margin-top: .65rem; padding-top: .5rem; border-top: 1px dashed var(--border);">
-                  <span style="font-weight: 800; color: #DC2626;">Saldo Pendiente por Cobrar:</span>
-                  <strong id="posBalanceDue" class="font-mono text-rose font-bold" style="font-size: 1.05rem;">RD$0.00</strong>
+                <div class="total-row" style="margin-top: .65rem; padding-top: .5rem; border-top: 1px dashed #E2E8F0;">
+                  <span style="font-weight: 800; color: #E11D48;">Saldo Pendiente por Cobrar:</span>
+                  <strong id="posBalanceDue" class="font-mono text-rose font-bold" style="font-size: 1.05rem; color: #E11D48;">RD$0.00</strong>
                 </div>
 
                 <!-- Botón Principal: Generar Factura e Imprimir -->
-                <button type="button" class="btn btn-success" onclick="saveAndPrintOrder()" style="width: 100%; margin-top: 1.15rem; padding: .95rem; font-size: .95rem; font-weight: 900; letter-spacing: .02em; display: flex; align-items: center; justify-content: center; gap: .6rem; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                <button type="button" class="btn-emit-ticket-fortexa" onclick="saveAndPrintOrder()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
                   <span>EMITIR FACTURA &amp; IMPRIMIR TICKET</span>
                 </button>
               </div>
 
+            </div>
           </div>
         </div>
       </section>
