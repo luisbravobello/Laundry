@@ -281,20 +281,119 @@ body {
 }
 
 /* ================================================================
-   PAGE BODY & GREETING HEADER
+   PAGE BODY & FORTEXA ERP DESIGN SYSTEM
    ================================================================ */
 .content-wrapper {
   padding: 1.75rem 2rem 3rem; flex: 1;
 }
 
-.page-header-row {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  margin-bottom: 1.75rem;
+/* Header de Página Fortexa */
+.fortexa-page-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 1.5rem;
 }
-.greeting-title {
-  font-size: 1.65rem; font-weight: 800; color: var(--text-main);
-  letter-spacing: -.02em; margin-bottom: .25rem;
+.fortexa-title-box { display: flex; align-items: center; gap: .75rem; margin-bottom: 2px; }
+.btn-back-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: .8rem; font-weight: 700; color: var(--text-muted);
+  background: transparent; border: none; cursor: pointer; margin-bottom: .35rem;
 }
+.btn-back-link:hover { color: #2563EB; }
+
+.fortexa-title { font-size: 1.5rem; font-weight: 900; color: #0F172A; letter-spacing: -.02em; margin: 0; }
+.fortexa-sub { font-size: .84rem; color: var(--text-muted); margin: 0; }
+
+.badge-live-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 99px; font-size: .68rem; font-weight: 800;
+  background: #EFF6FF; color: #2563EB; border: 1px solid #DBEAFE; letter-spacing: .04em;
+}
+
+.fortexa-actions-group { display: flex; align-items: center; gap: .6rem; }
+.btn-fortexa-outline {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .5rem .85rem; border-radius: var(--r-md);
+  background: #FFFFFF; border: 1px solid #CBD5E1;
+  color: #334155; font-size: .82rem; font-weight: 700;
+  cursor: pointer; transition: all var(--ease);
+}
+.btn-fortexa-outline:hover {
+  background: #F8FAFC; border-color: #94A3B8; color: #0F172A;
+}
+.btn-fortexa-primary {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .52rem 1.15rem; border-radius: var(--r-md);
+  background: #1E293B; border: 1px solid #0F172A;
+  color: #FFFFFF; font-size: .84rem; font-weight: 800;
+  cursor: pointer; transition: all var(--ease);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+}
+.btn-fortexa-primary:hover {
+  background: #0F172A; transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+}
+
+/* Fila de 5 Tarjetas KPI Fortexa ERP */
+.fortexa-kpi-row {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.fortexa-kpi-card {
+  background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: var(--r-lg);
+  padding: 1rem 1.15rem; display: flex; align-items: center; gap: .85rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03); transition: all var(--ease);
+}
+.fortexa-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.05);
+  border-color: #CBD5E1;
+}
+.fortexa-kpi-icon {
+  width: 42px; height: 42px; border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.kpi-bg-blue { background: #EFF6FF; color: #2563EB; border: 1px solid #DBEAFE; }
+.kpi-bg-green { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+.kpi-bg-purple { background: #FAF5FF; color: #9333EA; border: 1px solid #E9D5FF; }
+.kpi-bg-amber { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
+.kpi-bg-slate { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
+
+.fortexa-kpi-info { flex: 1; min-width: 0; }
+.fortexa-kpi-number {
+  font-size: 1.15rem; font-weight: 900; color: #0F172A;
+  line-height: 1.2; font-family: 'Inter', system-ui, sans-serif;
+}
+.fortexa-kpi-number.font-mono { font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; }
+.fortexa-kpi-label {
+  font-size: .74rem; font-weight: 600; color: var(--text-muted);
+  margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Card de Búsqueda y Filtrado Fortexa ERP */
+.fortexa-filter-card {
+  background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: var(--r-lg);
+  padding: 1.15rem; margin-bottom: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+.fortexa-filter-title {
+  font-size: .84rem; font-weight: 800; color: #0F172A; margin-bottom: .65rem;
+}
+.fortexa-filter-row { display: flex; align-items: center; gap: .75rem; }
+.fortexa-filter-input-box { position: relative; flex: 1; }
+.fortexa-filter-input {
+  width: 100%; height: 40px; padding: 0 1rem 0 2.4rem;
+  border-radius: var(--r-md); border: 1px solid #CBD5E1;
+  background: #FFFFFF; font-size: .85rem; color: #0F172A; outline: none;
+  transition: all var(--ease);
+}
+.fortexa-filter-input:focus {
+  border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+.fortexa-filter-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: #94A3B8; pointer-events: none;
+}
+
 .greeting-sub {
   font-size: .88rem; color: var(--text-muted);
 }
