@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SyncOps.Laundry.Application/SyncOps.Laundry.Application.csproj" />
+  <Project Path="SyncOps.Laundry.DesktopUI/SyncOps.Laundry.DesktopUI.csproj" />
+  <Project Path="SyncOps.Laundry.Domain/SyncOps.Laundry.Domain.csproj" />
+  <Project Path="SyncOps.Laundry.Infrastructure/SyncOps.Laundry.Infrastructure.csproj" />
+</Solution>

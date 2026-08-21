@@ -1,0 +1,83 @@
+<UserControl x:Class="SyncOps.Laundry.DesktopUI.Views.Pages.ClientesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1100"
+             Loaded="UserControl_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2.2*"/>
+            <ColumnDefinition Width="16"/>
+            <ColumnDefinition Width="1.1*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- COLUMNA IZQUIERDA: LISTA DE CLIENTES Y HOTELES -->
+        <Border Grid.Column="0" Style="{StaticResource ModernCard}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="Directorio de Clientes &amp; Cuentas Corporativas" FontSize="18" FontWeight="Bold" Foreground="{StaticResource TextMainBrush}"/>
+                        <TextBlock Text="Gestión de clientes particulares y hoteles con crédito y facturación acumulada" FontSize="12" Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBox Width="180" Style="{StaticResource ModernTextBox}" Text="{Binding FiltroTexto, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,8,0"/>
+                        <Button Style="{StaticResource OutlineButton}" Command="{Binding CargarClientesCommand}" Content="Buscar" Padding="10,5"/>
+                    </StackPanel>
+                </Grid>
+
+                <DataGrid Grid.Row="1" ItemsSource="{Binding Clientes}" SelectedItem="{Binding ClienteSeleccionado}" AutoGenerateColumns="False" IsReadOnly="True" BorderThickness="0" Background="Transparent" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{StaticResource BorderBrush}" RowHeight="44">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nombre / Razón Social" Binding="{Binding NombreCompleto}" Width="*"/>
+                        <DataGridTextColumn Header="Teléfono" Binding="{Binding Telefono}" Width="120"/>
+                        <DataGridTextColumn Header="Tipo" Binding="{Binding EsCorporativoHotel, Converter={x:Null}}" Width="110"/>
+                        <DataGridTextColumn Header="Saldo Pendiente" Binding="{Binding SaldoPendiente, StringFormat='RD${0:N2}'}" Width="130"/>
+                        <DataGridTextColumn Header="Límite Crédito" Binding="{Binding LimiteCredito, StringFormat='RD${0:N2}'}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- COLUMNA DERECHA: REGISTRO DE NUEVO CLIENTE / HOTEL -->
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <Border Style="{StaticResource ModernCard}">
+                <StackPanel>
+                    <TextBlock Text="Registrar Nuevo Cliente / Hotel" FontSize="15" FontWeight="Bold" Foreground="{StaticResource BluePrimaryBrush}" Margin="0,0,0,14"/>
+
+                    <TextBlock Text="Nombre Completo o Empresa:" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                    <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding NuevoNombre, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+
+                    <TextBlock Text="Teléfono Móvil / Contacto:" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                    <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding NuevoTelefono, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+
+                    <TextBlock Text="Correo Electrónico:" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                    <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding NuevoEmail, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+
+                    <TextBlock Text="RNC / Cédula (Fiscal):" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                    <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding NuevoRNC, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+
+                    <TextBlock Text="Dirección:" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                    <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding NuevaDireccion, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12"/>
+
+                    <!-- Checkbox Hotel / Empresa -->
+                    <Border Background="#F8FAFC" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,0,14">
+                        <StackPanel>
+                            <CheckBox IsChecked="{Binding NuevoEsHotel}" Content="Es Cuenta Corporativa / Hotel" FontWeight="Bold" Foreground="{StaticResource BlueDeepBrush}" Margin="0,0,0,8"/>
+                            <TextBlock Text="Límite de Crédito Autorizado (RD$):" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding NuevoLimiteCredito, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Button Style="{StaticResource PrimaryButton}" Command="{Binding GuardarNuevoClienteCommand}" Content="Guardar Cliente" Height="40"/>
+                    <TextBlock Text="{Binding MensajeEstado}" Foreground="{StaticResource BluePrimaryBrush}" FontWeight="SemiBold" FontSize="11" HorizontalAlignment="Center" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

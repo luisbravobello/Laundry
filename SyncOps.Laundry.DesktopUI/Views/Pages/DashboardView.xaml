@@ -1,0 +1,200 @@
+<UserControl x:Class="SyncOps.Laundry.DesktopUI.Views.Pages.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1100"
+             Loaded="UserControl_Loaded">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,10,0">
+        <StackPanel Margin="0,0,0,20">
+            <!-- Encabezado de Bienvenida y Acciones Rápidas -->
+            <Grid Margin="0,0,0,24">
+                <StackPanel>
+                    <TextBlock Text="¡Hola de nuevo! Resumen Operativo" FontSize="22" FontWeight="Bold" Foreground="{StaticResource TextMainBrush}"/>
+                    <TextBlock Text="Métricas en vivo de lavandería, sastrería, autoservicio y finanzas" FontSize="13" Foreground="{StaticResource TextMutedBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource PrimaryButton}" Command="{Binding IrANuevaOrdenCommand}" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconPlus}" Fill="#FFFFFF" Width="14" Height="14" Stretch="Uniform" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Nueva Orden / Recepción" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource OutlineButton}" Command="{Binding CargarDashboardCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconRefresh}" Fill="{StaticResource BluePrimaryBrush}" Width="14" Height="14" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Actualizar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <!-- FILA 1: TARJETAS KPI RESUMEN -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- KPI 1: Ventas Hoy -->
+                <Border Grid.Column="0" Style="{StaticResource ModernCard}" Background="#FFFFFF">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,12">
+                            <TextBlock Text="VENTAS HOY" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border HorizontalAlignment="Right" Background="{StaticResource BlueSubtleBrush}" CornerRadius="6" Padding="6,4">
+                                <Path Data="{StaticResource IconCash}" Fill="{StaticResource BlueVibrantBrush}" Width="16" Height="16" Stretch="Uniform"/>
+                            </Border>
+                        </Grid>
+                        <TextBlock Text="{Binding VentasHoy, StringFormat='RD${0:N2}'}" FontSize="22" FontWeight="ExtraBold" Foreground="{StaticResource BlueDeepBrush}" FontFamily="{StaticResource MonoFont}"/>
+                        <TextBlock Text="Ingresos por órdenes y fichas" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- KPI 2: Prendas en Taller -->
+                <Border Grid.Column="2" Style="{StaticResource ModernCard}">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,12">
+                            <TextBlock Text="PRENDAS EN TALLER" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border HorizontalAlignment="Right" Background="{StaticResource StatusProgressBg}" CornerRadius="6" Padding="6,4">
+                                <Path Data="{StaticResource IconScissors}" Fill="{StaticResource StatusProgressDot}" Width="16" Height="16" Stretch="Uniform"/>
+                            </Border>
+                        </Grid>
+                        <TextBlock Text="{Binding PrendasEnTaller}" FontSize="22" FontWeight="ExtraBold" Foreground="{StaticResource TextMainBrush}" FontFamily="{StaticResource MonoFont}"/>
+                        <TextBlock Text="Lavado, planchado y sastrería" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- KPI 3: Torres y Máquinas Autoservicio -->
+                <Border Grid.Column="4" Style="{StaticResource ModernCard}">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,12">
+                            <TextBlock Text="AUTOSERVICIO" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border HorizontalAlignment="Right" Background="{StaticResource StatusDoneBg}" CornerRadius="6" Padding="6,4">
+                                <Path Data="{StaticResource IconWasher}" Fill="{StaticResource StatusDoneDot}" Width="16" Height="16" Stretch="Uniform"/>
+                            </Border>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding MaquinasEnUso}" FontSize="22" FontWeight="ExtraBold" Foreground="{StaticResource StatusProgressDot}" FontFamily="{StaticResource MonoFont}"/>
+                            <TextBlock Text=" en uso / " FontSize="14" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Bottom" Margin="4,0,4,2"/>
+                            <TextBlock Text="{Binding MaquinasDisponibles}" FontSize="18" FontWeight="Bold" Foreground="{StaticResource StatusDoneDot}" FontFamily="{StaticResource MonoFont}" VerticalAlignment="Bottom" Margin="0,0,0,2"/>
+                            <TextBlock Text=" libres" FontSize="14" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Bottom" Margin="4,0,0,2"/>
+                        </StackPanel>
+                        <TextBlock Text="Torres de monedas e industriales" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- KPI 4: Hoteles & Crédito -->
+                <Border Grid.Column="6" Style="{StaticResource ModernCard}">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,12">
+                            <TextBlock Text="CRÉDITO HOTELES" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border HorizontalAlignment="Right" Background="{StaticResource StatusReviewBg}" CornerRadius="6" Padding="6,4">
+                                <Path Data="{StaticResource IconClients}" Fill="{StaticResource StatusReviewDot}" Width="16" Height="16" Stretch="Uniform"/>
+                            </Border>
+                        </Grid>
+                        <TextBlock Text="{Binding SaldoPendienteCobroHoteles, StringFormat='RD${0:N2}'}" FontSize="22" FontWeight="ExtraBold" Foreground="#B45309" FontFamily="{StaticResource MonoFont}"/>
+                        <TextBlock Text="Cuentas por cobrar corporativas" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- FILA 2: TABLAS PRINCIPALES (Últimas Órdenes y Alertas de Stock) -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="1.2*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- ÓRDENES RECIENTES -->
+                <Border Grid.Column="0" Style="{StaticResource ModernCard}">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,16">
+                            <TextBlock Text="Órdenes de Servicio Recientes" FontSize="15" FontWeight="Bold" Foreground="{StaticResource TextMainBrush}"/>
+                            <Button HorizontalAlignment="Right" Content="Ver Flujo en Taller →" Style="{StaticResource OutlineButton}" Command="{Binding IrATallerCommand}" Padding="8,4" FontSize="11"/>
+                        </Grid>
+
+                        <ItemsControl ItemsSource="{Binding UltimasOrdenes}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="110"/>
+                                                <ColumnDefinition Width="100"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Ticket -->
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding NumeroTicket}" FontWeight="Bold" Foreground="{StaticResource BluePrimaryBrush}" FontFamily="{StaticResource MonoFont}" FontSize="13"/>
+                                                <TextBlock Text="{Binding FechaRecepcion, StringFormat='{}{0:dd/MM hh:mm tt}'}" FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                                            </StackPanel>
+
+                                            <!-- Cliente y Tipo -->
+                                            <StackPanel Grid.Column="1" Margin="8,0">
+                                                <TextBlock Text="{Binding ClienteNombre}" FontWeight="SemiBold" Foreground="{StaticResource TextMainBrush}"/>
+                                                <TextBlock Text="{Binding ClienteTelefono}" FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                                            </StackPanel>
+
+                                            <!-- Estado -->
+                                            <Border Grid.Column="2" CornerRadius="6" Padding="6,3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{StaticResource StatusProgressBg}" BorderBrush="{StaticResource StatusProgressBorder}" BorderThickness="1">
+                                                <TextBlock Text="{Binding Estado}" FontWeight="Bold" FontSize="10" Foreground="{StaticResource StatusProgressText}"/>
+                                            </Border>
+
+                                            <!-- Total -->
+                                            <StackPanel Grid.Column="3" HorizontalAlignment="Right">
+                                                <TextBlock Text="{Binding Total, StringFormat='RD${0:N2}'}" FontWeight="Bold" Foreground="{StaticResource TextMainBrush}" FontFamily="{StaticResource MonoFont}"/>
+                                                <TextBlock Text="{Binding SaldoPendiente, StringFormat='Pend: RD${0:N2}'}" FontSize="10" Foreground="#DC2626" FontWeight="SemiBold"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- INSUMOS CRÍTICOS Y SUMINISTROS -->
+                <Border Grid.Column="2" Style="{StaticResource ModernCard}">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,16">
+                            <TextBlock Text="Alertas de Insumos" FontSize="15" FontWeight="Bold" Foreground="{StaticResource TextMainBrush}"/>
+                            <Button HorizontalAlignment="Right" Content="Inventario →" Style="{StaticResource OutlineButton}" Command="{Binding IrAInventarioCommand}" Padding="8,4" FontSize="11"/>
+                        </Grid>
+
+                        <ItemsControl ItemsSource="{Binding InsumosCriticos}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource StatusDangerBg}" BorderBrush="{StaticResource StatusDangerBorder}" BorderThickness="1" CornerRadius="8" Padding="12,10" Margin="0,0,0,8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding NombreInsumo}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource StatusDangerText}"/>
+                                                <TextBlock Text="{Binding ProveedorPrincipal, StringFormat='Prov: {0}'}" FontSize="10" Foreground="{StaticResource TextMutedBrush}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding StockActual, StringFormat='{}{0:N0} disp.'}" FontWeight="ExtraBold" Foreground="{StaticResource StatusDangerDot}" FontFamily="{StaticResource MonoFont}"/>
+                                                <TextBlock Text="{Binding StockMinimoAlerta, StringFormat='Mín: {0:N0}'}" FontSize="10" Foreground="{StaticResource TextMutedBrush}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

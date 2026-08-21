@@ -1,0 +1,311 @@
+<UserControl x:Class="SyncOps.Laundry.DesktopUI.Views.Pages.PosRecepcionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:enums="clr-namespace:SyncOps.Laundry.Domain.Enums;assembly=SyncOps.Laundry.Domain"
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1100"
+             Loaded="UserControl_Loaded">
+    <Grid>
+        <!-- GRID PRINCIPAL A 2 COLUMNAS (Selector / Formulario Izquierda | Resumen / Cobro Derecha) -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.4*"/>
+            <ColumnDefinition Width="16"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ==============================================
+             COLUMNA IZQUIERDA: CLIENTE + PRENDAS & SASTRERÍA
+             ============================================== -->
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,8,0">
+            <StackPanel>
+                <!-- 1. DATOS DEL CLIENTE Y FECHA ENTREGA -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="1. Cliente &amp; Compromiso de Entrega" FontSize="14" FontWeight="Bold" Foreground="{StaticResource BluePrimaryBrush}" Margin="0,0,0,12"/>
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="160"/>
+                            </Grid.ColumnDefinitions>
+                            <!-- Combo Cliente -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Cliente Seleccionado:" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                                <ComboBox ItemsSource="{Binding Clientes}" SelectedItem="{Binding ClienteSeleccionado}" DisplayMemberPath="NombreCompleto" Height="36" Padding="8,6" VerticalContentAlignment="Center"/>
+                            </StackPanel>
+                            <!-- Fecha Promesa -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Fecha Entrega:" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                                <DatePicker SelectedDate="{Binding FechaPromesaEntrega}" Height="36" VerticalContentAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid>
+                            <CheckBox IsChecked="{Binding EsUrgente}" Content="Servicio Urgente / Prioritario (+ Entrega Inmediata)" FontWeight="Bold" Foreground="#DC2626" VerticalAlignment="Center"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- 2. CATÁLOGO RÁPIDO & AGREGAR PRENDA -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="2. Selección de Prenda / Servicio" FontSize="14" FontWeight="Bold" Foreground="{StaticResource BluePrimaryBrush}" Margin="0,0,0,10"/>
+                        
+                        <!-- Botones de Acceso Rápido del Catálogo -->
+                        <ItemsControl ItemsSource="{Binding CatalogoPrendas}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource OutlineButton}" Command="{Binding DataContext.SeleccionarCatalogoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Margin="0,0,6,6" Padding="10,6">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding NombrePrenda}" FontWeight="SemiBold" FontSize="12"/>
+                                            <TextBlock Text="{Binding PrecioSugerido, StringFormat=' (RD${0:N0})'}" FontWeight="Bold" Foreground="{StaticResource BlueVibrantBrush}" FontFamily="{StaticResource MonoFont}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Separator Margin="0,12" Background="{StaticResource BorderBrush}"/>
+
+                        <!-- FORMULARIO DE DETALLE DE PRENDA -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Descripción Prenda:" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding DescripcionPersonalizada, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Tipo Servicio:" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                                <ComboBox SelectedValue="{Binding TipoServicioSeleccionado}" Height="34" VerticalContentAlignment="Center">
+                                    <ComboBoxItem Content="Lavado y Planchado" Tag="LavadoYPlanchado" IsSelected="True"/>
+                                    <ComboBoxItem Content="Sólo Lavado" Tag="LavadoPieza"/>
+                                    <ComboBoxItem Content="Sólo Planchado" Tag="Planchado"/>
+                                    <ComboBoxItem Content="Sastrería / Arreglo" Tag="Sastreria"/>
+                                    <ComboBoxItem Content="Hotel / Gran Volumen (Kg)" Tag="HotelVolumen"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="4">
+                                <TextBlock Text="Cantidad:" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding CantidadItem, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="6">
+                                <TextBlock Text="Precio Unit:" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding PrecioUnitarioItem, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Color / Tela:" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding ColorPrenda, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Defectos / Manchas Previas:" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding DefectosPrenda, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="4">
+                                <TextBlock Text="Estante/Gancho:" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding UbicacionEstante, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- SECCIÓN ESPECIAL: ESPECIFICACIONES DE SASTRERÍA -->
+                        <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,12">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,8">
+                                    <TextBlock Text="✂️ Especificaciones de Sastrería &amp; Taller" FontWeight="Bold" Foreground="#1E40AF" FontSize="12"/>
+                                    <CheckBox HorizontalAlignment="Right" IsChecked="{Binding EsServicioSastreria}" Content="Activar Arreglo" FontWeight="SemiBold" Foreground="{StaticResource TextBodyBrush}"/>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Tipo de Arreglo:" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,2"/>
+                                        <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding SastreriaTipoArreglo, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Medidas Exactas / Indicaciones:" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,2"/>
+                                        <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding SastreriaMedidas, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Button Style="{StaticResource PrimaryButton}" Command="{Binding AgregarItemAOrdenCommand}" HorizontalAlignment="Right" Padding="20,8">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="{StaticResource IconPlus}" Fill="#FFFFFF" Width="14" Height="14" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Agregar Prenda a la Orden" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ==============================================
+             COLUMNA DERECHA: RESUMEN DE ORDEN & COBRO
+             ============================================== -->
+        <Border Grid.Column="2" Style="{StaticResource ModernCard}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Encabezado Resumen -->
+                <Grid Grid.Row="0" Margin="0,0,0,12">
+                    <TextBlock Text="Resumen de la Orden" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextMainBrush}"/>
+                    <TextBlock HorizontalAlignment="Right" Text="{Binding ItemsAgregados.Count, StringFormat='{}{0} prenda(s)'}" FontWeight="Bold" Foreground="{StaticResource BlueVibrantBrush}"/>
+                </Grid>
+
+                <!-- LISTA DE PRENDAS AGREGADAS -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,12">
+                    <ItemsControl ItemsSource="{Binding ItemsAgregados}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,0,8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="{Binding PrendaDescripcion}" FontWeight="Bold" Foreground="{StaticResource TextMainBrush}" FontSize="13"/>
+                                            <TextBlock Text="{Binding TipoServicio, StringFormat='Servicio: {0}'}" FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                                            <TextBlock Text="{Binding SastreriaTipoArreglo, StringFormat='Arreglo: {0}'}" FontSize="10" Foreground="#2563EB" FontWeight="SemiBold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1" Margin="10,0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Subtotal, StringFormat='RD${0:N2}'}" FontWeight="ExtraBold" Foreground="{StaticResource TextMainBrush}" FontFamily="{StaticResource MonoFont}"/>
+                                            <TextBlock Text="{Binding Cantidad, StringFormat='Cant: {0}'}" FontSize="10" Foreground="{StaticResource TextMutedBrush}" HorizontalAlignment="Right"/>
+                                        </StackPanel>
+
+                                        <Button Grid.Column="2" Content="✕" Foreground="#DC2626" Background="Transparent" BorderThickness="0" FontWeight="Bold" Cursor="Hand" Command="{Binding DataContext.RemoverItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" VerticalAlignment="Center" Padding="6,2"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- TOTALES Y COBRO -->
+                <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="0,12,0,0">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,6">
+                            <TextBlock Text="Subtotal:" Foreground="{StaticResource TextMutedBrush}" FontSize="13"/>
+                            <TextBlock HorizontalAlignment="Right" Text="{Binding SubtotalCalculado, StringFormat='RD${0:N2}'}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}" FontSize="14"/>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,8">
+                            <TextBlock Text="Descuento (RD$):" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center"/>
+                            <TextBox HorizontalAlignment="Right" Width="100" Style="{StaticResource ModernTextBox}" Text="{Binding Descuento, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}"/>
+                        </Grid>
+
+                        <Border Background="{StaticResource BlueSubtleBrush}" Margin="-18,0,-18,12" Padding="18,10">
+                            <Grid>
+                                <TextBlock Text="TOTAL GENERAL:" FontWeight="ExtraBold" Foreground="{StaticResource BlueDeepBrush}" FontSize="15" VerticalAlignment="Center"/>
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding TotalCalculado, StringFormat='RD${0:N2}'}" FontWeight="ExtraBold" Foreground="{StaticResource BlueDeepBrush}" FontFamily="{StaticResource MonoFont}" FontSize="20"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Abono y Método de Pago -->
+                        <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Monto a Cobrar / Abonar:" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,2"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding MontoAbonado, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}" FontWeight="Bold" FontSize="14"/>
+                        </StackPanel>
+                        <Button Grid.Column="2" Content="Pagar Todo" Style="{StaticResource OutlineButton}" Command="{Binding CobrarTodoCommand}" VerticalAlignment="Bottom" Height="34" FontSize="11"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,12">
+                        <TextBlock Text="Saldo Pendiente:" Foreground="#DC2626" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Right" Text="{Binding SaldoPendienteCalculado, StringFormat='RD${0:N2}'}" Foreground="#DC2626" FontWeight="ExtraBold" FontFamily="{StaticResource MonoFont}" FontSize="14"/>
+                    </Grid>
+
+                    <!-- BOTÓN EMITIR ORDEN -->
+                    <Button Style="{StaticResource SuccessButton}" Command="{Binding GuardarYEmitirTicketCommand}" Height="45" FontSize="14">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconPrinter}" Fill="#FFFFFF" Width="16" Height="16" Stretch="Uniform" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="GUARDAR &amp; GENERAR TICKET" FontWeight="ExtraBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <TextBlock Text="{Binding MensajeEstado}" Foreground="{StaticResource BluePrimaryBrush}" FontWeight="SemiBold" FontSize="11" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- ==============================================
+             MODAL / DIÁLOGO DE VISTA PREVIA DE TICKET
+             ============================================== -->
+        <Border Grid.ColumnSpan="3" Background="#80000000" Visibility="{Binding MostrarModalTicket, Converter={StaticResource BoolToVisConverter}, FallbackValue=Collapsed}" Margin="-24">
+            <Border Width="460" MaxHeight="620" Style="{StaticResource ModernCard}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFFFFF">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,12">
+                        <TextBlock Text="Vista Previa de Ticket Térmico" FontWeight="Bold" FontSize="15" Foreground="{StaticResource BlueDeepBrush}"/>
+                        <Button Content="✕" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" FontWeight="Bold" Command="{Binding CerrarModalTicketCommand}" Cursor="Hand"/>
+                    </Grid>
+
+                    <Border Grid.Row="1" Background="#F8FAFC" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="14">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <TextBlock Text="{Binding TicketGeneradoTexto}" FontFamily="{StaticResource MonoFont}" FontSize="12" Foreground="{StaticResource TextMainBrush}" LineHeight="18"/>
+                        </ScrollViewer>
+                    </Border>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
+                        <Button Style="{StaticResource OutlineButton}" Content="Cerrar" Command="{Binding CerrarModalTicketCommand}" Margin="0,0,8,0" Width="90"/>
+                        <Button Style="{StaticResource PrimaryButton}" Content="Imprimir Ticket" Command="{Binding CerrarModalTicketCommand}" Width="140"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>
