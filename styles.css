@@ -177,37 +177,68 @@ body {
   height: var(--topbar-h);
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
-.breadcrumb {
-  display: flex; align-items: center; gap: .5rem;
-  font-size: .84rem; color: var(--text-dim); font-weight: 500;
-}
-.breadcrumb-active {
-  color: var(--text-main); font-weight: 700;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1.5rem;
+  position: sticky; top: 0;
+  z-index: 90;
 }
 
-.search-capsule {
-  display: flex; align-items: center; gap: .6rem;
-  background: #F8FAFC; border: 1px solid var(--border);
-  border-radius: 99px; padding: .45rem 1rem;
-  width: 340px; transition: all var(--ease);
+.topbar-left { display: flex; align-items: center; gap: 1rem; }
+.btn-sidebar-toggle {
+  background: transparent; border: 1px solid var(--border); border-radius: var(--r-md);
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); cursor: pointer; transition: all var(--ease);
 }
-.search-capsule:focus-within {
-  background: #FFFFFF; border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+.btn-sidebar-toggle:hover { background: var(--bg-hover); color: var(--text-main); }
+
+.breadcrumbs { display: flex; align-items: center; gap: .5rem; font-size: .82rem; color: var(--text-muted); }
+.breadcrumbs a { color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 4px; }
+.breadcrumbs a:hover { color: #2563EB; }
+.breadcrumbs-sep { color: var(--text-dim); font-size: .75rem; }
+.breadcrumbs-current { color: #0F172A; font-weight: 700; }
+
+.topbar-right { display: flex; align-items: center; gap: .75rem; }
+
+/* Selector de Empresa Fortexa */
+.org-selector-pill {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .35rem .75rem; background: #FAF5FF;
+  border: 1px solid #E9D5FF; border-radius: 99px;
+  color: #7E22CE; font-size: .8rem; font-weight: 700; cursor: pointer;
 }
-.search-input {
-  border: none; background: transparent; outline: none;
-  font-size: .82rem; color: var(--text-main); width: 100%;
+.org-selector-pill svg { color: #9333EA; }
+
+.status-counter-pill {
+  display: flex; align-items: center; gap: .4rem;
+  padding: .35rem .65rem; background: #F0FDF4;
+  border: 1px solid #DCFCE7; border-radius: 99px;
+  color: #15803D; font-size: .78rem; font-weight: 800; font-family: 'JetBrains Mono', monospace;
 }
-.search-input::placeholder { color: var(--text-dim); }
-.search-shortcut {
-  font-size: .68rem; font-weight: 700; color: var(--text-dim);
-  background: #FFFFFF; border: 1px solid var(--border);
-  padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;
+
+.topbar-search-box { position: relative; }
+.topbar-search-input {
+  width: 240px; height: 36px; padding: 0 .75rem 0 2.2rem;
+  border-radius: 99px; border: 1px solid var(--border);
+  background: #F8FAFC; font-size: .8rem; color: var(--text-main);
+  outline: none; transition: all var(--ease);
+}
+.topbar-search-input:focus {
+  width: 280px; background: #FFFFFF; border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+.search-icon-fixed {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  color: var(--text-dim); pointer-events: none;
+}
+.search-shortcut-badge {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-size: .65rem; font-weight: 800; color: var(--text-dim);
+  background: var(--bg-surface); border: 1px solid var(--border);
+  padding: 1px 5px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;
 }
 
 .search-dropdown-menu {
-  position: absolute; top: 48px; left: 0; width: 340px;
+  position: absolute; top: 44px; left: 0; width: 320px;
   background: #FFFFFF; border: 1px solid var(--border);
   border-radius: var(--r-md); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15);
   max-height: 280px; overflow-y: auto; z-index: 1000;
@@ -228,34 +259,19 @@ body {
   font-size: .72rem; color: var(--text-muted);
 }
 
-
-.topbar-right {
-  display: flex; align-items: center; gap: .85rem;
-}
-.btn-primary-action {
-  display: inline-flex; align-items: center; gap: .4rem;
-  background: #4F46E5; color: #FFFFFF;
-  font-size: .82rem; font-weight: 700;
-  padding: .5rem 1.15rem; border-radius: var(--r-md);
-  border: none; cursor: pointer; transition: all var(--ease);
-  box-shadow: var(--shadow-btn);
-}
-.btn-primary-action:hover {
-  background: #4338CA; transform: translateY(-1px);
-}
-.btn-icon-topbar {
-  background: transparent; border: 1px solid var(--border);
+.topbar-action-btn {
   width: 36px; height: 36px; border-radius: var(--r-md);
+  border: 1px solid var(--border); background: transparent;
   display: flex; align-items: center; justify-content: center;
-  color: var(--text-muted); cursor: pointer; position: relative;
-  transition: all var(--ease);
+  color: var(--text-muted); cursor: pointer; transition: all var(--ease); position: relative;
 }
-.btn-icon-topbar:hover { background: var(--bg-hover); color: var(--text-main); }
-.notif-badge-dot {
-  position: absolute; top: 7px; right: 7px;
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--accent-rose);
+.topbar-action-btn:hover { background: var(--bg-hover); color: var(--text-main); }
+.badge-count-red {
+  position: absolute; top: -3px; right: -3px;
+  background: #EF4444; color: #FFFFFF; font-size: .62rem; font-weight: 900;
+  padding: 1px 4px; border-radius: 99px; border: 2px solid #FFFFFF;
 }
+
 .topbar-avatar {
   width: 36px; height: 36px; border-radius: 50%;
   background: #1E40AF; color: #FFFFFF;
