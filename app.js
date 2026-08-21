@@ -1754,38 +1754,69 @@ function submitSupportTicket(e) {
 }
 
 // =====================================================================
-// 13. TICKET TÉRMICO IMPRIMIBLE (EPSON TM-T20II)
+// 13. TICKET TÉRMICO PROFESIONAL 80MM (EPSON TM-T20II - B&W PURO)
 // =====================================================================
+function generateBarcodeSvg(code) {
+  const pattern = [2, 1, 3, 1, 1, 2, 3, 2, 1, 2, 2, 3, 1, 1, 2, 1, 3, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 2, 1, 3, 1, 2];
+  let x = 15;
+  let rects = '';
+  for (let i = 0; i < pattern.length; i++) {
+    const width = pattern[i];
+    if (i % 2 === 0) {
+      rects += `<rect x="${x}" y="0" width="${width * 2.2}" height="34" fill="#000000" />`;
+    }
+    x += width * 2.2;
+  }
+  return rects;
+}
+
 function displayThermalTicket(order) {
   const state = getState();
   const cfg = state.config || DEFAULT_STATE.config;
 
-  document.getElementById('tktHeaderName').innerText = cfg.businessName.toUpperCase();
-  document.getElementById('tktHeaderAddress').innerText = cfg.address;
-  document.getElementById('tktHeaderPhone').innerText = `Tel: ${cfg.phone} • RNC: ${cfg.rnc}`;
-  document.getElementById('tktFooterNote').innerText = `* ${cfg.ticketFooter}`;
+  const headerName = document.getElementById('tktHeaderName');
+  const headerAddr = document.getElementById('tktHeaderAddress');
+  const headerPhone = document.getElementById('tktHeaderPhone');
+  const footerNote = document.getElementById('tktFooterNote');
+
+  if (headerName) headerName.innerText = (cfg.businessName || 'FULLTIME LAUNDRY').toUpperCase();
+  if (headerAddr) headerAddr.innerText = cfg.address || 'Av. Winston Churchill #102, Santo Domingo';
+  if (headerPhone) headerPhone.innerText = `Tel: ${cfg.phone || '(809) 555-7962'} • RNC: ${cfg.rnc || '131-89745-1'}`;
+  if (footerNote) footerNote.innerText = cfg.ticketFooter || 'Prendas no retiradas tras 30 días pasan a disposición legal.';
 
   document.getElementById('tktNum').innerText = order.ticket;
   document.getElementById('tktDate').innerText = order.date;
-  document.getElementById('tktDelivery').innerText = order.delivery;
+  document.getElementById('tktDelivery').innerText = order.delivery || order.date;
   document.getElementById('tktClient').innerText = order.clientName;
-  document.getElementById('tktPhone').innerText = order.phone;
+  document.getElementById('tktPhone').innerText = order.phone || 'N/A';
 
   const itemsBody = document.getElementById('tktItemsBody');
-  itemsBody.innerHTML = order.items.map(item => `
-    <div class="ticket-item-line">
-      <span>${item.qty}x ${item.name.slice(0, 24)}</span>
-      <span>RD$${item.subtotal.toLocaleString('es-DO')}</span>
-    </div>
-    ${item.alteration ? `<div style="font-size:.7rem; color:#475569; padding-left:.5rem;">* Arreglo: ${item.alteration}</div>` : ''}
-  `).join('');
+  if (itemsBody) {
+    itemsBody.innerHTML = order.items.map(item => `
+      <div class="tkt-item-row">
+        <div class="tkt-item-desc">
+          ${item.qty}x ${item.name}
+          ${item.alteration ? `<div class="tkt-item-subline">• Arreglo: ${item.alteration}</div>` : ''}
+          ${item.color ? `<div class="tkt-item-subline">• Detalle: ${item.color}</div>` : ''}
+        </div>
+        <div class="tkt-item-price font-mono">RD$${item.subtotal.toLocaleString('es-DO', {minimumFractionDigits:2})}</div>
+      </div>
+    `).join('');
+  }
 
   document.getElementById('tktSubtotal').innerText = `RD$${order.subtotal.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
-  document.getElementById('tktDiscount').innerText = `RD$${order.discount.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+  document.getElementById('tktDiscount').innerText = `RD$${(order.discount || 0).toLocaleString('es-DO', {minimumFractionDigits:2})}`;
   document.getElementById('tktTotal').innerText = `RD$${order.total.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
   document.getElementById('tktPaid').innerText = `RD$${order.paid.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
   document.getElementById('tktBalance').innerText = `RD$${order.balance.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
-  document.getElementById('tktBarcode').innerText = `*${order.barcode}*`;
+  
+  const barcodeNum = order.barcode || order.ticket.replace(/\D/g, '') || '202608210001';
+  document.getElementById('tktBarcode').innerText = `*${barcodeNum}*`;
+
+  const barcodeSvg = document.getElementById('tktBarcodeSvg');
+  if (barcodeSvg) {
+    barcodeSvg.innerHTML = generateBarcodeSvg(barcodeNum);
+  }
 
   document.getElementById('ticketModal').classList.add('active');
 }
@@ -1801,26 +1832,25 @@ function printThermalTicket() {
 function testEpsonT20II() {
   const testOrder = {
     id: 'test_epson',
-    ticket: 'FAC-TEST-0001',
-    barcode: '202608219999',
+    ticket: 'FAC-001001',
+    barcode: '202608216441',
     clientId: 'c1',
-    clientName: 'PRUEBA EPSON TM-T20II',
-    phone: '809-555-0000',
+    clientName: 'Alexandra Bello',
+    phone: '+8297602825',
     date: new Date().toLocaleString('es-DO'),
-    delivery: new Date().toLocaleString('es-DO'),
-    subtotal: 750,
-    discount: 50,
-    total: 700,
-    paid: 700,
+    delivery: new Date(Date.now() + 86400000).toLocaleString('es-DO'),
+    subtotal: 1000,
+    discount: 0,
+    total: 1000,
+    paid: 1000,
     balance: 0,
     items: [
-      { name: 'Prueba de Impresión 80mm', qty: 1, subtotal: 350, alteration: 'ESC/POS Font A 48 cols OK' },
-      { name: 'Prueba Código de Barras', qty: 1, subtotal: 400, alteration: 'Code128 / AutoCutter OK' }
+      { name: 'Torre — Servicio Asistido (Lavado + Secado)', qty: 1, subtotal: 1000, color: 'Ropa Blanca y Color' }
     ]
   };
 
   displayThermalTicket(testOrder);
-  showToast('Comprobante preparado para impresora EPSON TM-T20II. Pulsa "Imprimir en EPSON TM-T20II".', 'success');
+  showToast('Ticket de prueba en Blanco y Negro preparado para EPSON TM-T20II.', 'success');
 }
 
 // =====================================================================

@@ -2113,10 +2113,6 @@ body {
 .spotlight-key-hint strong {
   background: #FFFFFF;
   border: 1px solid #CBD5E1;
-  padding: 1px 4px;
-  border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.68rem;
   color: #334155;
 }
 .spotlight-results-count {
@@ -2124,6 +2120,200 @@ body {
   font-weight: 700;
   color: #94A3B8;
 }
+
+/* ================================================================
+   TICKET TÉRMICO PROFESIONAL 80MM (BLANCO Y NEGRO PURO EPSON TM-T20II)
+   ================================================================ */
+.modal-ticket {
+  max-width: 440px;
+}
+.thermal-ticket-pro {
+  width: 320px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem;
+  background: #FFFFFF;
+  color: #000000;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 11.5px;
+  line-height: 1.4;
+  border: 1px dashed #CBD5E1;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.tkt-brand-header {
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+.tkt-brand-title {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #000000;
+  margin-bottom: 2px;
+}
+.tkt-brand-subtitle {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #000000;
+  margin-bottom: 4px;
+}
+.tkt-brand-info {
+  font-size: 10px;
+  color: #000000;
+  line-height: 1.35;
+}
+
+.tkt-line-solid {
+  border-top: 1.5px solid #000000;
+  margin: 0.65rem 0;
+}
+.tkt-line-dashed {
+  border-top: 1px dashed #000000;
+  margin: 0.5rem 0;
+}
+
+.tkt-meta-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+}
+.tkt-meta-row {
+  display: flex;
+  justify-content: space-between;
+}
+.tkt-meta-label {
+  font-weight: 800;
+}
+.tkt-meta-val {
+  text-align: right;
+}
+.tkt-bold {
+  font-weight: 900;
+}
+
+.tkt-table-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+.tkt-items-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 4px 0;
+}
+.tkt-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 11px;
+}
+.tkt-item-desc {
+  flex: 1;
+  padding-right: 8px;
+  font-weight: 700;
+}
+.tkt-item-subline {
+  font-size: 9.5px;
+  font-weight: 400;
+  padding-left: 12px;
+  margin-top: 1px;
+}
+.tkt-item-price {
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.tkt-totals-block {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+}
+.tkt-tot-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+}
+
+.tkt-total-highlight-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1.5px solid #000000;
+  border-bottom: 1.5px solid #000000;
+  padding: 6px 0;
+  margin: 6px 0 4px;
+  font-size: 13px;
+  font-weight: 900;
+}
+.tkt-big-amount {
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.tkt-balance-due-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1.5px solid #000000;
+  padding: 4px 8px;
+  margin-top: 5px;
+  font-size: 11.5px;
+  font-weight: 900;
+}
+
+.tkt-barcode-section {
+  text-align: center;
+  margin: 0.75rem 0 0.5rem;
+}
+.tkt-barcode-number {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+.tkt-footer-section {
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.35;
+  margin-top: 0.5rem;
+}
+.tkt-thanks {
+  font-size: 11px;
+  font-weight: 900;
+  margin-top: 6px;
+  letter-spacing: 0.05em;
+}
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #ticketPrintArea, #ticketPrintArea * {
+    visibility: visible !important;
+  }
+  #ticketPrintArea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .thermal-ticket-pro {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+}
+
 
 
 

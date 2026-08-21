@@ -1663,54 +1663,106 @@
   <div class="modal-overlay" id="ticketModal">
     <div class="modal-card modal-ticket">
       <div class="modal-header">
-        <h3>Comprobante / Ticket Térmico POS (EPSON 80mm)</h3>
-        <button class="btn-close" onclick="closeTicketModal()">✕</button>
+        <h3>Comprobante / Ticket Térmico POS (EPSON TM-T20II 80mm)</h3>
+        <button type="button" class="btn-close" onclick="closeTicketModal()">✕</button>
       </div>
-      <div class="modal-body" id="ticketPrintArea">
-        <div class="thermal-ticket">
-          <div class="ticket-header">
-            <h4 id="tktHeaderName">SYNCOPS LAUNDRY &amp; SUITE</h4>
-            <p>Lavandería • Sastrería • Autoservicio</p>
-            <p id="tktHeaderAddress">Av. Winston Churchill #102, Santo Domingo</p>
-            <p id="tktHeaderPhone">Tel: (809) 555-7962 • RNC: 131-89745-1</p>
+      <div class="modal-body" id="ticketPrintArea" style="background: #F8FAFC; padding: 1.5rem; display: flex; justify-content: center;">
+        <div class="thermal-ticket-pro">
+          
+          <!-- Cabecera de Empresa -->
+          <div class="tkt-brand-header">
+            <div class="tkt-brand-title" id="tktHeaderName">FULLTIME LAUNDRY</div>
+            <div class="tkt-brand-subtitle">LAVANDERÍA • SASTRERÍA • AUTOSERVICIO</div>
+            <div class="tkt-brand-info" id="tktHeaderAddress">Av. Winston Churchill #102, Santo Domingo</div>
+            <div class="tkt-brand-info" id="tktHeaderPhone">Tel: (809) 555-7962 • RNC: 131-89745-1</div>
           </div>
-          <div class="ticket-divider">================================</div>
-          <div class="ticket-meta">
-            <div><strong>FACTURA:</strong> <span id="tktNum">FAC-001001</span></div>
-            <div><strong>FECHA:</strong> <span id="tktDate">21/08/2026 04:30 PM</span></div>
-            <div><strong>ENTREGA:</strong> <span id="tktDelivery">22/08/2026 04:30 PM</span></div>
-            <div><strong>CLIENTE:</strong> <span id="tktClient">Carlos Manuel Fernández</span></div>
-            <div><strong>TEL:</strong> <span id="tktPhone">809-555-1234</span></div>
+
+          <div class="tkt-line-solid"></div>
+
+          <!-- Metadatos de Orden / Cliente -->
+          <div class="tkt-meta-grid">
+            <div class="tkt-meta-row">
+              <span class="tkt-meta-label">FACTURA:</span>
+              <span class="tkt-meta-val tkt-bold font-mono" id="tktNum">FAC-001001</span>
+            </div>
+            <div class="tkt-meta-row">
+              <span class="tkt-meta-label">FECHA:</span>
+              <span class="tkt-meta-val" id="tktDate">21/08/2026 06:44 PM</span>
+            </div>
+            <div class="tkt-meta-row">
+              <span class="tkt-meta-label">ENTREGA:</span>
+              <span class="tkt-meta-val tkt-bold" id="tktDelivery">22/08/2026 10:44 PM</span>
+            </div>
+            <div class="tkt-meta-row">
+              <span class="tkt-meta-label">CLIENTE:</span>
+              <span class="tkt-meta-val tkt-bold" id="tktClient">Alexandra Bello</span>
+            </div>
+            <div class="tkt-meta-row">
+              <span class="tkt-meta-label">TELÉFONO:</span>
+              <span class="tkt-meta-val" id="tktPhone">(829) 760-2825</span>
+            </div>
           </div>
-          <div class="ticket-divider">--------------------------------</div>
-          <div class="ticket-items-header">
-            <span>CANT  DESCRIPCIÓN</span>
-            <span>TOTAL</span>
+
+          <div class="tkt-line-solid"></div>
+
+          <!-- Tabla de Prendas / Servicios -->
+          <div class="tkt-table-header">
+            <span class="tkt-th-desc">CANT  DESCRIPCIÓN</span>
+            <span class="tkt-th-total">IMPORTE</span>
           </div>
-          <div class="ticket-divider">--------------------------------</div>
-          <div class="ticket-items-body" id="tktItemsBody"></div>
-          <div class="ticket-divider">--------------------------------</div>
-          <div class="ticket-totals">
-            <div class="tkt-row"><span>SUBTOTAL:</span> <span id="tktSubtotal">RD$0.00</span></div>
-            <div class="tkt-row"><span>DESCUENTO:</span> <span id="tktDiscount">RD$0.00</span></div>
-            <div class="tkt-row tkt-bold"><span>TOTAL GENERAL:</span> <span id="tktTotal">RD$0.00</span></div>
-            <div class="tkt-row"><span>ABONO COBRADO:</span> <span id="tktPaid">RD$0.00</span></div>
-            <div class="tkt-row tkt-pending"><span>SALDO PENDIENTE:</span> <span id="tktBalance">RD$0.00</span></div>
+          <div class="tkt-line-dashed"></div>
+
+          <div class="tkt-items-container" id="tktItemsBody"></div>
+
+          <div class="tkt-line-dashed"></div>
+
+          <!-- Desglose Financiero -->
+          <div class="tkt-totals-block">
+            <div class="tkt-tot-row">
+              <span>Subtotal:</span>
+              <span id="tktSubtotal">RD$0.00</span>
+            </div>
+            <div class="tkt-tot-row">
+              <span>Descuento:</span>
+              <span id="tktDiscount">RD$0.00</span>
+            </div>
+            <div class="tkt-total-highlight-box">
+              <span>TOTAL GENERAL:</span>
+              <span id="tktTotal" class="tkt-big-amount font-mono">RD$0.00</span>
+            </div>
+            <div class="tkt-tot-row">
+              <span>Monto Cobrado / Abono:</span>
+              <span id="tktPaid">RD$0.00</span>
+            </div>
+            
+            <!-- Balance Pendiente en Blanco y Negro Puro -->
+            <div class="tkt-balance-due-box">
+              <span>SALDO PENDIENTE:</span>
+              <span id="tktBalance" class="font-mono tkt-bold">RD$0.00</span>
+            </div>
           </div>
-          <div class="ticket-divider">================================</div>
-          <div class="ticket-barcode-box">
-            <div class="barcode-lines">||| | |||| || ||| | ||| |||| |</div>
-            <div class="barcode-text" id="tktBarcode">*202608210001*</div>
+
+          <div class="tkt-line-solid"></div>
+
+          <!-- Código de Barras Vectorial -->
+          <div class="tkt-barcode-section">
+            <svg id="tktBarcodeSvg" width="220" height="38" style="display: block; margin: 0 auto;"></svg>
+            <div class="tkt-barcode-number" id="tktBarcode">*202608210001*</div>
           </div>
-          <div class="ticket-footer">
-            <p id="tktFooterNote">* Conserve este comprobante para retirar sus prendas.</p>
-            <p>¡Gracias por su preferencia!</p>
+
+          <!-- Pie de Ticket Legal Único -->
+          <div class="tkt-footer-section">
+            <p id="tktFooterNote">Prendas no retiradas tras 30 días pasan a disposición legal.</p>
+            <p class="tkt-thanks">¡GRACIAS POR SU PREFERENCIA!</p>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeTicketModal()">Cerrar</button>
-        <button class="btn btn-primary" onclick="printThermalTicket()">Imprimir en EPSON TM-T20II</button>
+        <button type="button" class="btn btn-outline" onclick="closeTicketModal()">Cerrar</button>
+        <button type="button" class="btn-fortexa-primary" onclick="printThermalTicket()" style="background: #000000; color: #FFFFFF; border-color: #000000;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+          <span>Imprimir en EPSON TM-T20II</span>
+        </button>
       </div>
     </div>
   </div>
