@@ -143,26 +143,61 @@ body {
   border: 1px solid #A7F3D0; padding: 2px 6px; border-radius: 99px;
 }
 
-.sidebar-user {
-  padding: .85rem 1rem;
+/* Footer de Usuario Estilo Fortexa ERP */
+.sidebar-user-card {
+  padding: 1rem .85rem;
   border-top: 1px solid var(--border);
+  background: #0B132B;
+  color: #FFFFFF;
+}
+.sidebar-user-profile {
   display: flex; align-items: center; gap: .75rem;
+  margin-bottom: .85rem;
 }
 .user-avatar-circle {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: #1E40AF; color: #FFFFFF;
-  font-weight: 800; font-size: .75rem;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: #1D4ED8; color: #FFFFFF;
+  font-weight: 900; font-size: 1rem;
   display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(29, 78, 216, 0.4);
 }
 .user-meta { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
-.user-meta strong { font-size: .8rem; font-weight: 700; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.user-meta span { font-size: .68rem; color: var(--text-muted); }
-.btn-logout-clean {
-  background: transparent; border: none; color: var(--text-dim);
-  cursor: pointer; padding: 4px; border-radius: var(--r-sm);
-  transition: all var(--ease);
+.user-meta strong {
+  font-size: .84rem; font-weight: 800; color: #FFFFFF;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  line-height: 1.2;
 }
-.btn-logout-clean:hover { color: var(--accent-rose); background: #FFF1F2; }
+.user-meta span {
+  font-size: .7rem; color: #94A3B8;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.sidebar-user-links {
+  display: flex; flex-direction: column; gap: 4px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: .65rem;
+}
+.sidebar-user-action-btn {
+  display: flex; align-items: center; gap: .65rem;
+  background: transparent; border: none;
+  color: #93C5FD; font-size: .8rem; font-weight: 600;
+  padding: .4rem .5rem; border-radius: var(--r-sm);
+  cursor: pointer; transition: all var(--ease);
+  width: 100%; text-align: left;
+}
+.sidebar-user-action-btn:hover {
+  background: rgba(255,255,255,0.06);
+  color: #FFFFFF;
+}
+.sidebar-user-action-btn svg { color: #60A5FA; }
+.sidebar-user-action-btn.btn-logout-action:hover {
+  color: #F87171;
+  background: rgba(239, 68, 68, 0.1);
+}
+.sidebar-user-action-btn.btn-logout-action:hover svg { color: #F87171; }
+
 
 /* ================================================================
    TOPBAR (FORTEXA ERP EXACT MATCH)

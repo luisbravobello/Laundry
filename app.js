@@ -125,10 +125,14 @@ function checkAuth() {
   }
 
   const nameEl = document.getElementById('userName');
+  const emailEl = document.getElementById('userEmailText');
   const avatarEl = document.getElementById('userAvatar');
   const greetingEl = document.getElementById('dashboardGreeting');
+  
+  const initialLetter = user.name ? user.name.trim().charAt(0).toUpperCase() : 'L';
   if (nameEl) nameEl.innerText = user.name || 'Luis Bravo';
-  if (avatarEl) avatarEl.innerText = user.avatar || 'LB';
+  if (emailEl) emailEl.innerText = user.email || 'luisbravobello@gmail.com';
+  if (avatarEl) avatarEl.innerText = initialLetter;
   if (greetingEl) greetingEl.innerText = `Buenas tardes, ${user.name ? user.name.split(' ')[0] : 'Luis'}`;
 }
 
