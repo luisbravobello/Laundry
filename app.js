@@ -1153,16 +1153,127 @@ function saveEditInvoice(e) {
 
 
 // =====================================================================
-// 10. BÚSQUEDA GLOBAL (⌘K)
+// 10. BÚSQUEDA GLOBAL & SPOTLIGHT COMMAND PALETTE (CTRL + K)
 // =====================================================================
-function handleGlobalSearch(query) {
-  const box = document.getElementById('globalSearchResults');
-  if (!box) return;
+function openSpotlight() {
+  const modal = document.getElementById('spotlightModal');
+  const input = document.getElementById('spotlightInput');
+  if (modal) {
+    modal.style.display = 'flex';
+    if (input) {
+      input.value = '';
+      setTimeout(() => input.focus(), 50);
+      handleSpotlightSearch('');
+    }
+  }
+}
+
+function closeSpotlight() {
+  const modal = document.getElementById('spotlightModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function closeSpotlightOnBackdrop(e) {
+  if (e.target && e.target.id === 'spotlightModal') {
+    closeSpotlight();
+  }
+}
+
+function navigateSpotlight(sectionId) {
+  closeSpotlight();
+  const navItems = document.querySelectorAll('.nav-item');
+  const sectionMap = {
+    'dashboard': 0,
+    'pos': 1,
+    'facturacion': 2,
+    'reportes': 3,
+    'inventario': 4,
+    'clientes': 5,
+    'configuracion': 6
+  };
+  const index = sectionMap[sectionId] !== undefined ? sectionMap[sectionId] : 0;
+  switchSection(sectionId, navItems[index]);
+}
+
+function handleSpotlightSearch(query) {
+  const body = document.getElementById('spotlightBody');
+  const countBadge = document.getElementById('spotlightCountBadge');
+  if (!body) return;
 
   const term = query.toLowerCase().trim();
+
   if (!term) {
-    box.style.display = 'none';
-    box.innerHTML = '';
+    // Vista por defecto: Recientes y Páginas
+    body.innerHTML = `
+      <div class="spotlight-section-title">RECIENTES</div>
+      <div class="spotlight-list">
+        <div class="spotlight-item active" onclick="navigateSpotlight('pos')">
+          <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg></div>
+          <div class="spotlight-item-meta">
+            <strong>Punto de Venta / POS</strong>
+            <span>Panel de Operaciones &amp; Cobros</span>
+          </div>
+          <svg class="spotlight-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <div class="spotlight-item" onclick="navigateSpotlight('facturacion')">
+          <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg></div>
+          <div class="spotlight-item-meta">
+            <strong>Historial de Facturas &amp; Cobros</strong>
+            <span>Panel de Facturación</span>
+          </div>
+        </div>
+        <div class="spotlight-item" onclick="navigateSpotlight('reportes')">
+          <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg></div>
+          <div class="spotlight-item-meta">
+            <strong>Reportes Financieros &amp; Ingresos</strong>
+            <span>Panel Financiero</span>
+          </div>
+        </div>
+        <div class="spotlight-item" onclick="navigateSpotlight('inventario')">
+          <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg></div>
+          <div class="spotlight-item-meta">
+            <strong>Inventario Insumos &amp; Suministros</strong>
+            <span>Panel de Operaciones</span>
+          </div>
+        </div>
+        <div class="spotlight-item" onclick="navigateSpotlight('clientes')">
+          <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg></div>
+          <div class="spotlight-item-meta">
+            <strong>Clientes Particulares &amp; Hoteles</strong>
+            <span>Panel de Clientes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="spotlight-section-title" style="margin-top: .75rem;">PÁGINAS</div>
+      <div class="spotlight-list">
+        <div class="spotlight-item" onclick="navigateSpotlight('dashboard')">
+          <div class="spotlight-item-icon-page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg></div>
+          <div class="spotlight-item-meta">
+            <strong>Dashboard Principal</strong>
+          </div>
+        </div>
+        <div class="spotlight-item" onclick="navigateSpotlight('pos')">
+          <div class="spotlight-item-icon-page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg></div>
+          <div class="spotlight-item-meta">
+            <strong>Punto de Venta / POS</strong>
+          </div>
+        </div>
+        <div class="spotlight-item" onclick="navigateSpotlight('facturacion')">
+          <div class="spotlight-item-icon-page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg></div>
+          <div class="spotlight-item-meta">
+            <strong>Facturas &amp; Cobros</strong>
+          </div>
+        </div>
+        <div class="spotlight-item" onclick="navigateSpotlight('clientes')">
+          <div class="spotlight-item-icon-page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg></div>
+          <div class="spotlight-item-meta">
+            <strong>Clientes</strong>
+          </div>
+        </div>
+      </div>
+    `;
+    if (countBadge) countBadge.innerText = '# 14 resultados';
     return;
   }
 
@@ -1170,57 +1281,79 @@ function handleGlobalSearch(query) {
   const matchingOrders = state.orders.filter(o => o.ticket.toLowerCase().includes(term) || o.clientName.toLowerCase().includes(term));
   const matchingClients = state.clients.filter(c => c.name.toLowerCase().includes(term) || c.phone.includes(term));
   const matchingInventory = state.inventory.filter(i => i.name.toLowerCase().includes(term) || i.code.includes(term));
+  const totalCount = matchingOrders.length + matchingClients.length + matchingInventory.length;
+
+  if (countBadge) countBadge.innerText = `# ${totalCount} resultados`;
+
+  if (totalCount === 0) {
+    body.innerHTML = `
+      <div style="padding: 2.5rem 1rem; text-align: center; color: #94A3B8;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="1.8" style="margin-bottom: .5rem;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <p style="font-size: .88rem; font-weight: 700; color: #475569;">No se encontraron registros para "${query}"</p>
+        <span style="font-size: .76rem;">Intenta con el número de factura, nombre de cliente o insumo.</span>
+      </div>
+    `;
+    return;
+  }
 
   let html = '';
+
   if (matchingOrders.length > 0) {
-    html += '<div style="font-size: .65rem; font-weight: 800; color: var(--text-dim); padding: 4px 8px;">FACTURAS</div>';
-    matchingOrders.slice(0, 3).forEach(o => {
+    html += '<div class="spotlight-section-title">FACTURAS &amp; COMPROBANTES</div><div class="spotlight-list">';
+    matchingOrders.forEach(o => {
       html += `
-        <div class="search-result-item" onclick="selectSearchResult('order', '${o.id}')">
-          <span class="search-result-title">${o.ticket} — ${o.clientName}</span>
-          <span class="search-result-desc">Estado: ${o.status} • Total: RD$${o.total}</span>
+        <div class="spotlight-item" onclick="selectSpotlightResult('order', '${o.id}')">
+          <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div>
+          <div class="spotlight-item-meta">
+            <strong>${o.ticket} — ${o.clientName}</strong>
+            <span>Total: RD$${o.total.toLocaleString()} • Estado: ${o.status} • Saldo: RD$${o.balance.toLocaleString()}</span>
+          </div>
+          <svg class="spotlight-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
       `;
     });
+    html += '</div>';
   }
 
   if (matchingClients.length > 0) {
-    html += '<div style="font-size: .65rem; font-weight: 800; color: var(--text-dim); padding: 4px 8px; margin-top: 4px;">CLIENTES</div>';
-    matchingClients.slice(0, 3).forEach(c => {
+    html += '<div class="spotlight-section-title" style="margin-top: .75rem;">CLIENTES &amp; HOTELES</div><div class="spotlight-list">';
+    matchingClients.forEach(c => {
       html += `
-        <div class="search-result-item" onclick="selectSearchResult('client', '${c.id}')">
-          <span class="search-result-title">${c.name}</span>
-          <span class="search-result-desc">Tel: ${c.phone} • ${c.isHotel ? 'Hotel' : 'Particular'}</span>
+        <div class="spotlight-item" onclick="selectSpotlightResult('client', '${c.id}')">
+          <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg></div>
+          <div class="spotlight-item-meta">
+            <strong>${c.name}</strong>
+            <span>Tel: ${c.phone} • ${c.isHotel ? 'Hotel / Empresa' : 'Particular'}</span>
+          </div>
+          <svg class="spotlight-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
       `;
     });
+    html += '</div>';
   }
 
   if (matchingInventory.length > 0) {
-    html += '<div style="font-size: .65rem; font-weight: 800; color: var(--text-dim); padding: 4px 8px; margin-top: 4px;">INSUMOS</div>';
-    matchingInventory.slice(0, 3).forEach(i => {
+    html += '<div class="spotlight-section-title" style="margin-top: .75rem;">INSUMOS DE INVENTARIO</div><div class="spotlight-list">';
+    matchingInventory.forEach(i => {
       html += `
-        <div class="search-result-item" onclick="selectSearchResult('inventory', '${i.id}')">
-          <span class="search-result-title">${i.name}</span>
-          <span class="search-result-desc">Stock: ${i.stock} ${i.unit} • Código: ${i.code}</span>
+        <div class="spotlight-item" onclick="selectSpotlightResult('inventory', '${i.id}')">
+          <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <div class="spotlight-item-meta">
+            <strong>${i.name} (${i.code})</strong>
+            <span>Stock: ${i.stock} ${i.unit} • Categoría: ${i.category}</span>
+          </div>
+          <svg class="spotlight-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
       `;
     });
+    html += '</div>';
   }
 
-  if (!html) {
-    html = '<div style="padding: 1rem; text-align: center; font-size: .8rem; color: var(--text-dim);">No se encontraron resultados.</div>';
-  }
-
-  box.innerHTML = html;
-  box.style.display = 'block';
+  body.innerHTML = html;
 }
 
-function selectSearchResult(type, id) {
-  const box = document.getElementById('globalSearchResults');
-  if (box) box.style.display = 'none';
-  document.getElementById('globalSearchInput').value = '';
-
+function selectSpotlightResult(type, id) {
+  closeSpotlight();
   if (type === 'order') {
     switchSection('facturacion', document.querySelectorAll('.nav-item')[2]);
     const state = getState();
@@ -1234,6 +1367,23 @@ function selectSearchResult(type, id) {
     openNewInsumoModal(id);
   }
 }
+
+// Listener de atajo de teclado global Ctrl+K / Cmd+K / Esc
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    const modal = document.getElementById('spotlightModal');
+    if (modal && modal.style.display === 'flex') {
+      closeSpotlight();
+    } else {
+      openSpotlight();
+    }
+  }
+  if (e.key === 'Escape') {
+    closeSpotlight();
+  }
+});
+
 
 // =====================================================================
 // 11. CONFIGURACIÓN DE LA TIENDA, SECUENCIA Y PERFIL
