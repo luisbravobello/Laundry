@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Acceso al Sistema — SyncOps Laundry & Suite</title>
+  <title>Acceso al Sistema — SyncOps Laundry Suite</title>
   
   <!-- Google Fonts: Inter + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,27 +13,21 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="login-body">
-  <!-- Fondo Geométrico Split-Screen con Clip-Path -->
+  <!-- Fondo Geométrico Split-Screen -->
   <div class="bg-split-left"></div>
   <div class="bg-split-right">
     <canvas id="particleCanvas"></canvas>
   </div>
 
-  <!-- Contenedor Central Flotante -->
+  <!-- Contenedor Central -->
   <div class="login-wrapper">
     <div class="login-card">
       
-      <!-- Lado Izquierdo: Formulario de Autenticación -->
+      <!-- Lado Izquierdo: Formulario -->
       <div class="login-form-side">
         <!-- Logo de Marca -->
         <div class="brand-badge-login">
-          <div class="brand-logo-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="4"></rect>
-              <circle cx="12" cy="12" r="5"></circle>
-              <path d="M12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
-            </svg>
-          </div>
+          <div class="brand-badge-square">SO</div>
           <div class="brand-text">
             <span class="brand-title">Sync<span class="brand-highlight">Ops</span></span>
             <span class="brand-sub">LAUNDRY &amp; SUITE</span>
@@ -42,17 +36,17 @@
 
         <div class="login-header">
           <h1 id="authTitle">Iniciar Sesión</h1>
-          <p id="authSubtitle">Ingresa a la terminal de gestión de lavandería, sastrería y autoservicio.</p>
+          <p id="authSubtitle">Terminal de gestión operativa para lavandería, sastrería y autoservicio.</p>
         </div>
 
-        <!-- Selector de Cuenta Rápida Google 1-Clic -->
+        <!-- Selector de Cuenta Rápida -->
         <div class="quick-login-box">
-          <div class="quick-login-label">ACCESO RÁPIDO EN 1 CLIC</div>
+          <div class="quick-login-label">ACCESO RÁPIDO DE OPERADOR</div>
           <div class="google-account-card" onclick="loginDirect('Luis Bravo Bello', 'luisb@gmail.com', 'Administrador')">
-            <div class="google-avatar" style="background: #2563EB;">LB</div>
+            <div class="google-avatar">LB</div>
             <div class="google-info">
               <span class="google-name">Luis Bravo Bello</span>
-              <span class="google-email">luisb@gmail.com • <strong>Admin</strong></span>
+              <span class="google-email">luisb@gmail.com • Administrador</span>
             </div>
             <span class="badge-role">Principal</span>
           </div>
@@ -62,7 +56,7 @@
           <span>o ingresar con credenciales</span>
         </div>
 
-        <!-- Formulario Tradicional -->
+        <!-- Formulario -->
         <form id="loginForm" onsubmit="handleAuthSubmit(event)">
           <div class="form-group" id="nameFieldGroup" style="display: none;">
             <label>Nombre Completo</label>
@@ -84,53 +78,52 @@
               <input type="checkbox" id="rememberMe" checked />
               <span>Recordar sesión</span>
             </label>
-            <a href="#" class="link-muted" onclick="showToast('Usa el acceso rápido para ingresar directamente.')">¿Olvidaste tu clave?</a>
+            <a href="#" class="link-muted" onclick="showToast('Usa el acceso rápido para ingresar directamente.')">Recuperar contraseña</a>
           </div>
 
           <button type="submit" class="btn btn-primary btn-block" id="btnSubmit">
-            <span>Acceder al Panel</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <span>Acceder al Sistema</span>
           </button>
         </form>
 
         <div class="login-footer">
           <span id="toggleAuthText">¿No tienes cuenta registrada?</span>
-          <button type="button" class="btn-link" id="btnToggleAuth" onclick="toggleAuthMode()">Crear nueva cuenta</button>
+          <button type="button" class="btn-link" id="btnToggleAuth" onclick="toggleAuthMode()">Crear cuenta</button>
         </div>
       </div>
 
-      <!-- Lado Derecho: Panel Visual & Features -->
+      <!-- Lado Derecho: Panel Visual Minimalista -->
       <div class="login-info-side">
         <div class="info-content">
           <div class="pill-chip">
-            <span class="pulse-dot"></span> Terminal de Punto de Venta v2.4
+            <span class="pulse-dot"></span> Terminal Operativa v2.4
           </div>
           
-          <h2>Control Total de tu Lavandería, Sastrería &amp; Laundromat</h2>
-          <p>La plataforma integral para recepción de prendas, tickets térmicos con códigos de barra, flujo de taller, torres de autoservicio con monedas y cuentas corporativas de hoteles.</p>
+          <h2>Control Operativo de Lavandería, Taller &amp; Autoservicio</h2>
+          <p>Plataforma para control de recepción, flujo de confección y arreglos, gestión de torres con monedas y facturación para cuentas corporativas hoteleras.</p>
 
           <div class="features-list">
             <div class="feature-item">
-              <div class="feature-icon">✨</div>
+              <div class="feature-bullet">01</div>
               <div class="feature-text">
-                <strong>Recepción Ágil &amp; Sastrería a Medida</strong>
-                <span>Toma de pedidos con notas de arreglos, entalles y medidas exactas.</span>
+                <strong>Recepción &amp; Taller de Sastrería</strong>
+                <span>Registro de medidas, entalles y emisión de ticket con código de barras.</span>
               </div>
             </div>
 
             <div class="feature-item">
-              <div class="feature-icon">🌀</div>
+              <div class="feature-bullet">02</div>
               <div class="feature-text">
-                <strong>Monitoreo de Torres con Monedas</strong>
-                <span>Control en vivo de ciclos de lavado, secadoras industriales y cajetín.</span>
+                <strong>Monitoreo de Torres de Monedas</strong>
+                <span>Supervisión de ciclos de lavado en tiempo real y recaudación de cajetín.</span>
               </div>
             </div>
 
             <div class="feature-item">
-              <div class="feature-icon">🏨</div>
+              <div class="feature-bullet">03</div>
               <div class="feature-text">
                 <strong>Cuentas por Cobrar para Hoteles</strong>
-                <span>Facturación por lotes de toallas, mantelería y crédito corporativo.</span>
+                <span>Facturación por lotes de mantelería, lencería y crédito corporativo.</span>
               </div>
             </div>
           </div>
@@ -145,7 +138,6 @@
 
   <script src="app.js"></script>
   <script>
-    // Iniciar animación de partículas en el lienzo de bienvenida
     document.addEventListener('DOMContentLoaded', () => {
       if (typeof initParticleCanvas === 'function') {
         initParticleCanvas('particleCanvas');
@@ -158,18 +150,18 @@
       document.body.classList.toggle('sign-up-mode', isSignUp);
       document.getElementById('nameFieldGroup').style.display = isSignUp ? 'block' : 'none';
       document.getElementById('authTitle').innerText = isSignUp ? 'Crear Cuenta' : 'Iniciar Sesión';
-      document.getElementById('authSubtitle').innerText = isSignUp ? 'Registra un nuevo operador en el sistema.' : 'Ingresa a la terminal de gestión.';
-      document.getElementById('btnSubmit').querySelector('span').innerText = isSignUp ? 'Registrar y Acceder' : 'Acceder al Panel';
+      document.getElementById('authSubtitle').innerText = isSignUp ? 'Registra un nuevo operador.' : 'Terminal de gestión operativa.';
+      document.getElementById('btnSubmit').querySelector('span').innerText = isSignUp ? 'Registrar y Acceder' : 'Acceder al Sistema';
       document.getElementById('toggleAuthText').innerText = isSignUp ? '¿Ya tienes una cuenta?' : '¿No tienes cuenta registrada?';
-      document.getElementById('btnToggleAuth').innerText = isSignUp ? 'Iniciar Sesión' : 'Crear nueva cuenta';
+      document.getElementById('btnToggleAuth').innerText = isSignUp ? 'Iniciar Sesión' : 'Crear cuenta';
     }
 
     function loginDirect(name, email, role) {
       const user = { name, email, role, avatar: name.split(' ').map(n=>n[0]).join('').slice(0,2) };
       localStorage.setItem('syncops_user', JSON.stringify(user));
       sessionStorage.setItem('syncops_user', JSON.stringify(user));
-      showToast(`¡Bienvenido de nuevo, ${name}!`, 'success');
-      setTimeout(() => { window.location.href = 'index.html'; }, 700);
+      showToast(`Sesión iniciada: ${name}`, 'success');
+      setTimeout(() => { window.location.href = 'index.html'; }, 500);
     }
 
     function handleAuthSubmit(e) {

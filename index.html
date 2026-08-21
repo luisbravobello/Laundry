@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SyncOps — Laundry, Tailoring &amp; Coin-op Suite</title>
+  <title>SyncOps — Laundry &amp; Tailoring Suite</title>
 
   <!-- Google Fonts: Inter + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,18 +15,12 @@
 <body class="app-body">
 
   <!-- ==============================================
-       BARRA LATERAL DE NAVEGACIÓN (SIDEBAR MODERNO)
+       BARRA LATERAL MINIMALISTA
        ============================================== -->
   <aside class="sidebar">
     <!-- Brand Header -->
     <div class="sidebar-brand">
-      <div class="brand-logo-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="4"></rect>
-          <circle cx="12" cy="12" r="5"></circle>
-          <path d="M12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
-        </svg>
-      </div>
+      <div class="brand-badge-square">SO</div>
       <div class="brand-text">
         <span class="brand-title">Sync<span class="brand-highlight">Ops</span></span>
         <span class="brand-sub">LAUNDRY &amp; SUITE</span>
@@ -36,44 +30,61 @@
 
     <!-- Navegación -->
     <nav class="sidebar-nav">
-      <div class="nav-section-title">MÓDULOS PRINCIPALES</div>
+      <div class="nav-section-title">OPERACIÓN</div>
       
       <button class="nav-item active" onclick="switchSection('dashboard', this)">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z"/></svg>
+        <span class="nav-indicator"></span>
         <span>Panel &amp; Métricas</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('pos', this)">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h12a2 2 0 0 1 2 2v16l-3-2-3 2-3-2-3 2-3-2-3 2V4a2 2 0 0 1 2-2zm2 5h8v2H8V7zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/></svg>
+        <span class="nav-indicator"></span>
         <span>Punto de Venta / POS</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('kanban', this)">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4zm7 0a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4zm7 0a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4z"/></svg>
+        <span class="nav-indicator"></span>
         <span>Tablero de Taller</span>
         <span class="badge-count" id="navCountTaller">2</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('autoservicio', this)">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zm14 2v2H5V5h14zM5 9h14v10H5V9zm7 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
+        <span class="nav-indicator"></span>
         <span>Autoservicio &amp; Torres</span>
       </button>
 
-      <div class="nav-section-title" style="margin-top: 1.5rem;">ADMINISTRACIÓN &amp; CONTROL</div>
+      <div class="nav-section-title">ADMINISTRACIÓN</div>
 
       <button class="nav-item" onclick="switchSection('inventario', this)">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16.5V7.5L12 2.5 3 7.5v9l9 5 9-5zM12 4.7l6.8 3.8-2.8 1.6-6.8-3.8L12 4.7zm-1 5.9v6.7L5 13.5v-5.6l6 3.7zm2 6.7v-6.7l6-3.7v5.6l-6 3.8z"/></svg>
+        <span class="nav-indicator"></span>
         <span>Inventario Insumos</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('clientes', this)">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0zm-4-2a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm-8 11c0-2.67 5.33-4 8-4s8 1.33 8 4v1H4v-1z"/></svg>
+        <span class="nav-indicator"></span>
         <span>Clientes &amp; Hoteles</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('caja', this)">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6zm2 0v12h16V6H4zm8 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
+        <span class="nav-indicator"></span>
         <span>Control de Caja</span>
+      </button>
+
+      <div class="nav-section-title">SISTEMA &amp; SOPORTE</div>
+
+      <button class="nav-item" onclick="switchSection('configuracion', this)">
+        <span class="nav-indicator"></span>
+        <span>Configuración &amp; Perfil</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('faq', this)">
+        <span class="nav-indicator"></span>
+        <span>Preguntas Frecuentes</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('ayuda', this)">
+        <span class="nav-indicator"></span>
+        <span>Ayuda &amp; Diagnóstico QA</span>
       </button>
     </nav>
 
@@ -84,9 +95,7 @@
         <span class="user-name" id="userName">Luis Bravo Bello</span>
         <span class="user-role">Administrador • POS 01</span>
       </div>
-      <button class="btn-logout" onclick="logout()" title="Cerrar sesión">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-      </button>
+      <button class="btn-logout-text" onclick="logout()" title="Cerrar sesión">Salir</button>
     </div>
   </aside>
 
@@ -95,7 +104,7 @@
        ============================================== -->
   <main class="main-content">
     
-    <!-- BARRA SUPERIOR (HEADER) -->
+    <!-- BARRA SUPERIOR (TOPBAR) -->
     <header class="topbar">
       <div class="topbar-title-box">
         <h1 class="page-title" id="currentSectionTitle">Panel de Control &amp; Métricas</h1>
@@ -107,12 +116,12 @@
           <span class="status-dot"></span> Caja Abierta (Turno 01)
         </div>
 
-        <!-- Badge de Conectividad -->
+        <!-- Badge de Base de Datos -->
         <div class="status-badge status-progress">
-          <span class="status-dot"></span> Modo Híbrido / LocalDB
+          <span class="status-dot"></span> SQLite WAL Mode
         </div>
 
-        <!-- Reloj en vivo -->
+        <!-- Reloj -->
         <div class="clock-badge" id="liveClock">12:00:00 PM</div>
       </div>
     </header>
@@ -124,16 +133,14 @@
            1. SECCIÓN: DASHBOARD & MÉTRICAS
            ==================================================== -->
       <section id="section-dashboard" class="content-section active">
-        <!-- Banner de bienvenida -->
         <div class="dashboard-banner">
           <div>
-            <h2>¡Hola de nuevo! Resumen Operativo</h2>
-            <p>Métricas consolidadas en tiempo real de lavandería por piezas, taller de sastrería, autoservicio y cuentas hoteleras.</p>
+            <h2>Resumen Operativo del Sistema</h2>
+            <p>Métricas consolidadas de lavandería por piezas, taller de sastrería, autoservicio y cuentas hoteleras.</p>
           </div>
           <div class="banner-actions">
             <button class="btn btn-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-              <span>Nueva Orden / Recepción</span>
+              <span>+ Nueva Recepción</span>
             </button>
           </div>
         </div>
@@ -144,13 +151,11 @@
           <div class="kpi-card">
             <div class="kpi-header">
               <span class="kpi-label">VENTAS DEL DÍA</span>
-              <div class="kpi-icon-box bg-blue-subtle">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              </div>
+              <span class="kpi-tag">HOY</span>
             </div>
             <div class="kpi-value" id="kpiVentasHoy">RD$1,555.00</div>
             <div class="kpi-footer">
-              <span class="badge-pill bg-emerald">✓ Al Día</span>
+              <span class="badge-pill bg-emerald">Al Día</span>
               <span class="kpi-subtext">Ingresos por órdenes y fichas</span>
             </div>
           </div>
@@ -159,9 +164,7 @@
           <div class="kpi-card">
             <div class="kpi-header">
               <span class="kpi-label">PRENDAS EN TALLER</span>
-              <div class="kpi-icon-box bg-indigo-subtle">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
-              </div>
+              <span class="kpi-tag">FLUJO</span>
             </div>
             <div class="kpi-value" id="kpiPrendasTaller">2</div>
             <div class="kpi-footer">
@@ -174,14 +177,12 @@
           <div class="kpi-card">
             <div class="kpi-header">
               <span class="kpi-label">AUTOSERVICIO (TORRES)</span>
-              <div class="kpi-icon-box bg-emerald-subtle">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="4"></rect><circle cx="12" cy="12" r="5"></circle></svg>
-              </div>
+              <span class="kpi-tag">MONEDAS</span>
             </div>
             <div class="kpi-value" id="kpiAutoservicio"><span class="text-blue" id="kpiMaquinasUso">2</span> <span class="kpi-dim">en uso / 3 libres</span></div>
             <div class="kpi-footer">
-              <span class="badge-pill bg-emerald">Torres Monedas</span>
-              <span class="kpi-subtext">Operación continua en vivo</span>
+              <span class="badge-pill bg-emerald">Torres Activas</span>
+              <span class="kpi-subtext">Operación continua</span>
             </div>
           </div>
 
@@ -189,9 +190,7 @@
           <div class="kpi-card">
             <div class="kpi-header">
               <span class="kpi-label">CRÉDITO HOTELES</span>
-              <div class="kpi-icon-box bg-amber-subtle">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-              </div>
+              <span class="kpi-tag">CUENTAS</span>
             </div>
             <div class="kpi-value text-amber" id="kpiHotelesCredito">RD$18,500.00</div>
             <div class="kpi-footer">
@@ -201,9 +200,8 @@
           </div>
         </div>
 
-        <!-- TABLAS DEL DASHBOARD (Órdenes Recientes & Alertas de Insumos) -->
+        <!-- TABLAS DEL DASHBOARD -->
         <div class="grid-2col">
-          <!-- Órdenes Recientes -->
           <div class="card">
             <div class="card-header">
               <h3>Órdenes de Servicio Recientes</h3>
@@ -219,48 +217,40 @@
                     <th style="text-align: right;">TOTAL</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <!-- Inyectado por JS -->
-                </tbody>
+                <tbody></tbody>
               </table>
             </div>
           </div>
 
-          <!-- Alertas de Insumos -->
           <div class="card">
             <div class="card-header">
               <h3>Alertas de Insumos Críticos</h3>
               <button class="btn-link" onclick="switchSection('inventario', document.querySelectorAll('.nav-item')[4])">Inventario →</button>
             </div>
-            <div class="alerts-list" id="dashboardAlertsList">
-              <!-- Inyectado por JS -->
-            </div>
+            <div class="alerts-list" id="dashboardAlertsList"></div>
           </div>
         </div>
       </section>
 
       <!-- ====================================================
-           2. SECCIÓN: PUNTO DE VENTA (POS) & RECEPCIÓN
+           2. SECCIÓN: PUNTO DE VENTA (POS)
            ==================================================== -->
       <section id="section-pos" class="content-section">
         <div class="pos-layout">
           
-          <!-- LADO IZQUIERDO: SELECCIÓN DE CLIENTE & CATÁLOGO DE PRENDAS -->
           <div class="pos-left">
             <!-- 1. Cliente & Fecha -->
             <div class="card" style="margin-bottom: 1.25rem;">
               <div class="card-header-sm">
                 <span class="step-num">1</span>
                 <h4>Cliente &amp; Compromiso de Entrega</h4>
-                <button class="btn btn-sm btn-outline" style="margin-left: auto;" onclick="openNewClientModal()">+ Nuevo Cliente</button>
+                <button class="btn btn-sm btn-outline" style="margin-left: auto;" onclick="openNewClientModal()">+ Registrar Cliente</button>
               </div>
 
               <div class="form-row-2">
                 <div class="form-group">
                   <label>Cliente:</label>
-                  <select id="posClientSelect" class="form-input" onchange="handleClientSelect(this)">
-                    <!-- Inyectado por JS -->
-                  </select>
+                  <select id="posClientSelect" class="form-input" onchange="handleClientSelect(this)"></select>
                 </div>
                 <div class="form-group">
                   <label>Fecha de Entrega Estimada:</label>
@@ -271,37 +261,33 @@
               <div class="form-row-between" style="margin-top: .5rem;">
                 <label class="checkbox-label text-rose">
                   <input type="checkbox" id="posIsUrgent" onchange="calculatePosTotal()" />
-                  <strong>⚡ Servicio Urgente / Prioritario (+15% Entrega Inmediata)</strong>
+                  <strong>Servicio Urgente / Prioritario (+15% Entrega Inmediata)</strong>
                 </label>
               </div>
             </div>
 
-            <!-- 2. Catálogo Visual de Prendas & Sastrería -->
+            <!-- 2. Catálogo de Prendas & Sastrería -->
             <div class="card">
               <div class="card-header-sm">
                 <span class="step-num">2</span>
                 <h4>Catálogo de Prendas &amp; Servicios</h4>
               </div>
 
-              <!-- Pestañas de Categoría -->
               <div class="catalog-tabs">
                 <button class="catalog-tab active" onclick="filterCatalog('Todos', this)">Todos</button>
                 <button class="catalog-tab" onclick="filterCatalog('Ropa Formal', this)">Ropa Formal</button>
                 <button class="catalog-tab" onclick="filterCatalog('Ropa Casual', this)">Ropa Casual</button>
                 <button class="catalog-tab" onclick="filterCatalog('Ropa de Cama', this)">Ropa de Cama</button>
-                <button class="catalog-tab" onclick="filterCatalog('Sastrería', this)">Sastrería &amp; Arreglos</button>
+                <button class="catalog-tab" onclick="filterCatalog('Sastrería', this)">Sastrería</button>
                 <button class="catalog-tab" onclick="filterCatalog('Hotelería', this)">Hotelería (x Kg)</button>
               </div>
 
-              <!-- Grid de Tarjetas de Catálogo -->
-              <div class="catalog-grid" id="posCatalogGrid">
-                <!-- Inyectado por JS -->
-              </div>
+              <div class="catalog-grid" id="posCatalogGrid"></div>
 
-              <!-- Formulario de Personalización de Prenda Seleccionada -->
+              <!-- Formulario de Personalización -->
               <div class="item-builder-box">
                 <div class="item-builder-header">
-                  <span id="builderItemName">Selecciona una prenda arriba o personaliza:</span>
+                  <span id="builderItemName">Configuración de la Prenda:</span>
                 </div>
 
                 <div class="form-row-3">
@@ -331,8 +317,8 @@
                     <input type="text" id="builderColor" class="form-input" placeholder="Ej. Azul Marino / Algodón" />
                   </div>
                   <div class="form-group">
-                    <label>Defectos / Manchas Previas:</label>
-                    <input type="text" id="builderDefects" class="form-input" placeholder="Ej. Botón faltante, roce en cuello" />
+                    <label>Detalles / Observaciones:</label>
+                    <input type="text" id="builderDefects" class="form-input" placeholder="Ej. Falta botón, mancha en puño" />
                   </div>
                   <div class="form-group">
                     <label>Precio Unitario (RD$):</label>
@@ -340,30 +326,29 @@
                   </div>
                 </div>
 
-                <!-- SECCIÓN ESPECIAL: ESPECIFICACIONES DE SASTRERÍA -->
+                <!-- ESPECIFICACIONES DE SASTRERÍA -->
                 <div class="tailoring-drawer" id="tailoringDrawer" style="display: none;">
-                  <div class="drawer-header">✂️ Especificaciones de Sastrería &amp; Taller</div>
+                  <div class="drawer-header">Especificaciones de Sastrería &amp; Taller</div>
                   <div class="form-row-2">
                     <div class="form-group">
                       <label>Tipo de Arreglo:</label>
-                      <input type="text" id="tailorAlterationType" class="form-input" placeholder="Ej. Dobladillo / Ruedo a 38 pulg" />
+                      <input type="text" id="tailorAlterationType" class="form-input" placeholder="Ej. Dobladillo / Ruedo a 38 pulgadas" />
                     </div>
                     <div class="form-group">
-                      <label>Medidas Exactas / Indicaciones:</label>
-                      <input type="text" id="tailorMeasurements" class="form-input" placeholder="Ej. Reducir 2cm cintura, hilo marino" />
+                      <label>Medidas / Indicaciones:</label>
+                      <input type="text" id="tailorMeasurements" class="form-input" placeholder="Ej. Reducir 2cm en cintura, hilo marino" />
                     </div>
                   </div>
                 </div>
 
                 <button class="btn btn-primary btn-add-item" onclick="addItemToOrder()">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-                  <span>Agregar Prenda a la Orden</span>
+                  <span>+ Agregar Prenda a la Orden</span>
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- LADO DERECHO: RESUMEN DE LA ORDEN & COBRO / EMISIÓN -->
+          <!-- LADO DERECHO: RESUMEN DE ORDEN -->
           <div class="pos-right">
             <div class="card pos-summary-card">
               <div class="card-header">
@@ -371,12 +356,10 @@
                 <span class="badge-pill bg-blue" id="posItemsCount">0 prendas</span>
               </div>
 
-              <!-- Lista de Prendas Agregadas -->
               <div class="pos-items-list" id="posItemsList">
                 <div class="empty-state-pos">No hay prendas agregadas a la orden.</div>
               </div>
 
-              <!-- Totales -->
               <div class="pos-totals-box">
                 <div class="total-row">
                   <span>Subtotal:</span>
@@ -394,18 +377,18 @@
                 <div class="payment-method-selector">
                   <label>Método de Pago:</label>
                   <div class="payment-tabs">
-                    <button class="payment-tab active" onclick="selectPaymentMethod('Efectivo', this)">💵 Efectivo</button>
-                    <button class="payment-tab" onclick="selectPaymentMethod('Tarjeta', this)">💳 Tarjeta</button>
-                    <button class="payment-tab" onclick="selectPaymentMethod('Transferencia', this)">📲 Transfer</button>
+                    <button class="payment-tab active" onclick="selectPaymentMethod('Efectivo', this)">Efectivo</button>
+                    <button class="payment-tab" onclick="selectPaymentMethod('Tarjeta', this)">Tarjeta</button>
+                    <button class="payment-tab" onclick="selectPaymentMethod('Transferencia', this)">Transferencia</button>
                   </div>
                 </div>
 
                 <div class="form-row-between" style="margin-top: .75rem;">
                   <div class="form-group" style="flex: 1; margin-right: .5rem;">
-                    <label>Monto a Abonar (RD$):</label>
+                    <label>Monto Abonado (RD$):</label>
                     <input type="number" id="posAmountPaid" class="form-input font-mono font-bold" value="0" oninput="calculatePosTotal()" />
                   </div>
-                  <button class="btn btn-outline" style="margin-top: 1.35rem;" onclick="payFullOrder()">Pagar Todo</button>
+                  <button class="btn btn-outline" style="margin-top: 1.35rem;" onclick="payFullOrder()">Pagar Total</button>
                 </div>
 
                 <div class="total-row text-rose font-bold" style="margin-top: .5rem;">
@@ -413,9 +396,7 @@
                   <strong id="posBalanceDue" class="font-mono">RD$0.00</strong>
                 </div>
 
-                <!-- Botón de Emisión -->
                 <button class="btn btn-success btn-block btn-lg" onclick="saveAndPrintOrder()" style="margin-top: 1.25rem;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2h12v4H6V2zm12 6H6a4 4 0 0 0-4 4v5h4v5h12v-5h4v-5a4 4 0 0 0-4-4zm-2 12H8v-4h8v4zm2-7a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
                   <span>GUARDAR &amp; EMITIR TICKET</span>
                 </button>
               </div>
@@ -432,15 +413,14 @@
         <div class="kanban-header-bar">
           <div>
             <h2>Tablero de Taller &amp; Flujo de Lavandería</h2>
-            <p>Seguimiento visual del estado de lavado, planchado, arreglos de sastrería y entregas.</p>
+            <p>Seguimiento de etapas de lavado, secado, planchado y sastrería.</p>
           </div>
           <div class="kanban-search-box">
-            <input type="text" id="kanbanSearchInput" class="form-input" placeholder="🔍 Escanear o buscar Ticket / Cliente..." oninput="filterKanban(this.value)" />
+            <input type="text" id="kanbanSearchInput" class="form-input" placeholder="Buscar por Ticket o Cliente..." oninput="filterKanban(this.value)" />
           </div>
         </div>
 
         <div class="kanban-board">
-          <!-- Columna 1: Recibido -->
           <div class="kanban-column">
             <div class="kanban-column-header bg-todo">
               <span class="status-dot dot-todo"></span>
@@ -450,7 +430,6 @@
             <div class="kanban-cards-box" id="colRecibido"></div>
           </div>
 
-          <!-- Columna 2: En Lavado / Taller -->
           <div class="kanban-column">
             <div class="kanban-column-header bg-progress">
               <span class="status-dot dot-progress"></span>
@@ -460,7 +439,6 @@
             <div class="kanban-cards-box" id="colEnProceso"></div>
           </div>
 
-          <!-- Columna 3: En Planchado -->
           <div class="kanban-column">
             <div class="kanban-column-header bg-review">
               <span class="status-dot dot-review"></span>
@@ -470,7 +448,6 @@
             <div class="kanban-cards-box" id="colEnPlanchado"></div>
           </div>
 
-          <!-- Columna 4: Listo en Mostrador -->
           <div class="kanban-column">
             <div class="kanban-column-header bg-done">
               <span class="status-dot dot-done"></span>
@@ -483,57 +460,47 @@
       </section>
 
       <!-- ====================================================
-           4. SECCIÓN: AUTOSERVICIO & TORRES CON MONEDAS
+           4. SECCIÓN: AUTOSERVICIO & TORRES
            ==================================================== -->
       <section id="section-autoservicio" class="content-section">
         <div class="grid-2col-wide">
           
-          <!-- Lado Izquierdo: Monitoreo de Máquinas -->
           <div>
-            <!-- Torres Combo Monedas -->
             <div class="card" style="margin-bottom: 1.5rem;">
               <div class="card-header">
                 <div>
-                  <h3>🌀 Torres Combo Lavadora / Secadora (Operadas por Monedas)</h3>
-                  <p class="card-subtitle">Estilo EE. UU. (Speed Queen) • Capacidad: 30 Lbs • 3 Monedas por ciclo</p>
+                  <h3>Torres Combo Lavadora / Secadora (Monedas)</h3>
+                  <p class="card-subtitle">Capacidad: 30 Lbs • 3 Monedas por ciclo estándar</p>
                 </div>
               </div>
-
-              <div class="machines-grid" id="towersGrid">
-                <!-- Inyectado por JS -->
-              </div>
+              <div class="machines-grid" id="towersGrid"></div>
             </div>
 
-            <!-- Máquinas Industriales -->
             <div class="card">
               <div class="card-header">
                 <div>
-                  <h3>🏭 Lavadoras &amp; Secadoras Industriales de Gran Volumen</h3>
-                  <p class="card-subtitle">Capacidad: 75-80 Lbs • Para hoteles, lotes pesados y edredones King</p>
+                  <h3>Lavadoras &amp; Secadoras Industriales (Gran Volumen)</h3>
+                  <p class="card-subtitle">Capacidad: 75-80 Lbs • Cargas pesadas de lencería hotelera y edredones</p>
                 </div>
               </div>
-
-              <div class="machines-grid" id="industrialGrid">
-                <!-- Inyectado por JS -->
-              </div>
+              <div class="machines-grid" id="industrialGrid"></div>
             </div>
           </div>
 
-          <!-- Lado Derecho: Dispensador / Venta de Monedas y Fichas -->
           <div>
             <div class="card">
               <div class="card-header">
-                <h3>🪙 Venta de Fichas / Monedas</h3>
+                <h3>Dispensación de Fichas / Monedas</h3>
               </div>
-              <p class="text-muted" style="margin-bottom: 1.25rem;">Dispensación rápida de monedas para clientes de las torres de autoservicio.</p>
+              <p class="text-muted" style="margin-bottom: 1.25rem;">Venta directa de monedas para las torres de autoservicio.</p>
 
               <div class="form-group">
-                <label>Cantidad de Fichas / Monedas:</label>
+                <label>Cantidad de Fichas:</label>
                 <input type="number" id="tokenQty" class="form-input font-mono font-bold font-lg" value="3" min="1" oninput="calculateTokenSale()" />
               </div>
 
               <div class="form-group">
-                <label>Precio por Ficha (RD$):</label>
+                <label>Precio Unitario (RD$):</label>
                 <input type="number" id="tokenPrice" class="form-input font-mono" value="60" oninput="calculateTokenSale()" />
               </div>
 
@@ -548,8 +515,7 @@
               </div>
 
               <button class="btn btn-primary btn-block btn-lg" onclick="sellTokens()" style="margin-top: 1rem;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-                <span>VENDER FICHAS &amp; REGISTRAR EN CAJA</span>
+                <span>Registrar Venta de Fichas</span>
               </button>
             </div>
           </div>
@@ -558,7 +524,7 @@
       </section>
 
       <!-- ====================================================
-           5. SECCIÓN: INVENTARIO & SUMINISTROS
+           5. SECCIÓN: INVENTARIO & INSUMOS
            ==================================================== -->
       <section id="section-inventario" class="content-section">
         <div class="grid-2col-wide">
@@ -566,7 +532,7 @@
             <div class="card-header">
               <div>
                 <h3>Inventario de Insumos &amp; Suministros</h3>
-                <p class="card-subtitle">Detergentes industriales, suavizantes, fundas plásticas, ganchos e hilos de costura.</p>
+                <p class="card-subtitle">Detergentes, suavizantes, fundas plásticas, ganchos e insumos de taller.</p>
               </div>
               <button class="btn btn-primary" onclick="openNewInsumoModal()">+ Nuevo Insumo</button>
             </div>
@@ -584,31 +550,26 @@
                     <th>ACCIONES</th>
                   </tr>
                 </thead>
-                <tbody id="inventoryTableBody">
-                  <!-- Inyectado por JS -->
-                </tbody>
+                <tbody id="inventoryTableBody"></tbody>
               </table>
             </div>
           </div>
 
-          <!-- Card de Entrada Rápida de Stock -->
           <div>
             <div class="card">
               <div class="card-header">
-                <h3>📦 Entrada Rápida de Stock</h3>
+                <h3>Entrada Rápida de Stock</h3>
               </div>
               <div class="form-group">
                 <label>Seleccionar Insumo:</label>
-                <select id="quickRestockSelect" class="form-input">
-                  <!-- Inyectado por JS -->
-                </select>
+                <select id="quickRestockSelect" class="form-input"></select>
               </div>
               <div class="form-group">
-                <label>Cantidad a Agregar:</label>
+                <label>Cantidad a Ingresar:</label>
                 <input type="number" id="quickRestockQty" class="form-input font-mono" value="5" min="1" />
               </div>
               <button class="btn btn-success btn-block" onclick="executeQuickRestock()">
-                <span>Registrar Entrada +</span>
+                <span>Registrar Entrada</span>
               </button>
             </div>
           </div>
@@ -616,14 +577,14 @@
       </section>
 
       <!-- ====================================================
-           6. SECCIÓN: CLIENTES & CUENTAS DE HOTELES
+           6. SECCIÓN: CLIENTES & HOTELES
            ==================================================== -->
       <section id="section-clientes" class="content-section">
         <div class="card">
           <div class="card-header">
             <div>
-              <h3>Directorio de Clientes &amp; Cuentas Corporativas</h3>
-              <p class="card-subtitle">Clientes individuales y hoteles con facturación a crédito y lotes por volumen.</p>
+              <h3>Directorio de Clientes &amp; Cuentas Hoteleras</h3>
+              <p class="card-subtitle">Clientes individuales y hoteles corporativos con facturación a crédito.</p>
             </div>
             <button class="btn btn-primary" onclick="openNewClientModal()">+ Registrar Cliente</button>
           </div>
@@ -632,7 +593,7 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th>NOMBRE / EMPRESA</th>
+                  <th>NOMBRE / RAZÓN SOCIAL</th>
                   <th>TELÉFONO</th>
                   <th>TIPO DE CUENTA</th>
                   <th>SALDO PENDIENTE</th>
@@ -640,20 +601,17 @@
                   <th>ÓRDENES TOTALES</th>
                 </tr>
               </thead>
-              <tbody id="clientsTableBody">
-                <!-- Inyectado por JS -->
-              </tbody>
+              <tbody id="clientsTableBody"></tbody>
             </table>
           </div>
         </div>
       </section>
 
       <!-- ====================================================
-           7. SECCIÓN: CONTROL DE CAJA & ARQUEO
+           7. SECCIÓN: CONTROL DE CAJA
            ==================================================== -->
       <section id="section-caja" class="content-section">
         <div class="grid-2col">
-          <!-- Movimientos del Turno -->
           <div class="card">
             <div class="card-header">
               <h3>Movimientos y Cobros del Turno</h3>
@@ -671,18 +629,15 @@
                     <th style="text-align: right;">MONTO</th>
                   </tr>
                 </thead>
-                <tbody id="cashMovementsTableBody">
-                  <!-- Inyectado por JS -->
-                </tbody>
+                <tbody id="cashMovementsTableBody"></tbody>
               </table>
             </div>
           </div>
 
-          <!-- Resumen de Ingresos y Cierre -->
           <div>
             <div class="card" style="margin-bottom: 1.25rem;">
               <div class="card-header">
-                <h3>Resumen de Ingresos</h3>
+                <h3>Resumen de Ingresos del Turno</h3>
               </div>
               <div class="summary-breakdown">
                 <div class="summary-row">
@@ -694,7 +649,7 @@
                   <strong class="font-mono" id="cashTotalCash">RD$825.00</strong>
                 </div>
                 <div class="summary-row">
-                  <span>Monedas / Fichas Autoservicio:</span>
+                  <span>Monedas Autoservicio:</span>
                   <strong class="font-mono" id="cashTotalTokens">RD$525.00</strong>
                 </div>
                 <div class="summary-row">
@@ -708,7 +663,6 @@
               </div>
             </div>
 
-            <!-- Arqueo -->
             <div class="card">
               <div class="card-header">
                 <h3>Arqueo y Cierre de Turno</h3>
@@ -722,10 +676,244 @@
                 <input type="number" id="tokensDeclared" class="form-input font-mono" placeholder="525.00" />
               </div>
               <button class="btn btn-danger btn-block btn-lg" onclick="closeCashShift()">
-                <span>CERRAR TURNO &amp; ARQUEO</span>
+                <span>Cerrar Turno &amp; Realizar Arqueo</span>
               </button>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           8. SECCIÓN NUEVA: CONFIGURACIÓN & PERFIL
+           ==================================================== -->
+      <section id="section-configuracion" class="content-section">
+        <div class="grid-2col">
+          
+          <!-- Perfil de Usuario -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Perfil del Operador</h3>
+            </div>
+            
+            <div class="form-group">
+              <label>Nombre del Operador:</label>
+              <input type="text" id="cfgUserName" class="form-input" value="Luis Bravo Bello" />
+            </div>
+
+            <div class="form-group">
+              <label>Correo Electrónico:</label>
+              <input type="email" id="cfgUserEmail" class="form-input" value="luisb@gmail.com" />
+            </div>
+
+            <div class="form-group">
+              <label>Rol en el Sistema:</label>
+              <input type="text" class="form-input" value="Administrador General" disabled style="background: var(--bg-hover);" />
+            </div>
+
+            <div class="form-group">
+              <label>Cambiar Contraseña:</label>
+              <input type="password" id="cfgNewPass" class="form-input" placeholder="Nueva contraseña (dejar en blanco para no cambiar)" />
+            </div>
+
+            <button class="btn btn-primary" onclick="saveUserProfile()">Guardar Datos de Perfil</button>
+          </div>
+
+          <!-- Configuración del Negocio & Impresora POS -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Datos de la Empresa &amp; Ticket Térmico</h3>
+            </div>
+
+            <div class="form-group">
+              <label>Nombre Comercial:</label>
+              <input type="text" id="cfgBusinessName" class="form-input" value="SyncOps Laundry &amp; Tailoring Suite" />
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label>RNC / Identificación Fiscal:</label>
+                <input type="text" id="cfgRnc" class="form-input font-mono" value="131-89745-1" />
+              </div>
+              <div class="form-group">
+                <label>Teléfono de Contacto:</label>
+                <input type="text" id="cfgPhone" class="form-input" value="(809) 555-7962" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Dirección Física:</label>
+              <input type="text" id="cfgAddress" class="form-input" value="Av. Winston Churchill #102, Santo Domingo" />
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label>Ancho de Impresora POS:</label>
+                <select id="cfgPrinterWidth" class="form-input">
+                  <option value="80mm">80 mm (Estándar Térmico)</option>
+                  <option value="58mm">58 mm (Compacto)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Moneda Principal:</label>
+                <input type="text" class="form-input font-mono" value="DOP (RD$)" disabled style="background: var(--bg-hover);" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Mensaje de Pie de Ticket:</label>
+              <textarea id="cfgTicketFooter" class="form-input" rows="2">Prendas no retiradas tras 30 días pasan a disposición legal. ¡Gracias por su preferencia!</textarea>
+            </div>
+
+            <button class="btn btn-primary" onclick="saveBusinessConfig()">Guardar Configuración General</button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ====================================================
+           9. SECCIÓN NUEVA: PREGUNTAS FRECUENTES (FAQ)
+           ==================================================== -->
+      <section id="section-faq" class="content-section">
+        <div class="card" style="max-width: 900px; margin: 0 auto;">
+          <div class="card-header">
+            <div>
+              <h3>Preguntas Frecuentes &amp; Manual Operativo</h3>
+              <p class="card-subtitle">Guía de procedimientos estándar para lavandería, sastrería y autoservicio.</p>
+            </div>
+            <input type="text" id="faqSearchInput" class="form-input" placeholder="Buscar en preguntas..." style="width: 250px;" oninput="filterFaq(this.value)" />
+          </div>
+
+          <div class="faq-list" id="faqListContainer">
+            
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>¿Cómo se opera y recauda el cajetín de las torres de monedas?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                Las torres Speed Queen operan con 3 monedas/fichas estándar por ciclo de 35 minutos. El operador puede dispensar fichas desde el módulo de Autoservicio y vaciar el cajetín con el botón "Vaciar $", lo cual registrará automáticamente el monto recaudado como ingreso en el turno de caja abierto.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>¿Cómo registrar especificaciones y medidas para el taller de sastrería?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                Al seleccionar el servicio "Sastrería / Arreglo" en el Punto de Venta (POS), se despliega automáticamente el cajón de especificaciones donde se indica el tipo de arreglo (ej. ruedo, cambio de zipper, entalle) y las medidas en centímetros o pulgadas. Estos datos se imprimen en el ticket térmico y viajan al tablero Kanban del taller.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>¿Cómo funciona la facturación por volumen para hoteles?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                Las cuentas hoteleras permiten registrar recepciones por peso en kilos (lotes de toallas, sábanas o mantelería). Si la orden no se abona de inmediato, el saldo restante se acumula automáticamente en la cuenta corriente del hotel, respetando su límite de crédito autorizado.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>¿Cómo realizar el arqueo y cierre diario de caja?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                En el módulo "Control de Caja", el sistema desglosa los ingresos acumulados por Efectivo, Monedas de autoservicio y Tarjetas. El cajero ingresa el conteo físico en el formulario de arqueo y presiona "Cerrar Turno" para sellar el balance y archivar la jornada.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>¿Qué hacer si un insumo llega al nivel mínimo de stock?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                El sistema genera una alerta visual automática en el panel principal cuando el inventario cae por debajo del umbral mínimo. Desde la sección de Inventario se puede registrar una entrada rápida de mercancía una vez recibido el pedido del proveedor.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           10. SECCIÓN NUEVA: AYUDA & DIAGNÓSTICO QA
+           ==================================================== -->
+      <section id="section-ayuda" class="content-section">
+        <div class="grid-2col">
+          
+          <!-- Panel de Diagnóstico QA del Sistema -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Diagnóstico del Sistema &amp; QA</h3>
+              <span class="badge-pill bg-emerald">Estado: Saludable</span>
+            </div>
+
+            <div class="qa-metric-row">
+              <span>Motor de Base de Datos:</span>
+              <strong class="font-mono">SQLite 3.45 (Modo WAL Híbrido)</strong>
+            </div>
+            <div class="qa-metric-row">
+              <span>Persistencia Local:</span>
+              <strong class="font-mono text-blue">Activa (localStorage OK)</strong>
+            </div>
+            <div class="qa-metric-row">
+              <span>Latencia de Renderizado:</span>
+              <strong class="font-mono">2.4 ms (Instantáneo)</strong>
+            </div>
+            <div class="qa-metric-row">
+              <span>Servicio de Impresión POS:</span>
+              <strong class="font-mono">ESC/POS Thermal Driver OK</strong>
+            </div>
+
+            <div class="card-header-sm" style="margin-top: 1.5rem;">
+              <h4>Pruebas Rápidas de Aseguramiento de Calidad (QA)</h4>
+            </div>
+
+            <div class="qa-buttons-grid">
+              <button class="btn btn-outline" onclick="runQaTest('ticket')">Test 1: Prueba de Ticket Térmico</button>
+              <button class="btn btn-outline" onclick="runQaTest('calc')">Test 2: Test de Cálculo de Totales</button>
+              <button class="btn btn-outline" onclick="runQaTest('barcode')">Test 3: Validación Código de Barras</button>
+              <button class="btn btn-outline" onclick="runQaTest('reset')">Test 4: Restaurar Datos de Demostración</button>
+            </div>
+          </div>
+
+          <!-- Formulario de Soporte Técnico -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Mesa de Ayuda &amp; Soporte Técnico</h3>
+            </div>
+
+            <form onsubmit="submitSupportTicket(event)">
+              <div class="form-group">
+                <label>Asunto de la Consulta / Incidencia:</label>
+                <input type="text" id="supportSubject" class="form-input" placeholder="Ej. Duda con sincronización de impresora" required />
+              </div>
+
+              <div class="form-group">
+                <label>Nivel de Prioridad:</label>
+                <select id="supportPriority" class="form-input">
+                  <option value="Baja">Baja — Consulta general</option>
+                  <option value="Media">Media — Duda operativa</option>
+                  <option value="Alta">Alta — Problema de facturación o caja</option>
+                  <option value="Critica">Crítica — Bloqueo de terminal</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Detalle del Mensaje:</label>
+                <textarea id="supportBody" class="form-input" rows="4" placeholder="Describe brevemente lo ocurrido..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block">
+                <span>Enviar Reporte a Soporte</span>
+              </button>
+            </form>
+          </div>
+
         </div>
       </section>
 
@@ -733,21 +921,21 @@
   </main>
 
   <!-- ==============================================
-       MODAL DE TICKET TÉRMICO IMPRIMIBLE (CON CÓDIGO DE BARRAS)
+       MODAL DE TICKET TÉRMICO IMPRIMIBLE
        ============================================== -->
   <div class="modal-overlay" id="ticketModal">
     <div class="modal-card modal-ticket">
       <div class="modal-header">
-        <h3>🧾 Comprobante / Ticket Térmico POS</h3>
+        <h3>Comprobante / Ticket Térmico POS</h3>
         <button class="btn-close" onclick="closeTicketModal()">✕</button>
       </div>
       <div class="modal-body" id="ticketPrintArea">
         <div class="thermal-ticket">
           <div class="ticket-header">
-            <h4>SYNCOPS LAUNDRY &amp; SUITE</h4>
+            <h4 id="tktHeaderName">SYNCOPS LAUNDRY &amp; SUITE</h4>
             <p>Lavandería • Sastrería • Autoservicio</p>
-            <p>Av. Winston Churchill #102, Santo Domingo</p>
-            <p>Tel: (809) 555-7962 • RNC: 131-89745-1</p>
+            <p id="tktHeaderAddress">Av. Winston Churchill #102, Santo Domingo</p>
+            <p id="tktHeaderPhone">Tel: (809) 555-7962 • RNC: 131-89745-1</p>
           </div>
           <div class="ticket-divider">================================</div>
           <div class="ticket-meta">
@@ -778,15 +966,14 @@
             <div class="barcode-text" id="tktBarcode">*202608210001*</div>
           </div>
           <div class="ticket-footer">
-            <p>* Conserve este ticket para retirar sus prendas.</p>
-            <p>* Prendas no retiradas tras 30 días pasan a disposición.</p>
+            <p id="tktFooterNote">* Conserve este ticket para retirar sus prendas.</p>
             <p>¡Gracias por su preferencia!</p>
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeTicketModal()">Cerrar</button>
-        <button class="btn btn-primary" onclick="printThermalTicket()">🖨️ Imprimir Ticket</button>
+        <button class="btn btn-primary" onclick="printThermalTicket()">Imprimir Ticket</button>
       </div>
     </div>
   </div>
