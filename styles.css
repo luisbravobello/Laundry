@@ -2294,33 +2294,74 @@ body {
 @media print {
   @page {
     size: 80mm auto;
-    margin: 0mm;
+    margin: 0mm !important;
   }
+  
   html, body {
     width: 80mm !important;
-    min-width: 80mm !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
     background: #FFFFFF !important;
+    overflow: hidden !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-  body * {
-    visibility: hidden !important;
+  
+  /* Ocultar todos los contenedores de la aplicación para no generar espacio fantasma */
+  .app-container,
+  .sidebar,
+  .topbar,
+  .content-wrapper,
+  .modal-overlay:not(#ticketModal),
+  .modal-header,
+  .modal-footer,
+  .spotlight-overlay,
+  .toast-container {
+    display: none !important;
   }
-  #ticketPrintArea, #ticketPrintArea * {
-    visibility: visible !important;
+  
+  #ticketModal {
+    position: static !important;
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 80mm !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
   }
+  
+  .modal-card.modal-ticket {
+    position: static !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 80mm !important;
+    max-width: 80mm !important;
+    background: #FFFFFF !important;
+  }
+  
   #ticketPrintArea {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
+    position: static !important;
     width: 76mm !important;
     max-width: 76mm !important;
     margin: 0 !important;
-    padding: 2mm 3.5mm 6mm 4.5mm !important;
+    padding: 2mm 3.5mm 3mm 4.5mm !important;
     box-sizing: border-box !important;
+    background: #FFFFFF !important;
+    page-break-after: avoid !important;
+    page-break-before: avoid !important;
+    page-break-inside: avoid !important;
+    break-after: avoid !important;
+    break-before: avoid !important;
+    break-inside: avoid !important;
   }
+  
   .thermal-ticket-pro {
     border: none !important;
     box-shadow: none !important;
@@ -2328,7 +2369,11 @@ body {
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-after: avoid !important;
+    break-inside: avoid !important;
   }
 }
 
