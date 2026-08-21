@@ -1031,7 +1031,25 @@ body {
   align-items: center;
   font-size: .85rem;
   color: #475569;
-  margin-bottom: .45rem;
+  margin-bottom: .55rem;
+}
+.input-inline {
+  width: 95px;
+  height: 32px;
+  padding: 0 8px;
+  text-align: right;
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+  background: #FFFFFF;
+  color: #0F172A;
+  font-size: 0.85rem;
+  font-weight: 800;
+  outline: none;
+  transition: all var(--ease);
+}
+.input-inline:focus {
+  border-color: #1D4ED8;
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15);
 }
 
 /* Card Total General Destacada Fortexa ERP */
@@ -1048,7 +1066,7 @@ body {
 }
 .total-row-highlight span {
   color: #94A3B8;
-  font-size: .88rem;
+  font-size: .85rem;
   font-weight: 800;
   letter-spacing: .04em;
 }
@@ -1066,7 +1084,11 @@ body {
   margin: .85rem 0;
 }
 .btn-pay-method {
-  padding: .55rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  padding: .55rem .4rem;
   border-radius: 8px;
   border: 1px solid #CBD5E1;
   background: #FFFFFF;
@@ -1079,12 +1101,16 @@ body {
 .btn-pay-method:hover {
   background: #F8FAFC;
   border-color: #94A3B8;
+  color: #0F172A;
 }
 .btn-pay-method.active {
   background: #1D4ED8;
   border-color: #1D4ED8;
   color: #FFFFFF;
   box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
+}
+.btn-pay-method svg {
+  flex-shrink: 0;
 }
 
 .btn-emit-ticket-fortexa {
@@ -1094,8 +1120,8 @@ body {
   border: 1px solid #047857;
   border-radius: 10px;
   color: #FFFFFF;
-  font-size: .95rem;
-  font-weight: 800;
+  font-size: .92rem;
+  font-weight: 900;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1104,12 +1130,14 @@ body {
   transition: all var(--ease);
   box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
   margin-top: .65rem;
+  letter-spacing: .02em;
 }
 .btn-emit-ticket-fortexa:hover {
   background: #047857;
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(5, 150, 105, 0.35);
 }
+
 
 
 .payment-tabs { display: flex; gap: .5rem; margin-top: .35rem; }

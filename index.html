@@ -612,18 +612,25 @@
 
               <!-- Lista de Prendas Agregadas -->
               <div class="pos-items-list" id="posItemsList">
-                <div class="empty-state-pos">No hay artículos agregados a la orden.</div>
+                <div class="empty-state-pos" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 2.2rem 1rem;">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.8" style="margin-bottom: 4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                  <strong style="color: #475569; font-size: .84rem;">No hay artículos agregados</strong>
+                  <span style="font-size: .74rem; color: #94A3B8;">Haz clic en cualquier servicio del catálogo</span>
+                </div>
               </div>
 
               <!-- Desglose de Totales -->
               <div class="pos-totals-box">
                 <div class="total-row">
-                  <span>Subtotal:</span>
-                  <strong id="posSubtotal" class="font-mono font-bold" style="color: #0F172A;">RD$0.00</strong>
+                  <span style="font-weight: 600; color: #475569;">Subtotal:</span>
+                  <strong id="posSubtotal" class="font-mono font-bold" style="color: #0F172A; font-size: .95rem;">RD$0.00</strong>
                 </div>
-                <div class="total-row">
-                  <span>Descuento Especial (RD$):</span>
-                  <input type="number" id="posDiscount" class="input-inline font-mono font-bold" value="0" min="0" oninput="calculatePosTotal()" />
+                <div class="total-row" style="margin-bottom: .65rem;">
+                  <span style="font-weight: 600; color: #475569;">Descuento Especial:</span>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: .78rem; font-weight: 700; color: #64748B; font-family: 'JetBrains Mono', monospace;">RD$</span>
+                    <input type="number" id="posDiscount" class="input-inline font-mono font-bold" value="0" min="0" oninput="calculatePosTotal()" />
+                  </div>
                 </div>
                 
                 <!-- TOTAL GENERAL DESTACADO FORTEXA ERP -->
@@ -632,28 +639,40 @@
                   <strong id="posTotal" class="font-mono">RD$0.00</strong>
                 </div>
 
-                <!-- Método de Pago -->
-                <div style="margin-top: .75rem;">
+                <!-- Método de Pago con Íconos SVG Limpios -->
+                <div style="margin-top: .85rem;">
                   <label class="field-label" style="font-size: .74rem; font-weight: 800; color: #64748B; text-transform: uppercase;">Método de Cobro:</label>
                   <div class="pos-payment-methods">
-                    <button type="button" class="btn-pay-method active" onclick="selectPaymentMethod('Efectivo', this)">💵 Efectivo</button>
-                    <button type="button" class="btn-pay-method" onclick="selectPaymentMethod('Tarjeta', this)">💳 Tarjeta POS</button>
-                    <button type="button" class="btn-pay-method" onclick="selectPaymentMethod('Transferencia', this)">📲 Transferencia</button>
+                    <button type="button" class="btn-pay-method active" onclick="selectPaymentMethod('Efectivo', this)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+                      <span>Efectivo</span>
+                    </button>
+                    <button type="button" class="btn-pay-method" onclick="selectPaymentMethod('Tarjeta', this)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                      <span>Tarjeta POS</span>
+                    </button>
+                    <button type="button" class="btn-pay-method" onclick="selectPaymentMethod('Transferencia', this)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3v18M17 3l4 4M17 3l-4 4M7 21V3M7 21l-4-4M7 21l4-4"/></svg>
+                      <span>Transferencia</span>
+                    </button>
                   </div>
                 </div>
 
-                <!-- Monto Cobrado / Abono -->
+                <!-- Monto Cobrado / Abono con Prefijo RD$ -->
                 <div class="form-group" style="margin-top: .85rem;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                    <label class="field-label">Monto Cobrado / Abono (RD$):</label>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <label class="field-label" style="font-weight: 700; margin-bottom: 0;">Monto Cobrado / Abono:</label>
                     <button type="button" class="btn-link" style="font-size: .74rem; font-weight: 800; color: #1D4ED8;" onclick="payFullOrder()">Pagar Total Completo</button>
                   </div>
-                  <input type="number" id="posAmountPaid" class="form-input font-mono font-bold" value="0" min="0" oninput="calculatePosTotal()" style="font-size: 1.05rem;" />
+                  <div style="position: relative; display: flex; align-items: center;">
+                    <span style="position: absolute; left: 12px; font-weight: 800; font-size: .84rem; color: #64748B; font-family: 'JetBrains Mono', monospace; pointer-events: none;">RD$</span>
+                    <input type="number" id="posAmountPaid" class="form-input font-mono font-bold" value="0" min="0" oninput="calculatePosTotal()" style="padding-left: 2.65rem; font-size: 1.05rem; color: #0F172A; height: 42px;" />
+                  </div>
                 </div>
 
                 <!-- Saldo Pendiente -->
                 <div class="total-row" style="margin-top: .65rem; padding-top: .5rem; border-top: 1px dashed #E2E8F0;">
-                  <span style="font-weight: 800; color: #E11D48;">Saldo Pendiente por Cobrar:</span>
+                  <span style="font-weight: 800; color: #E11D48; font-size: .84rem;">Saldo Pendiente por Cobrar:</span>
                   <strong id="posBalanceDue" class="font-mono text-rose font-bold" style="font-size: 1.05rem; color: #E11D48;">RD$0.00</strong>
                 </div>
 
