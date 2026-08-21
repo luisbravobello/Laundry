@@ -208,11 +208,8 @@ function switchSection(sectionId, btnElement) {
   const titles = {
     'dashboard': 'Panel Principal',
     'pos': 'Punto de Venta / POS',
-    'kanban': 'Tablero Kanban',
-    'autoservicio': 'Autoservicio & Torres',
     'inventario': 'Inventario Insumos',
     'clientes': 'Clientes & Hoteles',
-    'caja': 'Control de Caja',
     'configuracion': 'Configuración & Perfil',
     'faq': 'Preguntas Frecuentes',
     'ayuda': 'Ayuda & QA'
@@ -223,23 +220,16 @@ function switchSection(sectionId, btnElement) {
 
   if (sectionId === 'dashboard') renderDashboard();
   if (sectionId === 'pos') renderPos();
-  if (sectionId === 'kanban') renderKanban();
-  if (sectionId === 'autoservicio') renderMachines();
   if (sectionId === 'inventario') renderInventory();
   if (sectionId === 'clientes') renderClients();
-  if (sectionId === 'caja') renderCash();
   if (sectionId === 'configuracion') loadConfigInputs();
 }
 
 function initApp() {
-  setInterval(tickMachineCycles, 1000);
   renderDashboard();
   renderPos();
-  renderKanban();
-  renderMachines();
   renderInventory();
   renderClients();
-  renderCash();
   loadConfigInputs();
 }
 
@@ -257,13 +247,14 @@ function renderDashboard() {
     .filter(o => o.status !== 'Listo' && o.status !== 'Entregado')
     .reduce((sum, o) => sum + o.items.length, 0);
 
-  const maquinasEnUso = state.machines.filter(m => m.status === 'EnCiclo').length;
   const insumosAlertas = state.inventory.filter(i => i.stock <= i.minStock).length;
+  const clientesCount = state.clients.length;
 
-  document.getElementById('kpiVentasHoy').innerText = `RD$${ventasHoy.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
-  document.getElementById('kpiPrendasTaller').innerText = prendasTaller;
-  document.getElementById('kpiInsumosAlertCount').innerText = insumosAlertas;
-  document.getElementById('kpiAutoservicio').innerHTML = `${maquinasEnUso} <span class="kpi-number-sub">en uso</span>`;
+  if (document.getElementById('kpiVentasHoy')) document.getElementById('kpiVentasHoy').innerText = `RD$${ventasHoy.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+  if (document.getElementById('kpiPrendasTaller')) document.getElementById('kpiPrendasTaller').innerText = prendasTaller;
+  if (document.getElementById('kpiInsumosAlertCount')) document.getElementById('kpiInsumosAlertCount').innerText = insumosAlertas;
+  if (document.getElementById('kpiClientesCount')) document.getElementById('kpiClientesCount').innerHTML = `${clientesCount} <span class="kpi-number-sub">activas</span>`;
+
 
   const tbody = document.querySelector('#tableRecentOrders tbody');
   if (tbody) {

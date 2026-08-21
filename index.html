@@ -15,7 +15,7 @@
 <body class="app-body">
 
   <!-- ==============================================
-       BARRA LATERAL (ICONOS EXACTOS DEL SISTEMA SYNCOPS)
+       BARRA LATERAL (LIMPIA SIN MÓDULOS DESCARTADOS)
        ============================================== -->
   <aside class="sidebar">
     <!-- Brand Header -->
@@ -53,22 +53,6 @@
         <span class="nav-badge-pill">4</span>
       </button>
 
-      <button class="nav-item" onclick="switchSection('kanban', this)">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-          <path d="M9 3v18M15 3v18"></path>
-        </svg>
-        <span>Tablero Kanban</span>
-        <span class="nav-badge-pill" id="navCountTaller">9</span>
-      </button>
-
-      <button class="nav-item" onclick="switchSection('autoservicio', this)">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-        </svg>
-        <span>Autoservicio &amp; Torres</span>
-      </button>
-
       <div class="nav-section-label">
         <span>MÉTRICAS Y SISTEMA</span>
         <span class="badge-live">En vivo</span>
@@ -91,14 +75,6 @@
           <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
         </svg>
         <span>Clientes &amp; Hoteles</span>
-      </button>
-
-      <button class="nav-item" onclick="switchSection('caja', this)">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="6" width="20" height="12" rx="2"></rect>
-          <circle cx="12" cy="12" r="3"></circle>
-        </svg>
-        <span>Control de Caja</span>
       </button>
 
       <div class="nav-section-label">
@@ -144,7 +120,7 @@
   </aside>
 
   <!-- ==============================================
-       MAIN LAYOUT & TOPBAR (EXACT MATCH SCREENSHOT)
+       MAIN LAYOUT & TOPBAR
        ============================================== -->
   <div class="main-layout">
     
@@ -183,7 +159,7 @@
           <span class="notif-badge-dot"></span>
         </button>
 
-        <div class="topbar-avatar" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[7])">LB</div>
+        <div class="topbar-avatar" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[4])">LB</div>
       </div>
     </header>
 
@@ -198,21 +174,21 @@
         <div class="page-header-row">
           <div>
             <h1 class="greeting-title" id="dashboardGreeting">Buenas tardes, Luis</h1>
-            <p class="greeting-sub">Resumen ejecutivo y métricas en tiempo real de <strong>Lavandería &amp; Taller</strong>.</p>
+            <p class="greeting-sub">Resumen ejecutivo y métricas en tiempo real de <strong>Lavandería &amp; POS</strong>.</p>
           </div>
 
           <div class="header-badges-row">
             <div class="status-pill-green">
               <span class="pill-dot"></span>
-              <span>Turno 01 • Caja Abierta</span>
+              <span>Terminal Activa • En Línea</span>
             </div>
-            <button class="btn-link-action" onclick="switchSection('kanban', document.querySelectorAll('.nav-item')[2])">
-              <span>Ver Flujo en Taller →</span>
+            <button class="btn-link-action" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
+              <span>+ Nueva Recepción POS →</span>
             </button>
           </div>
         </div>
 
-        <!-- 4 TARJETAS KPI MODERNAS (EXACT MATCH) -->
+        <!-- 4 TARJETAS KPI MODERNAS -->
         <div class="kpi-row">
           
           <!-- Card 1: Ventas Hoy -->
@@ -238,7 +214,7 @@
             </div>
           </div>
 
-          <!-- Card 2: Prendas en Taller -->
+          <!-- Card 2: Prendas Registradas -->
           <div class="kpi-card-modern">
             <div>
               <div class="kpi-top-box">
@@ -248,7 +224,7 @@
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                   </svg>
                 </div>
-                <span class="kpi-label-text">Prendas en Taller</span>
+                <span class="kpi-label-text">Prendas Procesadas</span>
               </div>
               <div class="kpi-main-number">
                 <span id="kpiPrendasTaller">2</span> <span class="kpi-number-sub">/ 8</span>
@@ -285,23 +261,26 @@
             </div>
           </div>
 
-          <!-- Card 4: Autoservicio (Torres) -->
+          <!-- Card 4: Clientes Registrados -->
           <div class="kpi-card-modern">
             <div>
               <div class="kpi-top-box">
                 <div class="kpi-icon-container bg-icon-emerald">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                   </svg>
                 </div>
-                <span class="kpi-label-text">Torres Autoservicio</span>
+                <span class="kpi-label-text">Cuentas &amp; Clientes</span>
               </div>
-              <div class="kpi-main-number" id="kpiAutoservicio">
-                2 <span class="kpi-number-sub">en uso</span>
+              <div class="kpi-main-number" id="kpiClientesCount">
+                3 <span class="kpi-number-sub">activas</span>
               </div>
             </div>
             <div class="kpi-footer-row">
-              <span class="trend-positive">▲ 3 torres disponibles</span>
+              <span class="trend-positive">▲ Cuentas particulares &amp; hoteles</span>
             </div>
           </div>
 
@@ -379,7 +358,7 @@
           <div class="card">
             <div class="card-header">
               <h3>Órdenes de Servicio Recientes</h3>
-              <button class="btn-link" onclick="switchSection('kanban', document.querySelectorAll('.nav-item')[2])">Ver Flujo en Taller →</button>
+              <button class="btn-link" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">Punto de Venta →</button>
             </div>
             <div class="table-responsive">
               <table class="table" id="tableRecentOrders">
@@ -400,7 +379,7 @@
           <div class="card">
             <div class="card-header">
               <h3>Alertas de Insumos Críticos</h3>
-              <button class="btn-link" onclick="switchSection('inventario', document.querySelectorAll('.nav-item')[4])">Inventario →</button>
+              <button class="btn-link" onclick="switchSection('inventario', document.querySelectorAll('.nav-item')[2])">Inventario →</button>
             </div>
             <div class="alerts-list" id="dashboardAlertsList"></div>
           </div>
@@ -577,120 +556,7 @@
       </section>
 
       <!-- ====================================================
-           3. SECCIÓN: TABLERO KANBAN DE TALLER
-           ==================================================== -->
-      <section id="section-kanban" class="content-section">
-        <div class="card-header" style="margin-bottom: 1.5rem;">
-          <div>
-            <h2 class="greeting-title" style="font-size: 1.35rem;">Tablero de Taller &amp; Flujo de Lavandería</h2>
-            <p class="greeting-sub">Seguimiento de etapas de lavado, secado, planchado y sastrería.</p>
-          </div>
-          <input type="text" id="kanbanSearchInput" class="form-input" style="width: 320px;" placeholder="Buscar por Ticket o Cliente..." oninput="filterKanban(this.value)" />
-        </div>
-
-        <div class="kanban-board">
-          <div class="kanban-column">
-            <div class="kanban-column-header bg-todo">
-              <span class="status-dot dot-todo"></span>
-              <strong>1. RECIBIDO</strong>
-              <span class="kanban-counter" id="countRecibido">0</span>
-            </div>
-            <div class="kanban-cards-box" id="colRecibido"></div>
-          </div>
-
-          <div class="kanban-column">
-            <div class="kanban-column-header bg-progress">
-              <span class="status-dot dot-progress"></span>
-              <strong>2. EN LAVADO / TALLER</strong>
-              <span class="kanban-counter" id="countEnProceso">0</span>
-            </div>
-            <div class="kanban-cards-box" id="colEnProceso"></div>
-          </div>
-
-          <div class="kanban-column">
-            <div class="kanban-column-header bg-review">
-              <span class="status-dot dot-review"></span>
-              <strong>3. EN PLANCHADO</strong>
-              <span class="kanban-counter" id="countEnPlanchado">0</span>
-            </div>
-            <div class="kanban-cards-box" id="colEnPlanchado"></div>
-          </div>
-
-          <div class="kanban-column">
-            <div class="kanban-column-header bg-done">
-              <span class="status-dot dot-done"></span>
-              <strong>4. LISTO EN MOSTRADOR</strong>
-              <span class="kanban-counter" id="countListo">0</span>
-            </div>
-            <div class="kanban-cards-box" id="colListo"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ====================================================
-           4. SECCIÓN: AUTOSERVICIO & TORRES
-           ==================================================== -->
-      <section id="section-autoservicio" class="content-section">
-        <div class="grid-2col-wide">
-          <div>
-            <div class="card" style="margin-bottom: 1.25rem;">
-              <div class="card-header">
-                <div>
-                  <h3>Torres Combo Lavadora / Secadora (Monedas)</h3>
-                  <p class="card-subtitle">Capacidad: 30 Lbs • 3 Monedas por ciclo estándar</p>
-                </div>
-              </div>
-              <div class="machines-grid" id="towersGrid"></div>
-            </div>
-
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <h3>Lavadoras &amp; Secadoras Industriales (Gran Volumen)</h3>
-                  <p class="card-subtitle">Capacidad: 75-80 Lbs • Cargas pesadas de lencería hotelera</p>
-                </div>
-              </div>
-              <div class="machines-grid" id="industrialGrid"></div>
-            </div>
-          </div>
-
-          <div>
-            <div class="card">
-              <div class="card-header">
-                <h3>Dispensación de Fichas / Monedas</h3>
-              </div>
-              <p class="text-muted" style="margin-bottom: 1.25rem;">Venta directa de monedas para las torres de autoservicio.</p>
-
-              <div class="form-group">
-                <label>Cantidad de Fichas:</label>
-                <input type="number" id="tokenQty" class="form-input font-mono font-bold font-lg" value="3" min="1" oninput="calculateTokenSale()" />
-              </div>
-
-              <div class="form-group">
-                <label>Precio Unitario (RD$):</label>
-                <input type="number" id="tokenPrice" class="form-input font-mono" value="60" oninput="calculateTokenSale()" />
-              </div>
-
-              <div class="form-group">
-                <label>Cliente (Opcional):</label>
-                <input type="text" id="tokenClientName" class="form-input" placeholder="Cliente Autoservicio" />
-              </div>
-
-              <div class="total-box-token">
-                <span>TOTAL A COBRAR:</span>
-                <strong id="tokenTotalCost" class="font-mono">RD$180.00</strong>
-              </div>
-
-              <button class="btn btn-primary btn-block btn-lg" onclick="sellTokens()" style="margin-top: 1rem;">
-                <span>Registrar Venta de Fichas</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ====================================================
-           5. SECCIÓN: INVENTARIO & INSUMOS (CON CRUD COMPLETO)
+           3. SECCIÓN: INVENTARIO & INSUMOS (CON CRUD COMPLETO)
            ==================================================== -->
       <section id="section-inventario" class="content-section">
         <div class="grid-2col-wide">
@@ -743,7 +609,7 @@
       </section>
 
       <!-- ====================================================
-           6. SECCIÓN: CLIENTES & HOTELES (CON CRUD COMPLETO)
+           4. SECCIÓN: CLIENTES & HOTELES (CON CRUD COMPLETO)
            ==================================================== -->
       <section id="section-clientes" class="content-section">
         <div class="card">
@@ -775,83 +641,7 @@
       </section>
 
       <!-- ====================================================
-           7. SECCIÓN: CONTROL DE CAJA
-           ==================================================== -->
-      <section id="section-caja" class="content-section">
-        <div class="grid-2col">
-          <div class="card">
-            <div class="card-header">
-              <h3>Movimientos y Cobros del Turno</h3>
-              <span class="badge-pill bg-emerald">Turno Abierto</span>
-            </div>
-
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>HORA</th>
-                    <th>TIPO</th>
-                    <th>CONCEPTO</th>
-                    <th>MÉTODO</th>
-                    <th style="text-align: right;">MONTO</th>
-                  </tr>
-                </thead>
-                <tbody id="cashMovementsTableBody"></tbody>
-              </table>
-            </div>
-          </div>
-
-          <div>
-            <div class="card" style="margin-bottom: 1.25rem;">
-              <div class="card-header">
-                <h3>Resumen de Ingresos del Turno</h3>
-              </div>
-              <div class="summary-breakdown">
-                <div class="summary-row">
-                  <span>Fondo Inicial:</span>
-                  <strong class="font-mono">RD$3,000.00</strong>
-                </div>
-                <div class="summary-row">
-                  <span>Efectivo en Caja:</span>
-                  <strong class="font-mono" id="cashTotalCash">RD$825.00</strong>
-                </div>
-                <div class="summary-row">
-                  <span>Monedas Autoservicio:</span>
-                  <strong class="font-mono" id="cashTotalTokens">RD$525.00</strong>
-                </div>
-                <div class="summary-row">
-                  <span>Tarjetas POS:</span>
-                  <strong class="font-mono" id="cashTotalCards">RD$730.00</strong>
-                </div>
-                <div class="summary-row-total">
-                  <span>TOTAL INGRESOS TURNO:</span>
-                  <strong class="font-mono" id="cashGrandTotal">RD$2,080.00</strong>
-                </div>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="card-header">
-                <h3>Arqueo y Cierre de Turno</h3>
-              </div>
-              <div class="form-group">
-                <label>Efectivo Físico Contado (RD$):</label>
-                <input type="number" id="cashDeclared" class="form-input font-mono" placeholder="3825.00" />
-              </div>
-              <div class="form-group">
-                <label>Monedas Físicas Contadas (RD$):</label>
-                <input type="number" id="tokensDeclared" class="form-input font-mono" placeholder="525.00" />
-              </div>
-              <button class="btn btn-danger btn-block btn-lg" onclick="closeCashShift()">
-                <span>Cerrar Turno &amp; Realizar Arqueo</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ====================================================
-           8. SECCIÓN: CONFIGURACIÓN (EXACT MATCH SCREENSHOT)
+           5. SECCIÓN: CONFIGURACIÓN (EXACT MATCH SCREENSHOT)
            ==================================================== -->
       <section id="section-configuracion" class="content-section">
         
@@ -1067,16 +857,8 @@
                 <label class="checkbox-label">
                   <input type="checkbox" checked />
                   <div>
-                    <strong>Avisos de Ciclos de Autoservicio</strong>
-                    <div style="font-size: .78rem; color: var(--text-muted);">Notificar al mostrador cuando una torre o lavadora termine su ciclo.</div>
-                  </div>
-                </label>
-
-                <label class="checkbox-label">
-                  <input type="checkbox" checked />
-                  <div>
-                    <strong>Resumen Diario de Arqueo de Caja</strong>
-                    <div style="font-size: .78rem; color: var(--text-muted);">Enviar reporte de ingresos al cerrar el turno.</div>
+                    <strong>Avisos de Pedidos Listos</strong>
+                    <div style="font-size: .78rem; color: var(--text-muted);">Notificar al mostrador cuando una orden esté lista para entrega.</div>
                   </div>
                 </label>
               </div>
@@ -1118,7 +900,7 @@
                   <strong style="color: #4338CA; font-size: 1.1rem;">SyncOps PRO Suite</strong>
                   <span class="badge-pill bg-emerald">Activo</span>
                 </div>
-                <p style="color: #4B5563; font-size: .84rem; margin: 0;">Terminal de Lavandería, Sastrería, Autoservicio y Cuentas Corporativas ilimitadas.</p>
+                <p style="color: #4B5563; font-size: .84rem; margin: 0;">Terminal de Lavandería, Sastrería y Cuentas Corporativas ilimitadas.</p>
               </div>
             </div>
 
@@ -1128,16 +910,15 @@
 
       </section>
 
-
       <!-- ====================================================
-           9. SECCIÓN: PREGUNTAS FRECUENTES (FAQ)
+           6. SECCIÓN: PREGUNTAS FRECUENTES (FAQ)
            ==================================================== -->
       <section id="section-faq" class="content-section">
         <div class="card" style="max-width: 900px; margin: 0 auto;">
           <div class="card-header">
             <div>
               <h3>Preguntas Frecuentes &amp; Manual Operativo</h3>
-              <p class="card-subtitle">Guía de procedimientos estándar para lavandería, sastrería y autoservicio.</p>
+              <p class="card-subtitle">Guía de procedimientos estándar para lavandería y sastrería.</p>
             </div>
             <input type="text" id="faqSearchInput" class="form-input" placeholder="Buscar en preguntas..." style="width: 250px;" oninput="filterFaq(this.value)" />
           </div>
@@ -1145,21 +926,11 @@
           <div class="faq-list" id="faqListContainer">
             <div class="faq-item">
               <button class="faq-question" onclick="toggleFaq(this)">
-                <span>¿Cómo se opera y recauda el cajetín de las torres de monedas?</span>
-                <span class="faq-toggle">+</span>
-              </button>
-              <div class="faq-answer">
-                Las torres Speed Queen operan con 3 monedas/fichas estándar por ciclo de 35 minutos. El operador puede dispensar fichas desde el módulo de Autoservicio y vaciar el cajetín con el botón "Vaciar $", lo cual registrará automáticamente el monto recaudado como ingreso en el turno de caja abierto.
-              </div>
-            </div>
-
-            <div class="faq-item">
-              <button class="faq-question" onclick="toggleFaq(this)">
                 <span>¿Cómo registrar especificaciones y medidas para el taller de sastrería?</span>
                 <span class="faq-toggle">+</span>
               </button>
               <div class="faq-answer">
-                Al seleccionar el servicio "Sastrería / Arreglo" en el Punto de Venta (POS), se despliega automáticamente el cajón de especificaciones donde se indica el tipo de arreglo (ej. ruedo, cambio de zipper, entalle) y las medidas en centímetros o pulgadas. Estos datos se imprimen en el ticket térmico y viajan al tablero Kanban del taller.
+                Al seleccionar el servicio "Sastrería / Arreglo" en el Punto de Venta (POS), se despliega automáticamente el cajón de especificaciones donde se indica el tipo de arreglo (ej. ruedo, cambio de zipper, entalle) y las medidas en centímetros o pulgadas. Estos datos se imprimen directamente en el ticket térmico con código de barras.
               </div>
             </div>
 
@@ -1172,22 +943,12 @@
                 Las cuentas hoteleras permiten registrar recepciones por peso en kilos (lotes de toallas, sábanas o mantelería). Si la orden no se abona de inmediato, el saldo restante se acumula automáticamente en la cuenta corriente del hotel, respetando su límite de crédito autorizado.
               </div>
             </div>
-
-            <div class="faq-item">
-              <button class="faq-question" onclick="toggleFaq(this)">
-                <span>¿Cómo realizar el arqueo y cierre diario de caja?</span>
-                <span class="faq-toggle">+</span>
-              </button>
-              <div class="faq-answer">
-                En el módulo "Control de Caja", el sistema desglosa los ingresos acumulados por Efectivo, Monedas de autoservicio y Tarjetas. El cajero ingresa el conteo físico en el formulario de arqueo y presiona "Cerrar Turno" para sellar el balance y archivar la jornada.
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
       <!-- ====================================================
-           10. SECCIÓN: AYUDA & DIAGNÓSTICO QA
+           7. SECCIÓN: AYUDA & DIAGNÓSTICO QA
            ==================================================== -->
       <section id="section-ayuda" class="content-section">
         <div class="grid-2col">
@@ -1242,7 +1003,7 @@
                 <select id="supportPriority" class="form-input">
                   <option value="Baja">Baja — Consulta general</option>
                   <option value="Media">Media — Duda operativa</option>
-                  <option value="Alta">Alta — Problema de facturación o caja</option>
+                  <option value="Alta">Alta — Problema de facturación o pos</option>
                   <option value="Critica">Crítica — Bloqueo de terminal</option>
                 </select>
               </div>
@@ -1435,7 +1196,7 @@
         <div class="thermal-ticket">
           <div class="ticket-header">
             <h4 id="tktHeaderName">SYNCOPS LAUNDRY &amp; SUITE</h4>
-            <p>Lavandería • Sastrería • Autoservicio</p>
+            <p>Lavandería • Sastrería • Suite</p>
             <p id="tktHeaderAddress">Av. Winston Churchill #102, Santo Domingo</p>
             <p id="tktHeaderPhone">Tel: (809) 555-7962 • RNC: 131-89745-1</p>
           </div>
