@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SyncOps — Laundry &amp; Tailoring Suite</title>
+  <title>SyncOps — Laundry, Tailoring &amp; Billing Suite</title>
 
   <!-- Google Fonts: Inter + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,7 +15,7 @@
 <body class="app-body">
 
   <!-- ==============================================
-       BARRA LATERAL (LIMPIA SIN MÓDULOS DESCARTADOS)
+       BARRA LATERAL DE NAVEGACIÓN
        ============================================== -->
   <aside class="sidebar">
     <!-- Brand Header -->
@@ -32,7 +32,7 @@
     <!-- Navegación -->
     <nav class="sidebar-nav">
       <div class="nav-section-label">
-        <span>ESPACIO DE TRABAJO</span>
+        <span>OPERACIONES</span>
       </div>
       
       <button class="nav-item active" onclick="switchSection('dashboard', this)">
@@ -53,16 +53,34 @@
         <span class="nav-badge-pill">4</span>
       </button>
 
+      <button class="nav-item" onclick="switchSection('facturacion', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        <span>Facturas &amp; Cobros</span>
+      </button>
+
       <div class="nav-section-label">
-        <span>MÉTRICAS Y SISTEMA</span>
+        <span>FINANZAS Y CATÁLOGO</span>
         <span class="badge-live">En vivo</span>
       </div>
 
-      <button class="nav-item" onclick="switchSection('inventario', this)">
+      <button class="nav-item" onclick="switchSection('reportes', this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="20" x2="18" y2="10"></line>
           <line x1="12" y1="20" x2="12" y2="4"></line>
           <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+        <span>Reportes &amp; Ingresos</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('inventario', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
         </svg>
         <span>Inventario Insumos</span>
       </button>
@@ -78,7 +96,7 @@
       </button>
 
       <div class="nav-section-label">
-        <span>ADMINISTRACIÓN</span>
+        <span>SISTEMA</span>
       </div>
 
       <button class="nav-item" onclick="switchSection('configuracion', this)">
@@ -141,7 +159,7 @@
       <div style="position: relative;">
         <div class="search-capsule">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="globalSearchInput" class="search-input" placeholder="Buscar órdenes, clientes, insumos... ⌘K" oninput="handleGlobalSearch(this.value)" />
+          <input type="text" id="globalSearchInput" class="search-input" placeholder="Buscar facturas, clientes, insumos... ⌘K" oninput="handleGlobalSearch(this.value)" />
           <span class="search-shortcut">⌘K</span>
         </div>
         <div id="globalSearchResults" class="search-dropdown-menu" style="display: none;"></div>
@@ -151,30 +169,29 @@
       <div class="topbar-right">
         <button class="btn-primary-action" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          <span>+ Nueva Orden</span>
+          <span>+ Nueva Factura</span>
         </button>
 
-        <button class="btn-icon-topbar" title="Notificaciones" onclick="showToast('Sistema operativo al día. 0 errores.', 'info')">
+        <button class="btn-icon-topbar" title="Notificaciones" onclick="showToast('Sistema operativo en línea.', 'info')">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           <span class="notif-badge-dot"></span>
         </button>
 
-        <div class="topbar-avatar" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[4])">LB</div>
+        <div class="topbar-avatar" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[5])">LB</div>
       </div>
     </header>
 
     <div class="content-wrapper">
 
       <!-- ====================================================
-           1. SECCIÓN: DASHBOARD
+           1. SECCIÓN: DASHBOARD (PANEL PRINCIPAL)
            ==================================================== -->
       <section id="section-dashboard" class="content-section active">
         
-        <!-- Saludo & Badges Superiores -->
         <div class="page-header-row">
           <div>
             <h1 class="greeting-title" id="dashboardGreeting">Buenas tardes, Luis</h1>
-            <p class="greeting-sub">Resumen ejecutivo y métricas en tiempo real de <strong>Lavandería &amp; POS</strong>.</p>
+            <p class="greeting-sub">Resumen ejecutivo y métricas de <strong>Facturación &amp; Operaciones</strong>.</p>
           </div>
 
           <div class="header-badges-row">
@@ -183,12 +200,12 @@
               <span>Terminal Activa • En Línea</span>
             </div>
             <button class="btn-link-action" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
-              <span>+ Nueva Recepción POS →</span>
+              <span>+ Nueva Factura POS →</span>
             </button>
           </div>
         </div>
 
-        <!-- 4 TARJETAS KPI MODERNAS -->
+        <!-- 4 TARJETAS KPI -->
         <div class="kpi-row">
           
           <!-- Card 1: Ventas Hoy -->
@@ -196,33 +213,28 @@
             <div>
               <div class="kpi-top-box">
                 <div class="kpi-icon-container bg-icon-purple">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                  </svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                 </div>
-                <span class="kpi-label-text">Ventas del Día</span>
+                <span class="kpi-label-text">Ingresos Cobrados</span>
               </div>
               <div class="kpi-main-number" id="kpiVentasHoy">
                 RD$1,555.00
               </div>
             </div>
             <div class="kpi-footer-row">
-              <span class="trend-positive">▲ +18% vs día anterior</span>
+              <span class="trend-positive">▲ Cobros en caja &amp; transferencias</span>
               <svg class="sparkline-svg" viewBox="0 0 75 26">
                 <path d="M2,20 Q15,5 30,18 T55,8 T73,4" />
               </svg>
             </div>
           </div>
 
-          <!-- Card 2: Prendas Registradas -->
+          <!-- Card 2: Prendas Procesadas -->
           <div class="kpi-card-modern">
             <div>
               <div class="kpi-top-box">
                 <div class="kpi-icon-container bg-icon-cyan">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                  </svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                 </div>
                 <span class="kpi-label-text">Prendas Procesadas</span>
               </div>
@@ -237,27 +249,21 @@
             </div>
           </div>
 
-          <!-- Card 3: Insumos Críticos -->
+          <!-- Card 3: Facturas Pendientes -->
           <div class="kpi-card-modern">
             <div>
               <div class="kpi-top-box">
                 <div class="kpi-icon-container bg-icon-rose">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="8" height="14" x="8" y="6" rx="4"></rect>
-                    <path d="m19 7-3 2"></path><path d="m5 7 3 2"></path>
-                    <path d="m19 19-3-2"></path><path d="m5 19 3-2"></path>
-                    <path d="M20 13h-4"></path><path d="M4 13h4"></path>
-                    <path d="m10 4 1 2"></path><path d="m14 4-1 2"></path>
-                  </svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="8" height="14" x="8" y="6" rx="4"></rect><path d="m19 7-3 2"></path><path d="m5 7 3 2"></path><path d="m19 19-3-2"></path><path d="m5 19 3-2"></path><path d="M20 13h-4"></path><path d="M4 13h4"></path></svg>
                 </div>
-                <span class="kpi-label-text">Alertas de Insumos</span>
+                <span class="kpi-label-text">Facturas con Saldo</span>
               </div>
-              <div class="kpi-main-number" style="color: #0F172A;" id="kpiInsumosAlertCount">
+              <div class="kpi-main-number" style="color: #0F172A;" id="kpiFacturasPendientesCount">
                 2
               </div>
             </div>
             <div class="kpi-footer-row">
-              <span class="trend-alert">▼ 2 requieren compra hoy</span>
+              <span class="trend-alert">▼ Cuentas por cobrar activas</span>
             </div>
           </div>
 
@@ -266,12 +272,7 @@
             <div>
               <div class="kpi-top-box">
                 <div class="kpi-icon-container bg-icon-emerald">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                  </svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                 </div>
                 <span class="kpi-label-text">Cuentas &amp; Clientes</span>
               </div>
@@ -357,8 +358,8 @@
         <div class="grid-2col">
           <div class="card">
             <div class="card-header">
-              <h3>Órdenes de Servicio Recientes</h3>
-              <button class="btn-link" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">Punto de Venta →</button>
+              <h3>Facturas Recientes</h3>
+              <button class="btn-link" onclick="switchSection('facturacion', document.querySelectorAll('.nav-item')[2])">Ver Todas las Facturas →</button>
             </div>
             <div class="table-responsive">
               <table class="table" id="tableRecentOrders">
@@ -366,7 +367,7 @@
                   <tr>
                     <th>TICKET</th>
                     <th>CLIENTE</th>
-                    <th>ESTADO</th>
+                    <th>ESTADO PAGO</th>
                     <th style="text-align: right;">TOTAL</th>
                     <th>ACCIONES</th>
                   </tr>
@@ -379,7 +380,7 @@
           <div class="card">
             <div class="card-header">
               <h3>Alertas de Insumos Críticos</h3>
-              <button class="btn-link" onclick="switchSection('inventario', document.querySelectorAll('.nav-item')[2])">Inventario →</button>
+              <button class="btn-link" onclick="switchSection('inventario', document.querySelectorAll('.nav-item')[4])">Inventario →</button>
             </div>
             <div class="alerts-list" id="dashboardAlertsList"></div>
           </div>
@@ -422,15 +423,15 @@
             <div class="card">
               <div class="card-header-sm">
                 <span class="step-num">2</span>
-                <h4>Catálogo de Prendas &amp; Servicios</h4>
+                <h4>Catálogo por Categoría (Lavandería, Sastrería, Autoservicio)</h4>
               </div>
 
+              <!-- Pestañas por Categoría Requerida -->
               <div class="catalog-tabs">
                 <button class="catalog-tab active" onclick="filterCatalog('Todos', this)">Todos</button>
-                <button class="catalog-tab" onclick="filterCatalog('Ropa Formal', this)">Ropa Formal</button>
-                <button class="catalog-tab" onclick="filterCatalog('Ropa Casual', this)">Ropa Casual</button>
-                <button class="catalog-tab" onclick="filterCatalog('Ropa de Cama', this)">Ropa de Cama</button>
+                <button class="catalog-tab" onclick="filterCatalog('Lavandería', this)">Lavandería</button>
                 <button class="catalog-tab" onclick="filterCatalog('Sastrería', this)">Sastrería</button>
+                <button class="catalog-tab" onclick="filterCatalog('Autoservicio', this)">Autoservicio &amp; Fichas</button>
                 <button class="catalog-tab" onclick="filterCatalog('Hotelería', this)">Hotelería (x Kg)</button>
               </div>
 
@@ -438,22 +439,21 @@
 
               <div class="item-builder-box">
                 <div class="item-builder-header">
-                  <span id="builderItemName">Configuración de la Prenda:</span>
+                  <span id="builderItemName">Configuración del Artículo / Servicio:</span>
                 </div>
 
                 <div class="form-row-3">
                   <div class="form-group">
-                    <label>Descripción / Prenda:</label>
+                    <label>Descripción / Servicio:</label>
                     <input type="text" id="builderDesc" class="form-input" placeholder="Ej. Pantalón de Lino" />
                   </div>
                   <div class="form-group">
-                    <label>Tipo de Servicio:</label>
+                    <label>Categoría / Tipo:</label>
                     <select id="builderService" class="form-input" onchange="toggleTailoringDrawer(this.value)">
-                      <option value="LavadoYPlanchado">Lavado &amp; Planchado</option>
-                      <option value="LavadoPieza">Sólo Lavado</option>
-                      <option value="Planchado">Sólo Planchado</option>
-                      <option value="Sastreria">Sastrería / Arreglo</option>
-                      <option value="HotelVolumen">Hotel / Gran Volumen (x Kg)</option>
+                      <option value="Lavandería">Lavandería (Lavado &amp; Planchado)</option>
+                      <option value="Sastrería">Sastrería / Arreglo</option>
+                      <option value="Autoservicio">Autoservicio / Fichas &amp; Monedas</option>
+                      <option value="HotelVolumen">Hotelería / Gran Volumen (x Kg)</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -464,12 +464,12 @@
 
                 <div class="form-row-3">
                   <div class="form-group">
-                    <label>Color / Tela:</label>
+                    <label>Color / Detalles:</label>
                     <input type="text" id="builderColor" class="form-input" placeholder="Ej. Azul Marino / Algodón" />
                   </div>
                   <div class="form-group">
-                    <label>Detalles / Observaciones:</label>
-                    <input type="text" id="builderDefects" class="form-input" placeholder="Ej. Falta botón, mancha en puño" />
+                    <label>Observaciones:</label>
+                    <input type="text" id="builderDefects" class="form-input" placeholder="Ej. Mancha en puño, cambio botón" />
                   </div>
                   <div class="form-group">
                     <label>Precio Unitario (RD$):</label>
@@ -492,7 +492,7 @@
                 </div>
 
                 <button class="btn btn-primary btn-add-item" onclick="addItemToOrder()">
-                  <span>+ Agregar Prenda a la Orden</span>
+                  <span>+ Agregar al Carrito de Facturación</span>
                 </button>
               </div>
             </div>
@@ -501,12 +501,12 @@
           <div class="pos-right">
             <div class="card pos-summary-card">
               <div class="card-header">
-                <h3>Resumen de la Orden</h3>
-                <span class="badge-pill bg-blue" id="posItemsCount">0 prendas</span>
+                <h3>Resumen de Factura</h3>
+                <span class="badge-pill bg-blue" id="posItemsCount">0 artículos</span>
               </div>
 
               <div class="pos-items-list" id="posItemsList">
-                <div class="empty-state-pos">No hay prendas agregadas a la orden.</div>
+                <div class="empty-state-pos">No hay artículos agregados.</div>
               </div>
 
               <div class="pos-totals-box">
@@ -546,7 +546,7 @@
                 </div>
 
                 <button class="btn btn-success btn-block btn-lg" onclick="saveAndPrintOrder()" style="margin-top: 1.25rem;">
-                  <span>GUARDAR &amp; EMITIR TICKET</span>
+                  <span>GENERAR FACTURA &amp; IMPRIMIR TICKET</span>
                 </button>
               </div>
             </div>
@@ -556,7 +556,170 @@
       </section>
 
       <!-- ====================================================
-           3. SECCIÓN: INVENTARIO & INSUMOS (CON CRUD COMPLETO)
+           3. SECCIÓN: FACTURACIÓN & HISTORIAL DE FACTURAS (NUEVO)
+           ==================================================== -->
+      <section id="section-facturacion" class="content-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="greeting-title" style="font-size: 1.35rem;">Historial de Facturas &amp; Estado de Cobro</h2>
+              <p class="greeting-sub">Monitorea facturas emitidas, saldos pendientes y pagos recibidos.</p>
+            </div>
+            
+            <div style="display: flex; gap: .75rem; align-items: center;">
+              <input type="text" id="facturacionSearchInput" class="form-input" placeholder="Buscar por Nº Factura o Cliente..." style="width: 280px;" oninput="filterFacturacion(this.value)" />
+              <button class="btn btn-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">+ Nueva Factura</button>
+            </div>
+          </div>
+
+          <!-- Filtro de Estados de Factura -->
+          <div class="catalog-tabs" style="margin-bottom: 1.25rem;">
+            <button class="catalog-tab active" onclick="setFacturacionFilter('todas', this)" id="tabFilterTodas">Todas (<span id="countFactTodas">0</span>)</button>
+            <button class="catalog-tab" onclick="setFacturacionFilter('pagadas', this)" id="tabFilterPagadas">Pagadas (<span id="countFactPagadas">0</span>)</button>
+            <button class="catalog-tab" onclick="setFacturacionFilter('pendientes', this)" id="tabFilterPendientes">Pendientes de Pago (<span id="countFactPendientes">0</span>)</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="tableFacturas">
+              <thead>
+                <tr>
+                  <th>Nº FACTURA</th>
+                  <th>CLIENTE</th>
+                  <th>FECHA</th>
+                  <th>TOTAL</th>
+                  <th>ABONO COBRADO</th>
+                  <th>SALDO PENDIENTE</th>
+                  <th>ESTADO</th>
+                  <th>ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody id="facturacionTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           4. SECCIÓN: REPORTES & INGRESOS (CON EXPORTACIÓN PDF)
+           ==================================================== -->
+      <section id="section-reportes" class="content-section">
+        <div class="page-header-row">
+          <div>
+            <h1 class="greeting-title">Reportes Financieros &amp; Ingresos</h1>
+            <p class="greeting-sub">Análisis de facturación, recaudación por método de pago y exportación a PDF.</p>
+          </div>
+
+          <div style="display: flex; gap: .75rem;">
+            <button class="btn btn-primary" onclick="openPrintFinancialReport()" style="display: flex; align-items: center; gap: .5rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Generar / Imprimir Reporte PDF</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 KPI Cards de Finanzas -->
+        <div class="kpi-row" style="margin-bottom: 1.5rem;">
+          <div class="kpi-card-modern">
+            <div class="kpi-top-box">
+              <div class="kpi-icon-container bg-icon-purple">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              </div>
+              <span class="kpi-label-text">Total Facturado</span>
+            </div>
+            <div class="kpi-main-number" id="repTotalFacturado">RD$0.00</div>
+            <div class="kpi-footer-row"><span class="trend-positive">Valor total de servicios emitidos</span></div>
+          </div>
+
+          <div class="kpi-card-modern">
+            <div class="kpi-top-box">
+              <div class="kpi-icon-container bg-icon-emerald">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <span class="kpi-label-text">Total Recaudado / Cobrado</span>
+            </div>
+            <div class="kpi-main-number text-emerald" id="repTotalCobrado">RD$0.00</div>
+            <div class="kpi-footer-row"><span class="trend-positive">Efectivo, Tarjetas y Bancos</span></div>
+          </div>
+
+          <div class="kpi-card-modern">
+            <div class="kpi-top-box">
+              <div class="kpi-icon-container bg-icon-rose">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <span class="kpi-label-text">Cuentas por Cobrar (Saldos)</span>
+            </div>
+            <div class="kpi-main-number text-rose" id="repTotalPendiente">RD$0.00</div>
+            <div class="kpi-footer-row"><span class="trend-alert">Saldos pendientes de cobro</span></div>
+          </div>
+
+          <div class="kpi-card-modern">
+            <div class="kpi-top-box">
+              <div class="kpi-icon-container bg-icon-cyan">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+              </div>
+              <span class="kpi-label-text">Total de Facturas</span>
+            </div>
+            <div class="kpi-main-number" id="repTotalFacturasCount">0</div>
+            <div class="kpi-footer-row"><span class="trend-positive">Transacciones procesadas</span></div>
+          </div>
+        </div>
+
+        <!-- Filtros Rápidos de Reporte -->
+        <div class="card" style="margin-bottom: 1.5rem;">
+          <div class="form-row-3" style="align-items: flex-end;">
+            <div class="form-group">
+              <label>Período de Análisis:</label>
+              <select id="reportPeriodSelect" class="form-input" onchange="filterReportData()">
+                <option value="all">Todo el Historial</option>
+                <option value="today">Hoy</option>
+                <option value="week">Últimos 7 Días</option>
+                <option value="month">Este Mes</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Estado de Pago:</label>
+              <select id="reportStatusSelect" class="form-input" onchange="filterReportData()">
+                <option value="all">Todas las Facturas</option>
+                <option value="paid">Sólo Pagadas</option>
+                <option value="pending">Sólo Pendientes</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Buscar en Reporte:</label>
+              <input type="text" id="reportSearchInput" class="form-input" placeholder="Filtrar por cliente o factura..." oninput="filterReportData()" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla Detallada de Ingresos -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Detalle de Transacciones e Ingresos</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nº FACTURA</th>
+                  <th>CLIENTE</th>
+                  <th>FECHA</th>
+                  <th>MÉTODO</th>
+                  <th style="text-align: right;">TOTAL FACTURA</th>
+                  <th style="text-align: right;">MONTO COBRADO</th>
+                  <th style="text-align: right;">SALDO RESTANTE</th>
+                  <th>ESTADO</th>
+                </tr>
+              </thead>
+              <tbody id="reportTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           5. SECCIÓN: INVENTARIO & INSUMOS (CRUD COMPLETO)
            ==================================================== -->
       <section id="section-inventario" class="content-section">
         <div class="grid-2col-wide">
@@ -609,7 +772,7 @@
       </section>
 
       <!-- ====================================================
-           4. SECCIÓN: CLIENTES & HOTELES (CON CRUD COMPLETO)
+           6. SECCIÓN: CLIENTES & HOTELES (CRUD COMPLETO)
            ==================================================== -->
       <section id="section-clientes" class="content-section">
         <div class="card">
@@ -641,52 +804,42 @@
       </section>
 
       <!-- ====================================================
-           5. SECCIÓN: CONFIGURACIÓN (EXACT MATCH SCREENSHOT)
+           7. SECCIÓN: CONFIGURACIÓN (CON DATOS DE LA TIENDA)
            ==================================================== -->
       <section id="section-configuracion" class="content-section">
         
         <div class="settings-page-header">
           <h1 class="settings-main-title">Configuración</h1>
-          <p class="settings-main-subtitle">Administración de cuenta, espacio de trabajo, seguridad y preferencias</p>
+          <p class="settings-main-subtitle">Administración de la tienda, datos fiscales, perfil y preferencias</p>
         </div>
 
         <div class="settings-layout-exact">
           
           <!-- LADO IZQUIERDO: MENÚ DE PESTAÑAS -->
           <div class="settings-tabs-sidebar">
-            <button class="settings-tab-btn active" onclick="switchSettingsTab('perfil', this)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              <span>Perfil</span>
+            <button class="settings-tab-btn active" onclick="switchSettingsTab('tienda', this)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              <span>Datos de la Tienda</span>
             </button>
 
-            <button class="settings-tab-btn" onclick="switchSettingsTab('workspace', this)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-              <span>Espacio de Trabajo</span>
+            <button class="settings-tab-btn" onclick="switchSettingsTab('perfil', this)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span>Perfil del Operador</span>
             </button>
 
-            <button class="settings-tab-btn" onclick="switchSettingsTab('security', this)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-              <span>Seguridad y Auth</span>
+            <button class="settings-tab-btn" onclick="switchSettingsTab('seguridad', this)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span>Seguridad</span>
             </button>
 
-            <button class="settings-tab-btn" onclick="switchSettingsTab('notifications', this)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-              <span>Notificaciones</span>
-            </button>
-
-            <button class="settings-tab-btn" onclick="switchSettingsTab('integrations', this)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-              <span>Integraciones</span>
-            </button>
-
-            <button class="settings-tab-btn" onclick="switchSettingsTab('billing', this)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-              <span>Facturación</span>
+            <button class="settings-tab-btn" onclick="switchSettingsTab('impresora', this)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              <span>Impresora Térmica POS</span>
             </button>
 
             <div style="margin-top: 2.5rem;">
               <button class="settings-tab-btn-danger" onclick="logout()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                 <span>Cerrar Sesión</span>
               </button>
             </div>
@@ -695,20 +848,66 @@
           <!-- LADO DERECHO: CONTENIDO DE CONFIGURACIÓN -->
           <div class="settings-content-card">
             
-            <!-- PESTAÑA 1: PERFIL (EXACTO A LA CAPTURA) -->
-            <div id="settings-tab-perfil" class="settings-tab-pane active">
-              
-              <!-- Banner Superior de Perfil -->
+            <!-- PESTAÑA 1: DATOS DE LA TIENDA (REQUERIDO) -->
+            <div id="settings-tab-tienda" class="settings-tab-pane active">
+              <h4 class="settings-section-subtitle" style="margin-top: 0;">Configuración General de la Tienda / Negocio</h4>
+              <p class="text-muted" style="margin-bottom: 1.5rem;">Estos datos aparecen en las facturas y tickets térmicos entregados a los clientes.</p>
+
+              <form onsubmit="saveBusinessConfig(event)">
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                  <label>Nombre de la Tienda / Razón Social *</label>
+                  <input type="text" id="cfgBusinessName" class="form-input" value="SyncOps Laundry &amp; Tailoring Suite" required />
+                </div>
+
+                <div class="form-row-2" style="margin-bottom: 1.25rem;">
+                  <div class="form-group">
+                    <label>RNC / Identificación Fiscal *</label>
+                    <input type="text" id="cfgRnc" class="form-input font-mono" value="131-89745-1" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Número de Teléfono *</label>
+                    <input type="text" id="cfgPhone" class="form-input font-mono" value="(809) 555-7962" required />
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                  <label>Dirección Física de la Tienda *</label>
+                  <input type="text" id="cfgAddress" class="form-input" value="Av. Winston Churchill #102, Santo Domingo" required />
+                </div>
+
+                <div class="form-row-2" style="margin-bottom: 1.25rem;">
+                  <div class="form-group">
+                    <label>Correo Electrónico de Contacto</label>
+                    <input type="email" id="cfgStoreEmail" class="form-input" value="contacto@syncopslaundry.do" />
+                  </div>
+                  <div class="form-group">
+                    <label>Moneda de Facturación</label>
+                    <input type="text" class="form-input font-mono" value="DOP (RD$)" disabled style="background: var(--bg-hover);" />
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                  <label>Mensaje de Pie de Factura / Ticket</label>
+                  <textarea id="cfgTicketFooter" class="form-input" rows="2">Prendas no retiradas tras 30 días pasan a disposición legal. ¡Gracias por su preferencia!</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="background: #4F46E5; font-weight: 700; padding: .65rem 1.6rem; border-radius: 8px;">
+                  Guardar Configuración de la Tienda
+                </button>
+              </form>
+            </div>
+
+            <!-- PESTAÑA 2: PERFIL DEL OPERADOR -->
+            <div id="settings-tab-perfil" class="settings-tab-pane" style="display: none;">
               <div class="profile-header-banner">
                 <div class="profile-avatar-large" id="cfgAvatarCircle">LB</div>
                 <div class="profile-header-meta">
-                  <h3 id="cfgDisplayName">Luis Brito</h3>
+                  <h3 id="cfgDisplayName">Luis Bravo</h3>
                   <span id="cfgDisplayEmail">luisb@gmail.com</span>
-                  <button type="button" class="btn-change-photo" onclick="showToast('Foto de perfil actualizada correctamente.', 'success')">Cambiar foto de perfil</button>
                 </div>
               </div>
 
-              <h4 class="settings-section-subtitle">Información Personal</h4>
+              <h4 class="settings-section-subtitle">Información del Operador</h4>
 
               <form onsubmit="saveUserProfileExact(event)">
                 <div class="form-row-2" style="margin-bottom: 1.25rem;">
@@ -718,99 +917,30 @@
                   </div>
                   <div class="form-group">
                     <label>Apellidos</label>
-                    <input type="text" id="cfgLastName" class="form-input" value="Brito" required />
-                  </div>
-                </div>
-
-                <div class="form-row-2" style="margin-bottom: 1.25rem;">
-                  <div class="form-group">
-                    <label>Correo Electrónico</label>
-                    <input type="email" id="cfgUserEmailExact" class="form-input" value="luisb@gmail.com" required />
-                  </div>
-                  <div class="form-group">
-                    <label>Cargo</label>
-                    <input type="text" id="cfgJobTitle" class="form-input" value="Ingeniero de Software (Google)" />
+                    <input type="text" id="cfgLastName" class="form-input" value="Bravo" required />
                   </div>
                 </div>
 
                 <div class="form-row-2" style="margin-bottom: 1.5rem;">
                   <div class="form-group">
-                    <label>Zona Horaria</label>
-                    <select id="cfgTimezone" class="form-input">
-                      <option selected>UTC-4 (Caracas / La Paz / Santo Domingo)</option>
-                      <option>UTC-5 (Bogotá / Lima / Quito)</option>
-                      <option>UTC-6 (Ciudad de México)</option>
-                      <option>UTC-3 (Buenos Aires / Santiago)</option>
-                    </select>
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="cfgUserEmailExact" class="form-input" value="luisb@gmail.com" required />
                   </div>
                   <div class="form-group">
-                    <label>Idioma de la Interfaz</label>
-                    <select id="cfgLanguage" class="form-input">
-                      <option selected>Español</option>
-                      <option>English (US)</option>
-                      <option>Português</option>
-                    </select>
+                    <label>Rol / Cargo</label>
+                    <input type="text" id="cfgJobTitle" class="form-input" value="Administrador General" />
                   </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary" style="background: #4F46E5; font-weight: 700; padding: .65rem 1.6rem; border-radius: 8px;">
-                  Guardar Cambios
+                  Guardar Cambios de Perfil
                 </button>
               </form>
             </div>
 
-            <!-- PESTAÑA 2: ESPACIO DE TRABAJO (NEGOCIO & TICKET) -->
-            <div id="settings-tab-workspace" class="settings-tab-pane" style="display: none;">
-              <h4 class="settings-section-subtitle" style="margin-top: 0;">Datos de la Empresa &amp; Ticket Térmico</h4>
-              
-              <div class="form-group" style="margin-bottom: 1.25rem;">
-                <label>Nombre Comercial / Razón Social</label>
-                <input type="text" id="cfgBusinessName" class="form-input" value="SyncOps Laundry &amp; Tailoring Suite" />
-              </div>
-
-              <div class="form-row-2" style="margin-bottom: 1.25rem;">
-                <div class="form-group">
-                  <label>RNC / Identificación Fiscal</label>
-                  <input type="text" id="cfgRnc" class="form-input font-mono" value="131-89745-1" />
-                </div>
-                <div class="form-group">
-                  <label>Teléfono de Contacto</label>
-                  <input type="text" id="cfgPhone" class="form-input" value="(809) 555-7962" />
-                </div>
-              </div>
-
-              <div class="form-group" style="margin-bottom: 1.25rem;">
-                <label>Dirección Física</label>
-                <input type="text" id="cfgAddress" class="form-input" value="Av. Winston Churchill #102, Santo Domingo" />
-              </div>
-
-              <div class="form-row-2" style="margin-bottom: 1.25rem;">
-                <div class="form-group">
-                  <label>Ancho de Impresora POS</label>
-                  <select id="cfgPrinterWidth" class="form-input">
-                    <option value="80mm">80 mm (Estándar Térmico ESC/POS)</option>
-                    <option value="58mm">58 mm (Compacto)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Moneda Principal</label>
-                  <input type="text" class="form-input font-mono" value="DOP (RD$)" disabled style="background: var(--bg-hover);" />
-                </div>
-              </div>
-
-              <div class="form-group" style="margin-bottom: 1.5rem;">
-                <label>Mensaje de Pie de Ticket</label>
-                <textarea id="cfgTicketFooter" class="form-input" rows="2">Prendas no retiradas tras 30 días pasan a disposición legal. ¡Gracias por su preferencia!</textarea>
-              </div>
-
-              <button type="button" class="btn btn-primary" onclick="saveBusinessConfig()" style="background: #4F46E5; font-weight: 700; padding: .65rem 1.6rem; border-radius: 8px;">
-                Guardar Configuración de Empresa
-              </button>
-            </div>
-
-            <!-- PESTAÑA 3: SEGURIDAD Y AUTH -->
-            <div id="settings-tab-security" class="settings-tab-pane" style="display: none;">
-              <h4 class="settings-section-subtitle" style="margin-top: 0;">Seguridad de la Cuenta</h4>
+            <!-- PESTAÑA 3: SEGURIDAD -->
+            <div id="settings-tab-seguridad" class="settings-tab-pane" style="display: none;">
+              <h4 class="settings-section-subtitle" style="margin-top: 0;">Seguridad y Contraseña</h4>
               
               <div class="form-group" style="margin-bottom: 1.25rem;">
                 <label>Contraseña Actual</label>
@@ -828,80 +958,26 @@
                 </div>
               </div>
 
-              <div style="background: var(--bg-hover); border-radius: var(--r-md); padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                  <strong>Autenticación en Dos Pasos (2FA)</strong>
-                  <div style="font-size: .78rem; color: var(--text-muted);">Protege tu terminal con Google Authenticator</div>
-                </div>
-                <span class="badge-pill bg-emerald">Activado</span>
-              </div>
-
-              <button type="button" class="btn btn-primary" onclick="showToast('Contraseña y seguridad actualizadas.', 'success')" style="background: #4F46E5; font-weight: 700; padding: .65rem 1.6rem; border-radius: 8px;">
-                Actualizar Seguridad
+              <button type="button" class="btn btn-primary" onclick="showToast('Contraseña actualizada con éxito.', 'success')" style="background: #4F46E5; font-weight: 700; padding: .65rem 1.6rem; border-radius: 8px;">
+                Actualizar Contraseña
               </button>
             </div>
 
-            <!-- PESTAÑA 4: NOTIFICACIONES -->
-            <div id="settings-tab-notifications" class="settings-tab-pane" style="display: none;">
-              <h4 class="settings-section-subtitle" style="margin-top: 0;">Preferencias de Notificaciones</h4>
+            <!-- PESTAÑA 4: IMPRESORA POS -->
+            <div id="settings-tab-impresora" class="settings-tab-pane" style="display: none;">
+              <h4 class="settings-section-subtitle" style="margin-top: 0;">Parámetros de Impresora Térmica</h4>
               
-              <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
-                <label class="checkbox-label">
-                  <input type="checkbox" checked />
-                  <div>
-                    <strong>Alertas de Insumos Críticos</strong>
-                    <div style="font-size: .78rem; color: var(--text-muted);">Recibir avisos cuando el detergente o ganchos alcancen el stock mínimo.</div>
-                  </div>
-                </label>
-
-                <label class="checkbox-label">
-                  <input type="checkbox" checked />
-                  <div>
-                    <strong>Avisos de Pedidos Listos</strong>
-                    <div style="font-size: .78rem; color: var(--text-muted);">Notificar al mostrador cuando una orden esté lista para entrega.</div>
-                  </div>
-                </label>
+              <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label>Ancho del Papel Térmico</label>
+                <select id="cfgPrinterWidth" class="form-input">
+                  <option value="80mm">80 mm (Estándar Térmico ESC/POS)</option>
+                  <option value="58mm">58 mm (Compacto)</option>
+                </select>
               </div>
 
-              <button type="button" class="btn btn-primary" onclick="showToast('Preferencias de notificaciones guardadas.', 'success')" style="background: #4F46E5; font-weight: 700; padding: .65rem 1.6rem; border-radius: 8px;">
-                Guardar Notificaciones
+              <button type="button" class="btn btn-outline" onclick="runQaTest('ticket')" style="margin-top: .5rem;">
+                Emitir Ticket de Prueba
               </button>
-            </div>
-
-            <!-- PESTAÑA 5: INTEGRACIONES -->
-            <div id="settings-tab-integrations" class="settings-tab-pane" style="display: none;">
-              <h4 class="settings-section-subtitle" style="margin-top: 0;">Integraciones y Hardware Conectado</h4>
-              
-              <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
-                <div style="border: 1px solid var(--border); border-radius: var(--r-md); padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
-                  <div>
-                    <strong>Impresora Térmica POS ESC/POS</strong>
-                    <div style="font-size: .78rem; color: var(--text-muted);">Conexión directa USB / Red para impresión rápida de tickets.</div>
-                  </div>
-                  <span class="badge-pill bg-emerald">Conectada</span>
-                </div>
-
-                <div style="border: 1px solid var(--border); border-radius: var(--r-md); padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
-                  <div>
-                    <strong>Base de Datos SQLite WAL</strong>
-                    <div style="font-size: .78rem; color: var(--text-muted);">Motor de persistencia local y sincronización en la nube.</div>
-                  </div>
-                  <span class="badge-pill bg-blue">Sincronizado</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- PESTAÑA 6: FACTURACIÓN -->
-            <div id="settings-tab-billing" class="settings-tab-pane" style="display: none;">
-              <h4 class="settings-section-subtitle" style="margin-top: 0;">Plan y Facturación</h4>
-              
-              <div style="background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: var(--r-md); padding: 1.25rem; margin-bottom: 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem;">
-                  <strong style="color: #4338CA; font-size: 1.1rem;">SyncOps PRO Suite</strong>
-                  <span class="badge-pill bg-emerald">Activo</span>
-                </div>
-                <p style="color: #4B5563; font-size: .84rem; margin: 0;">Terminal de Lavandería, Sastrería y Cuentas Corporativas ilimitadas.</p>
-              </div>
             </div>
 
           </div>
@@ -911,7 +987,7 @@
       </section>
 
       <!-- ====================================================
-           6. SECCIÓN: PREGUNTAS FRECUENTES (FAQ)
+           8. SECCIÓN: PREGUNTAS FRECUENTES (FAQ)
            ==================================================== -->
       <section id="section-faq" class="content-section">
         <div class="card" style="max-width: 900px; margin: 0 auto;">
@@ -930,7 +1006,7 @@
                 <span class="faq-toggle">+</span>
               </button>
               <div class="faq-answer">
-                Al seleccionar el servicio "Sastrería / Arreglo" en el Punto de Venta (POS), se despliega automáticamente el cajón de especificaciones donde se indica el tipo de arreglo (ej. ruedo, cambio de zipper, entalle) y las medidas en centímetros o pulgadas. Estos datos se imprimen directamente en el ticket térmico con código de barras.
+                Al seleccionar el servicio "Sastrería" en el Punto de Venta (POS), se despliega automáticamente el cajón de especificaciones donde se indica el tipo de arreglo (ej. ruedo, cambio de zipper, entalle) y las medidas en centímetros o pulgadas. Estos datos se imprimen directamente en el ticket térmico con código de barras.
               </div>
             </div>
 
@@ -948,7 +1024,7 @@
       </section>
 
       <!-- ====================================================
-           7. SECCIÓN: AYUDA & DIAGNÓSTICO QA
+           9. SECCIÓN: AYUDA & DIAGNÓSTICO QA
            ==================================================== -->
       <section id="section-ayuda" class="content-section">
         <div class="grid-2col">
@@ -1025,8 +1101,83 @@
   </div>
 
   <!-- ==============================================
-       MODAL 1: REGISTRAR / EDITAR CLIENTE (CRUD)
+       MODAL: REPORTE FINANCIERO IMPRIMIBLE / PDF
        ============================================== -->
+  <div class="modal-overlay" id="reportPdfModal">
+    <div class="modal-card modal-lg" style="max-width: 850px;">
+      <div class="modal-header">
+        <h3>Reporte Oficial de Ingresos &amp; Facturación</h3>
+        <button class="btn-close" onclick="closeReportPdfModal()">✕</button>
+      </div>
+      <div class="modal-body" id="reportPdfPrintArea" style="padding: 2rem;">
+        <div class="pdf-report-sheet">
+          <div class="pdf-report-header">
+            <div>
+              <h2 id="pdfStoreName" style="color: #1E3A8A; font-size: 1.35rem; font-weight: 900; margin: 0;">SYNCOPS LAUNDRY &amp; TAILORING SUITE</h2>
+              <p id="pdfStoreMeta" style="color: #64748B; font-size: .82rem; margin: .25rem 0;">Av. Winston Churchill #102 • Tel: (809) 555-7962 • RNC: 131-89745-1</p>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge-pill bg-blue" style="font-size: .75rem;">REPORTE FINANCIERO</span>
+              <div id="pdfGeneratedDate" style="font-size: .75rem; color: #64748B; margin-top: .35rem;">Fecha: 21/08/2026</div>
+            </div>
+          </div>
+
+          <div class="pdf-summary-grid">
+            <div class="pdf-summary-box">
+              <span>TOTAL FACTURADO</span>
+              <strong id="pdfKpiFacturado" class="font-mono">RD$0.00</strong>
+            </div>
+            <div class="pdf-summary-box">
+              <span>TOTAL RECAUDADO</span>
+              <strong id="pdfKpiCobrado" class="font-mono text-emerald">RD$0.00</strong>
+            </div>
+            <div class="pdf-summary-box">
+              <span>SALDOS PENDIENTES</span>
+              <strong id="pdfKpiPendiente" class="font-mono text-rose">RD$0.00</strong>
+            </div>
+            <div class="pdf-summary-box">
+              <span>CANT. FACTURAS</span>
+              <strong id="pdfKpiTotalDocs" class="font-mono">0</strong>
+            </div>
+          </div>
+
+          <h4 style="font-size: .92rem; font-weight: 800; color: #1E293B; margin: 1.5rem 0 .75rem 0;">Desglose de Facturas Emitidas:</h4>
+          
+          <table class="pdf-table">
+            <thead>
+              <tr>
+                <th>Nº FACTURA</th>
+                <th>CLIENTE</th>
+                <th>FECHA</th>
+                <th style="text-align: right;">TOTAL</th>
+                <th style="text-align: right;">COBRADO</th>
+                <th style="text-align: right;">PENDIENTE</th>
+                <th>ESTADO</th>
+              </tr>
+            </thead>
+            <tbody id="pdfTableBody"></tbody>
+          </table>
+
+          <div class="pdf-footer-signatures">
+            <div class="pdf-sig-line">
+              <div class="sig-border"></div>
+              <span>Elaborado por: <strong id="pdfSignOperator">Luis Bravo</strong></span>
+            </div>
+            <div class="pdf-sig-line">
+              <div class="sig-border"></div>
+              <span>Firma de Auditoría / Gerencia</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeReportPdfModal()">Cerrar</button>
+        <button class="btn btn-primary" onclick="printFinancialReportDocument()">Imprimir / Guardar como PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: REGISTRAR / EDITAR CLIENTE (CRUD) -->
   <div class="modal-overlay" id="clientModal">
     <div class="modal-card">
       <div class="modal-header">
@@ -1068,9 +1219,7 @@
     </div>
   </div>
 
-  <!-- ==============================================
-       MODAL 2: REGISTRAR / EDITAR INSUMO (CRUD)
-       ============================================== -->
+  <!-- MODAL: REGISTRAR / EDITAR INSUMO (CRUD) -->
   <div class="modal-overlay" id="insumoModal">
     <div class="modal-card">
       <div class="modal-header">
@@ -1136,13 +1285,11 @@
     </div>
   </div>
 
-  <!-- ==============================================
-       MODAL 3: COBRAR SALDO PENDIENTE DE ORDEN (CRUD)
-       ============================================== -->
+  <!-- MODAL: COBRAR SALDO PENDIENTE DE FACTURA (CRUD) -->
   <div class="modal-overlay" id="payOrderModal">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>Cobrar Saldo de Orden</h3>
+        <h3>Cobrar Saldo de Factura</h3>
         <button class="btn-close" onclick="closePayOrderModal()">✕</button>
       </div>
       <form onsubmit="submitPayOrder(event)" style="padding: 1.5rem;">
@@ -1150,7 +1297,7 @@
         
         <div style="background: var(--bg-hover); padding: 1rem; border-radius: var(--r-md); margin-bottom: 1rem;">
           <div style="display: flex; justify-content: space-between; margin-bottom: .25rem;">
-            <span>Ticket:</span>
+            <span>Nº Factura:</span>
             <strong id="payModalTicket" class="font-mono text-blue">SAS-2608-001</strong>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: .25rem;">
@@ -1164,7 +1311,7 @@
         </div>
 
         <div class="form-group">
-          <label>Monto a Pagar (RD$):</label>
+          <label>Monto a Cobrar (RD$):</label>
           <input type="number" id="payModalAmount" class="form-input font-mono font-bold font-lg" required />
         </div>
 
@@ -1179,7 +1326,7 @@
 
         <div class="modal-footer" style="padding: 1rem 0 0; background: transparent;">
           <button type="button" class="btn btn-outline" onclick="closePayOrderModal()">Cancelar</button>
-          <button type="submit" class="btn btn-success">Registrar Pago &amp; Actualizar</button>
+          <button type="submit" class="btn btn-success">Registrar Cobro &amp; Actualizar</button>
         </div>
       </form>
     </div>
@@ -1196,13 +1343,13 @@
         <div class="thermal-ticket">
           <div class="ticket-header">
             <h4 id="tktHeaderName">SYNCOPS LAUNDRY &amp; SUITE</h4>
-            <p>Lavandería • Sastrería • Suite</p>
+            <p>Lavandería • Sastrería • Autoservicio</p>
             <p id="tktHeaderAddress">Av. Winston Churchill #102, Santo Domingo</p>
             <p id="tktHeaderPhone">Tel: (809) 555-7962 • RNC: 131-89745-1</p>
           </div>
           <div class="ticket-divider">================================</div>
           <div class="ticket-meta">
-            <div><strong>TICKET:</strong> <span id="tktNum">LAV-2026-001</span></div>
+            <div><strong>FACTURA:</strong> <span id="tktNum">LAV-2026-001</span></div>
             <div><strong>FECHA:</strong> <span id="tktDate">21/08/2026 04:30 PM</span></div>
             <div><strong>ENTREGA:</strong> <span id="tktDelivery">22/08/2026 04:30 PM</span></div>
             <div><strong>CLIENTE:</strong> <span id="tktClient">Carlos Manuel Fernández</span></div>
@@ -1220,7 +1367,7 @@
             <div class="tkt-row"><span>SUBTOTAL:</span> <span id="tktSubtotal">RD$0.00</span></div>
             <div class="tkt-row"><span>DESCUENTO:</span> <span id="tktDiscount">RD$0.00</span></div>
             <div class="tkt-row tkt-bold"><span>TOTAL GENERAL:</span> <span id="tktTotal">RD$0.00</span></div>
-            <div class="tkt-row"><span>ABONO PAGADO:</span> <span id="tktPaid">RD$0.00</span></div>
+            <div class="tkt-row"><span>ABONO COBRADO:</span> <span id="tktPaid">RD$0.00</span></div>
             <div class="tkt-row tkt-pending"><span>SALDO PENDIENTE:</span> <span id="tktBalance">RD$0.00</span></div>
           </div>
           <div class="ticket-divider">================================</div>
@@ -1229,7 +1376,7 @@
             <div class="barcode-text" id="tktBarcode">*202608210001*</div>
           </div>
           <div class="ticket-footer">
-            <p id="tktFooterNote">* Conserve este ticket para retirar sus prendas.</p>
+            <p id="tktFooterNote">* Conserve este comprobante para retirar sus prendas.</p>
             <p>¡Gracias por su preferencia!</p>
           </div>
         </div>

@@ -1063,4 +1063,92 @@ body {
   margin: 0 0 1.25rem 0;
 }
 
+/* ================================================================
+   BOTÓN LOGIN MODERNO
+   ================================================================ */
+.exact-btn-signin-modern {
+  width: 100%;
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #1D4ED8 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: .9rem 1.25rem;
+  border-radius: 12px;
+  font-size: .92rem; font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px -4px rgba(29, 78, 216, 0.45);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex; align-items: center; justify-content: center;
+}
+.exact-btn-signin-modern:hover {
+  background: linear-gradient(135deg, #60A5FA 0%, #3B82F6 50%, #2563EB 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px -4px rgba(29, 78, 216, 0.55);
+}
+.exact-btn-signin-modern:active {
+  transform: translateY(0);
+}
+
+/* ================================================================
+   REPORTE FINANCIERO PDF / IMPRIMIBLE
+   ================================================================ */
+.pdf-report-sheet {
+  background: #FFFFFF;
+  color: #0F172A;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+}
+.pdf-report-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  border-bottom: 2px solid #0F172A; padding-bottom: 1.25rem; margin-bottom: 1.5rem;
+}
+.pdf-summary-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+.pdf-summary-box {
+  background: #F8FAFC; border: 1px solid #E2E8F0;
+  border-radius: var(--r-md); padding: .85rem 1rem;
+  display: flex; flex-direction: column; gap: .25rem;
+}
+.pdf-summary-box span {
+  font-size: .68rem; font-weight: 700; color: #64748B; letter-spacing: 0.5px;
+}
+.pdf-summary-box strong {
+  font-size: 1.15rem; font-weight: 800; color: #0F172A;
+}
+
+.pdf-table {
+  width: 100%; border-collapse: collapse; font-size: .82rem; margin-bottom: 2.5rem;
+}
+.pdf-table th {
+  background: #F1F5F9; border-bottom: 2px solid #CBD5E1;
+  padding: .65rem .75rem; text-align: left; font-weight: 700; color: #334155;
+}
+.pdf-table td {
+  padding: .65rem .75rem; border-bottom: 1px solid #E2E8F0; color: #1E293B;
+}
+.pdf-table tr:nth-child(even) td {
+  background: #FAFAFA;
+}
+
+.pdf-footer-signatures {
+  display: flex; justify-content: space-between; margin-top: 3.5rem; padding-top: 1rem;
+}
+.pdf-sig-line {
+  width: 240px; text-align: center; font-size: .78rem; color: #475569;
+}
+.sig-border {
+  border-top: 1px solid #94A3B8; margin-bottom: .5rem; width: 100%;
+}
+
+@media print {
+  body * { visibility: hidden; }
+  #reportPdfPrintArea, #reportPdfPrintArea * { visibility: visible; }
+  #reportPdfPrintArea {
+    position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 1.5cm;
+  }
+}
+
+
 

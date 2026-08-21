@@ -20,7 +20,7 @@
     <div class="split-blue-side"></div>
   </div>
 
-  <!-- Tarjeta Central Exacta -->
+  <!-- Tarjeta Central -->
   <div class="exact-login-container">
     <div class="exact-login-card">
       
@@ -28,18 +28,14 @@
            LADO IZQUIERDO: BRANDING SYNCOPS (BLANCO)
            ============================================== -->
       <div class="exact-brand-side">
-        <!-- Logo 3 Pétalos / Llama Azul -->
+        <!-- Logo Moderno Stylized Sync Flame -->
         <div class="exact-brand-logo">
-          <svg width="68" height="68" viewBox="0 0 100 100" fill="none">
-            <!-- Pétalo Izquierdo -->
-            <path d="M40 70C35 55 32 40 40 28C44 42 45 58 40 70Z" fill="url(#petalBlueGrad)" />
-            <!-- Pétalo Central -->
-            <path d="M50 78C44 58 42 35 50 18C58 35 56 58 50 78Z" fill="url(#petalBlueGrad)" />
-            <!-- Pétalo Derecho -->
-            <path d="M60 70C65 55 68 40 60 28C56 42 55 58 60 70Z" fill="url(#petalBlueGrad)" />
+          <svg width="72" height="72" viewBox="0 0 80 80" fill="none">
+            <rect width="80" height="80" rx="20" fill="#EFF6FF" />
+            <path d="M40 18C34 26 31 35 34 45C36 38 41 33 46 29C44 42 35 52 40 62C45 54 48 45 45 35C43 42 38 47 33 51C35 38 44 28 40 18Z" fill="url(#logoBlueGrad)" />
             <defs>
-              <linearGradient id="petalBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#3B82F6" />
+              <linearGradient id="logoBlueGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+                <stop offset="0%" stop-color="#2563EB" />
                 <stop offset="100%" stop-color="#1D4ED8" />
               </linearGradient>
             </defs>
@@ -47,7 +43,7 @@
         </div>
 
         <h1 class="exact-brand-title">SYNCOPS DASHBOARD</h1>
-        <p class="exact-brand-sub">Plataforma de Ingeniería de Alto Rendimiento</p>
+        <p class="exact-brand-sub">Suite de Gestión para Lavanderías &amp; Sastrería</p>
 
         <div class="exact-brand-divider"></div>
 
@@ -63,62 +59,36 @@
            ============================================== -->
       <div class="exact-form-side">
         <h2 class="exact-form-title" id="authHeaderTitle">Iniciar Sesión</h2>
-        <p class="exact-form-sub" id="authHeaderSub">Ingresa con tus credenciales o cuenta de Google</p>
+        <p class="exact-form-sub" id="authHeaderSub">Ingresa con tus credenciales de operador</p>
 
         <form id="exactLoginForm" onsubmit="handleAuthSubmit(event)">
           
           <div class="exact-field-group" id="groupNameField" style="display: none;">
-            <label class="exact-field-label">Full name</label>
-            <input type="text" id="exactAuthName" class="exact-field-input" placeholder="Luis Bravo Bello" />
+            <label class="exact-field-label">Nombre Completo</label>
+            <input type="text" id="exactAuthName" class="exact-field-input" placeholder="Luis Bravo" />
           </div>
 
           <div class="exact-field-group">
-            <label class="exact-field-label">Your email</label>
-            <input type="email" id="exactAuthEmail" class="exact-field-input" value="alex.rivera@syncops.io" required />
+            <label class="exact-field-label">Correo Electrónico</label>
+            <input type="email" id="exactAuthEmail" class="exact-field-input" value="luisb@gmail.com" required placeholder="tu-email@syncops.io" />
           </div>
 
           <div class="exact-field-group">
-            <label class="exact-field-label">Password</label>
-            <input type="password" id="exactAuthPassword" class="exact-field-input" value="••••••••••••" required />
+            <label class="exact-field-label">Contraseña</label>
+            <input type="password" id="exactAuthPassword" class="exact-field-input" value="••••••••••••" required placeholder="••••••••" />
           </div>
 
           <div class="exact-options-row">
             <label class="exact-checkbox-label">
               <input type="checkbox" id="exactRemember" checked />
-              <span>Remember me</span>
+              <span>Recordar sesión</span>
             </label>
-            <a href="#" class="exact-forgot-link" onclick="showToast('Usa el botón Google o pulsa Sign In para entrar directamente.')">Recover password</a>
+            <a href="#" class="exact-forgot-link" onclick="showToast('Ingresa con tu correo y contraseña habitual.', 'info')">¿Olvidaste tu contraseña?</a>
           </div>
 
-          <button type="submit" class="exact-btn-signin" id="exactBtnSubmit">
-            SIGN IN
+          <button type="submit" class="exact-btn-signin-modern" id="exactBtnSubmit">
+            <span>ENTRAR AL SISTEMA →</span>
           </button>
-
-          <div class="exact-divider-or">
-            <span>O CONTINUAR CON</span>
-          </div>
-
-          <div class="exact-social-row">
-            <button type="button" class="exact-btn-social" onclick="loginDirect('Luis Bravo', 'luis.bravo@syncops.io', 'Administrador')">
-              <svg width="18" height="18" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.97 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-              </svg>
-              <span>Google</span>
-            </button>
-
-            <button type="button" class="exact-btn-social" onclick="loginDirect('Alex Rivera', 'alex.rivera@syncops.io', 'Ingeniero Líder')">
-              <svg width="18" height="18" viewBox="0 0 23 23">
-                <path fill="#f35325" d="M1 1h10v10H1z"/>
-                <path fill="#81bc06" d="M12 1h10v10H12z"/>
-                <path fill="#05a6f0" d="M1 12h10v10H1z"/>
-                <path fill="#ffba08" d="M12 12h10v10H12z"/>
-              </svg>
-              <span>Microsoft</span>
-            </button>
-          </div>
 
         </form>
       </div>
@@ -136,8 +106,8 @@
       isRegisterMode = !isRegisterMode;
       document.getElementById('groupNameField').style.display = isRegisterMode ? 'block' : 'none';
       document.getElementById('authHeaderTitle').innerText = isRegisterMode ? 'Crear Cuenta' : 'Iniciar Sesión';
-      document.getElementById('authHeaderSub').innerText = isRegisterMode ? 'Completa tus datos para unirte al equipo' : 'Ingresa con tus credenciales o cuenta de Google';
-      document.getElementById('exactBtnSubmit').innerText = isRegisterMode ? 'SIGN UP' : 'SIGN IN';
+      document.getElementById('authHeaderSub').innerText = isRegisterMode ? 'Completa tus datos para unirte al equipo' : 'Ingresa con tus credenciales de operador';
+      document.getElementById('exactBtnSubmit').querySelector('span').innerText = isRegisterMode ? 'REGISTRARME Y ENTRAR →' : 'ENTRAR AL SISTEMA →';
       document.getElementById('btnCreateText').innerText = isRegisterMode ? 'Ya tengo cuenta' : 'Crear Nueva Cuenta';
     }
 
@@ -146,7 +116,7 @@
       localStorage.setItem('syncops_user', JSON.stringify(user));
       sessionStorage.setItem('syncops_user', JSON.stringify(user));
       showToast(`Bienvenido, ${name}`, 'success');
-      setTimeout(() => { window.location.href = 'index.html'; }, 400);
+      setTimeout(() => { window.location.href = 'index.html'; }, 350);
     }
 
     function handleAuthSubmit(e) {
