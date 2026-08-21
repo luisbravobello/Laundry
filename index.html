@@ -414,9 +414,9 @@
         <!-- CABECERA FORTEXA ERP POS -->
         <div class="fortexa-page-header">
           <div class="fortexa-header-left">
-            <button class="btn-fortexa-back" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
+            <button type="button" class="btn-fortexa-back" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
-              <span>Volver al Panel</span>
+              <span>Volver al Panel Principal</span>
             </button>
             <div class="fortexa-title-row">
               <h2 class="fortexa-title">Punto de Venta &amp; Emisión POS</h2>
@@ -425,19 +425,43 @@
             <p class="fortexa-subtitle">Terminal POS 01 • Facturación rápida de prendas, máquinas y autoservicio</p>
           </div>
           <div class="fortexa-actions-group">
-            <button class="btn-fortexa-outline" onclick="resetPosOrder()" title="Limpiar orden">
+            <button type="button" class="btn-fortexa-outline" onclick="resetPosOrder()" title="Limpiar orden">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
               <span>Reiniciar Orden</span>
             </button>
-            <button class="btn-fortexa-outline" onclick="openNewClientModal()" title="Registrar nuevo cliente">
+            <button type="button" class="btn-fortexa-outline" onclick="openNewClientModal()" title="Registrar nuevo cliente">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
               <span>+ Registrar Cliente</span>
             </button>
-            <button class="btn-fortexa-outline" onclick="testEpsonT20II()" title="Prueba de impresión TM-T20II">
+            <button type="button" class="btn-fortexa-outline" onclick="testEpsonT20II()" title="Prueba de impresión TM-T20II">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
               <span>Probar TM-T20II</span>
             </button>
           </div>
+        </div>
+
+        <!-- BARRA DE MINI SECCIONES Y FLUJO DE PROCESO (POS) -->
+        <div class="fortexa-subnav-bar">
+          <button type="button" class="fortexa-subnav-btn active" onclick="switchPosSubTab('emision', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span>1. Emisión Rápida &amp; POS</span>
+            <span class="fortexa-subnav-badge">Principal</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="switchPosSubTab('autoservicio', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="20" x="3" y="2" rx="2"/><circle cx="12" cy="13" r="5"/><path d="M12 18a5 5 0 0 0 5-5"/></svg>
+            <span>2. Autoservicio &amp; Máquinas</span>
+            <span class="fortexa-subnav-badge">Fichas</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="switchPosSubTab('sastreria', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+            <span>3. Sastrería &amp; Taller</span>
+            <span class="fortexa-subnav-badge">Medidas</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="switchPosSubTab('entrega', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+            <span>4. Entrega &amp; Retiro de Prendas</span>
+            <span class="fortexa-subnav-badge">Despacho</span>
+          </button>
         </div>
 
         <div class="pos-layout">
@@ -651,29 +675,48 @@
       <section id="section-facturacion" class="content-section">
         <!-- HEADER DE PÁGINA FORTEXA -->
         <div class="fortexa-page-header">
-          <div>
-            <button class="btn-back-link" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-              <span>Volver al Panel</span>
+          <div class="fortexa-header-left">
+            <button type="button" class="btn-fortexa-back" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Volver al Panel Principal</span>
             </button>
-            <div class="fortexa-title-box">
+            <div class="fortexa-title-row">
               <h1 class="fortexa-title">Historial de Facturas &amp; Cobros</h1>
-              <span class="badge-live-pill"><span style="color: #2563EB;">●</span> EN VIVO</span>
+              <span class="badge-live-pill">((•)) EN VIVO</span>
             </div>
-            <p class="fortexa-sub">Monitorea facturas emitidas, saldos pendientes y cobros registrados</p>
+            <p class="fortexa-subtitle">Monitorea facturas emitidas, saldos pendientes y cobros registrados</p>
           </div>
 
           <!-- BOTONES DE ACCIÓN FORTEXA ERP -->
           <div class="fortexa-actions-group">
-            <button class="btn-fortexa-outline" onclick="exportToExcel('facturas')" title="Exportar reporte de facturas">
+            <button type="button" class="btn-fortexa-outline" onclick="exportToExcel('facturas')" title="Exportar reporte de facturas">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
               <span>Exportar Excel</span>
             </button>
-            <button class="btn-fortexa-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
+            <button type="button" class="btn-fortexa-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               <span>+ Nueva Factura POS</span>
             </button>
           </div>
+        </div>
+
+        <!-- BARRA DE MINI SECCIONES Y FLUJO DE FACTURACIÓN (FORTEXA ERP) -->
+        <div class="fortexa-subnav-bar">
+          <button type="button" class="fortexa-subnav-btn active" onclick="setFacturacionFilter('todas', this)" id="tabFilterTodas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            <span>Todas las Facturas</span>
+            <span class="fortexa-subnav-badge" id="countFactTodas">0</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="setFacturacionFilter('pendientes', this)" id="tabFilterPendientes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>Saldos Pendientes (CxC)</span>
+            <span class="fortexa-subnav-badge" id="countFactPendientes" style="color: #E11D48; background: #FFE4E6;">0</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="setFacturacionFilter('pagadas', this)" id="tabFilterPagadas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Facturas Pagadas</span>
+            <span class="fortexa-subnav-badge" id="countFactPagadas" style="color: #059669; background: #ECFDF5;">0</span>
+          </button>
         </div>
 
         <!-- TARJETA DE BÚSQUEDA Y FILTRADO FORTEXA ERP -->
@@ -684,7 +727,7 @@
               <svg class="fortexa-filter-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
               <input type="text" id="facturacionSearchInput" class="fortexa-filter-input" placeholder="Buscar factura, cliente, teléfono..." oninput="filterFacturacion(this.value)" />
             </div>
-            <button class="btn-fortexa-outline" onclick="renderFacturacion()" title="Actualizar">
+            <button type="button" class="btn-fortexa-outline" onclick="renderFacturacion()" title="Actualizar">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               <span>Actualizar</span>
             </button>
@@ -694,16 +737,9 @@
         <div class="card" style="border-radius: var(--r-lg); border: 1px solid var(--border);">
           <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: .85rem;">
             <div>
-              <h3 style="font-size: 1.1rem; font-weight: 800; color: #0F172A;">Registro de Comprobantes Emitidos</h3>
-              <p style="font-size: .78rem; color: var(--text-muted); margin-top: 2px;">Visualiza y edita facturas con el botón de lápiz ✏️</p>
+              <h3 style="font-size: 1.05rem; font-weight: 800; color: #0F172A;">Registro de Comprobantes Emitidos</h3>
+              <p style="font-size: .76rem; color: #64748B; margin-top: 2px;">Visualiza y edita facturas con el botón de lápiz ✏️</p>
             </div>
-          </div>
-
-          <!-- Filtro de Estados de Factura -->
-          <div class="catalog-tabs" style="margin-bottom: 1.25rem;">
-            <button class="catalog-tab active" onclick="setFacturacionFilter('todas', this)" id="tabFilterTodas">Todas (<span id="countFactTodas">0</span>)</button>
-            <button class="catalog-tab" onclick="setFacturacionFilter('pagadas', this)" id="tabFilterPagadas">Pagadas (<span id="countFactPagadas">0</span>)</button>
-            <button class="catalog-tab" onclick="setFacturacionFilter('pendientes', this)" id="tabFilterPendientes">Pendientes de Pago (<span id="countFactPendientes">0</span>)</button>
           </div>
 
           <div class="table-responsive">
@@ -733,29 +769,45 @@
         
         <!-- HEADER DE PÁGINA FORTEXA -->
         <div class="fortexa-page-header">
-          <div>
-            <button class="btn-back-link" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-              <span>Volver al Panel</span>
+          <div class="fortexa-header-left">
+            <button type="button" class="btn-fortexa-back" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Volver al Panel Principal</span>
             </button>
-            <div class="fortexa-title-box">
+            <div class="fortexa-title-row">
               <h1 class="fortexa-title">Reportes Financieros &amp; Ingresos</h1>
-              <span class="badge-live-pill"><span style="color: #2563EB;">●</span> EN VIVO</span>
+              <span class="badge-live-pill">((•)) EN VIVO</span>
             </div>
-            <p class="fortexa-sub">Análisis de facturación, recaudación y exportación formal en PDF y Excel</p>
+            <p class="fortexa-subtitle">Análisis de facturación, recaudación y exportación formal en PDF y Excel</p>
           </div>
 
           <!-- BOTONES DE ACCIÓN FORTEXA ERP -->
           <div class="fortexa-actions-group">
-            <button class="btn-fortexa-outline" onclick="exportFinancialSummaryExcel()" title="Descargar Excel">
+            <button type="button" class="btn-fortexa-outline" onclick="exportFinancialSummaryExcel()" title="Descargar Excel">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
               <span>Descargar Excel (.xlsx)</span>
             </button>
-            <button class="btn-fortexa-primary" onclick="openPrintFinancialReport()" title="Generar Reporte PDF">
+            <button type="button" class="btn-fortexa-primary" onclick="openPrintFinancialReport()" title="Generar Reporte PDF">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               <span>Generar Reporte PDF</span>
             </button>
           </div>
+        </div>
+
+        <!-- BARRA DE MINI SECCIONES DE REPORTES (FORTEXA ERP) -->
+        <div class="fortexa-subnav-bar">
+          <button type="button" class="fortexa-subnav-btn active" onclick="switchReportSubTab('resumen', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+            <span>Resumen Ejecutivo &amp; KPIs</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="switchReportSubTab('caja', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+            <span>Flujo de Caja Diario</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="switchReportSubTab('servicios', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+            <span>Rentabilidad por Servicio</span>
+          </button>
         </div>
 
         <!-- 4 KPI Cards de Finanzas Fortexa -->

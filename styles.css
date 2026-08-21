@@ -325,9 +325,38 @@ body {
 /* Header de Página Fortexa */
 .fortexa-page-header {
   display: flex; justify-content: space-between; align-items: flex-end;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 .fortexa-title-box { display: flex; align-items: center; gap: .75rem; margin-bottom: 2px; }
+.fortexa-title-row { display: flex; align-items: center; gap: .75rem; margin-bottom: 2px; }
+.fortexa-subtitle { font-size: .82rem; color: #64748B; margin: 0; }
+
+.btn-fortexa-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: #64748B;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 3px 0;
+  margin-bottom: 0.35rem;
+  transition: all var(--ease);
+}
+.btn-fortexa-back:hover {
+  color: #1D4ED8;
+  transform: translateX(-3px);
+}
+.btn-fortexa-back svg {
+  color: #64748B;
+  transition: color var(--ease);
+}
+.btn-fortexa-back:hover svg {
+  color: #1D4ED8;
+}
+
 .btn-back-link {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: .8rem; font-weight: 700; color: var(--text-muted);
@@ -335,8 +364,62 @@ body {
 }
 .btn-back-link:hover { color: #2563EB; }
 
-.fortexa-title { font-size: 1.5rem; font-weight: 900; color: #0F172A; letter-spacing: -.02em; margin: 0; }
+.fortexa-title { font-size: 1.45rem; font-weight: 900; color: #0F172A; letter-spacing: -.02em; margin: 0; }
 .fortexa-sub { font-size: .84rem; color: var(--text-muted); margin: 0; }
+
+/* ================================================================
+   SUB-NAVEGACIÓN DE MINI-SECCIONES Y FLUJO DE PROCESO (FORTEXA ERP)
+   ================================================================ */
+.fortexa-subnav-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid #E2E8F0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0;
+  overflow-x: auto;
+}
+
+.fortexa-subnav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.15rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #64748B;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--ease);
+  margin-bottom: -1px;
+}
+
+.fortexa-subnav-btn:hover {
+  color: #0F172A;
+  border-bottom-color: #CBD5E1;
+}
+
+.fortexa-subnav-btn.active {
+  color: #1D4ED8;
+  border-bottom-color: #1D4ED8;
+  font-weight: 800;
+}
+
+.fortexa-subnav-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 99px;
+  background: #F1F5F9;
+  color: #64748B;
+}
+.fortexa-subnav-btn.active .fortexa-subnav-badge {
+  background: #EFF6FF;
+  color: #1D4ED8;
+}
 
 .badge-live-pill {
   display: inline-flex; align-items: center; gap: 4px;

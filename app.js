@@ -563,6 +563,48 @@ function resetPosOrder() {
   showToast('Orden de Punto de Venta reiniciada limpiamente.', 'info');
 }
 
+function switchPosSubTab(tabName, btnEl) {
+  if (btnEl) {
+    btnEl.parentElement.querySelectorAll('.fortexa-subnav-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+  }
+
+  if (tabName === 'emision') {
+    filterCatalog('Todos');
+  } else if (tabName === 'autoservicio') {
+    filterCatalog('Autoservicio');
+  } else if (tabName === 'sastreria') {
+    filterCatalog('Sastrería');
+    toggleTailoringDrawer('Sastrería');
+  } else if (tabName === 'entrega') {
+    switchSection('facturacion', document.querySelectorAll('.nav-item')[2]);
+    showToast('Búsqueda rápida de comprobante para entrega de prendas.', 'info');
+  }
+}
+
+function switchReportSubTab(tabName, btnEl) {
+  if (btnEl) {
+    btnEl.parentElement.querySelectorAll('.fortexa-subnav-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+  }
+
+  const select = document.getElementById('reportPeriodSelect');
+  if (tabName === 'caja' && select) {
+    select.value = 'today';
+    filterReportData();
+    showToast('Filtrando ventas y flujo de caja del día de hoy.', 'info');
+  } else if (tabName === 'servicios') {
+    switchSection('dashboard', document.querySelectorAll('.nav-item')[0]);
+    setTimeout(() => {
+      const el = document.getElementById('categoryDonutChartContainer');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 150);
+  } else if (tabName === 'resumen' && select) {
+    select.value = 'all';
+    filterReportData();
+  }
+}
+
 function toggleTailoringDrawer(service) {
   const drawer = document.getElementById('tailoringDrawer');
   if (drawer) {
