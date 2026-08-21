@@ -1,6 +1,6 @@
 /**
  * SyncOps — Complete Laundry, Tailoring, Billing & Reporting Suite
- * Full Reactive Store & Financial Reporting Engine
+ * Full Reactive Store, Excel Spreadsheet Generator & EPSON TM-T20II Driver
  */
 
 // =====================================================================
@@ -14,32 +14,41 @@ const DEFAULT_STATE = {
     address: 'Av. Winston Churchill #102, Santo Domingo',
     email: 'contacto@syncopslaundry.do',
     printerWidth: '80mm',
+    printerModel: 'epson-t20ii',
+    invoicePrefix: 'FAC',
+    nextInvoiceNumber: 1001,
     ticketFooter: 'Prendas no retiradas tras 30 días pasan a disposición legal. ¡Gracias por su preferencia!'
   },
   catalog: [
-    // 1. Lavandería
-    { id: '1', name: 'Camisa de Vestir / Manga Larga', category: 'Lavandería', service: 'Lavandería', price: 180 },
-    { id: '2', name: 'Pantalón de Vestir / Gabardina', category: 'Lavandería', service: 'Lavandería', price: 200 },
-    { id: '3', name: 'Traje Completo (2 Piezas)', category: 'Lavandería', service: 'Lavandería', price: 450 },
-    { id: '4', name: 'Vestido Casual / Fiesta', category: 'Lavandería', service: 'Lavandería', price: 350 },
-    { id: '5', name: 'Edredón / Acolchado King Size', category: 'Lavandería', service: 'Lavandería', price: 600 },
-    { id: '6', name: 'Juego de Sábanas Completo', category: 'Lavandería', service: 'Lavandería', price: 350 },
+    // 1. Lavandería (Prendas por pieza con precios base editables)
+    { id: '1', name: '👔 Camisa de Vestir / Manga Larga', category: 'Lavandería', service: 'Lavandería', price: 180 },
+    { id: '2', name: '👖 Pantalón de Vestir / Gabardina', category: 'Lavandería', service: 'Lavandería', price: 200 },
+    { id: '3', name: '🤵 Traje Completo (2 Piezas)', category: 'Lavandería', service: 'Lavandería', price: 450 },
+    { id: '4', name: '👗 Vestido Casual / Fiesta', category: 'Lavandería', service: 'Lavandería', price: 350 },
+    { id: '5', name: '🛏️ Edredón / Acolchado King Size', category: 'Lavandería', service: 'Lavandería', price: 600 },
+    { id: '6', name: '🛌 Juego de Sábanas Completo', category: 'Lavandería', service: 'Lavandería', price: 350 },
+    { id: '7', name: '👕 Polo / Camiseta Casual', category: 'Lavandería', service: 'Lavandería', price: 130 },
+    { id: '8', name: '🧥 Chaqueta / Blazer Casual', category: 'Lavandería', service: 'Lavandería', price: 300 },
     
-    // 2. Sastrería
-    { id: '7', name: 'Ruedo / Dobladillo de Pantalón', category: 'Sastrería', service: 'Sastrería', price: 250 },
-    { id: '8', name: 'Ajuste de Cintura / Entalle', category: 'Sastrería', service: 'Sastrería', price: 350 },
-    { id: '9', name: 'Cambio de Zipper / Cremallera', category: 'Sastrería', service: 'Sastrería', price: 300 },
-    { id: '10', name: 'Ajuste de Mangas / Hombros', category: 'Sastrería', service: 'Sastrería', price: 400 },
+    // 2. Sastrería & Taller de Arreglos
+    { id: '9', name: '✂️ Ruedo / Dobladillo de Pantalón', category: 'Sastrería', service: 'Sastrería', price: 250 },
+    { id: '10', name: '📐 Ajuste de Cintura / Entalle', category: 'Sastrería', service: 'Sastrería', price: 350 },
+    { id: '11', name: '🤐 Cambio de Zipper / Cremallera', category: 'Sastrería', service: 'Sastrería', price: 300 },
+    { id: '12', name: '🧵 Ajuste de Mangas / Hombros', category: 'Sastrería', service: 'Sastrería', price: 400 },
+    { id: '13', name: '🪡 Cambio de Forro / Bolsillo', category: 'Sastrería', service: 'Sastrería', price: 450 },
 
-    // 3. Autoservicio & Fichas
-    { id: '11', name: 'Ficha Lavado Estándar (30 Lbs)', category: 'Autoservicio', service: 'Autoservicio', price: 175 },
-    { id: '12', name: 'Ficha Secado Térmico (35 min)', category: 'Autoservicio', service: 'Autoservicio', price: 150 },
-    { id: '13', name: 'Dosis Detergente Industrial Bio-Clean', category: 'Autoservicio', service: 'Autoservicio', price: 60 },
-    { id: '14', name: 'Dosis Suavizante Textil Aroma Fresh', category: 'Autoservicio', service: 'Autoservicio', price: 50 },
+    // 3. Autoservicio & Máquinas en forma de Ítem clickeable
+    { id: '14', name: '🧺 Torre Lavadora Autoservicio (30 Lbs)', category: 'Autoservicio', service: 'Autoservicio', price: 175 },
+    { id: '15', name: '🌀 Torre Secadora Autoservicio (35 min)', category: 'Autoservicio', service: 'Autoservicio', price: 150 },
+    { id: '16', name: '🏭 Lavadora Industrial (75 Lbs)', category: 'Autoservicio', service: 'Autoservicio', price: 450 },
+    { id: '17', name: '🔥 Secadora Industrial (80 Lbs)', category: 'Autoservicio', service: 'Autoservicio', price: 400 },
+    { id: '18', name: '🪙 Ficha / Moneda Estándar', category: 'Autoservicio', service: 'Autoservicio', price: 60 },
+    { id: '19', name: '🧴 Dosis Detergente Bio-Clean', category: 'Autoservicio', service: 'Autoservicio', price: 60 },
+    { id: '20', name: '🌸 Dosis Suavizante Aroma Fresh', category: 'Autoservicio', service: 'Autoservicio', price: 50 },
 
     // 4. Hotelería & Volumen
-    { id: '15', name: 'Lote Toallas Hotel (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 75 },
-    { id: '16', name: 'Lencería & Mantelería (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 85 }
+    { id: '21', name: '🏨 Lote Toallas Hotel (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 75 },
+    { id: '22', name: '🍽️ Lencería & Mantelería (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 85 }
   ],
   clients: [
     { id: 'c1', name: 'Carlos Manuel Fernández', phone: '809-555-1234', isHotel: false, balance: 250, creditLimit: 0, ordersCount: 4 },
@@ -48,32 +57,32 @@ const DEFAULT_STATE = {
   ],
   orders: [
     {
-      id: 'o1', ticket: 'SAS-2608-001', barcode: '202608210001',
+      id: 'o1', ticket: 'FAC-001001', barcode: '202608210001',
       clientId: 'c1', clientName: 'Carlos Manuel Fernández', phone: '809-555-1234',
       status: 'Pendiente', date: '21/08/2026 01:00 PM', delivery: '23/08/2026 05:00 PM',
       subtotal: 550, discount: 0, total: 550, paid: 300, balance: 250, isUrgent: false,
       items: [
-        { name: 'Pantalón de Vestir Azul Marino', service: 'Sastrería', qty: 1, price: 350, alteration: 'Ajuste de Cintura + Ruedo 39 pulg' },
-        { name: 'Camisa de Lino Blanco', service: 'Lavandería', qty: 1, price: 200 }
+        { name: 'Pantalón de Vestir Azul Marino', service: 'Sastrería', qty: 1, price: 350, subtotal: 350, alteration: 'Ajuste de Cintura + Ruedo 39 pulg' },
+        { name: 'Camisa de Lino Blanco', service: 'Lavandería', qty: 1, price: 200, subtotal: 200 }
       ]
     },
     {
-      id: 'o2', ticket: 'HOT-2608-002', barcode: '202608210002',
+      id: 'o2', ticket: 'FAC-001002', barcode: '202608210002',
       clientId: 'c2', clientName: 'Hotel Boutique Colonial Santo Domingo', phone: '809-688-9000',
       status: 'Pendiente', date: '21/08/2026 03:00 PM', delivery: '22/08/2026 02:00 PM',
       subtotal: 4500, discount: 0, total: 4500, paid: 0, balance: 4500, isUrgent: true,
       items: [
-        { name: 'Lote Toallas Grandes Blancas (Hotel)', service: 'HotelVolumen', qty: 60, price: 75 }
+        { name: 'Lote Toallas Grandes Blancas (Hotel)', service: 'HotelVolumen', qty: 60, price: 75, subtotal: 4500 }
       ]
     },
     {
-      id: 'o3', ticket: 'LAV-2608-003', barcode: '202608210003',
+      id: 'o3', ticket: 'FAC-001003', barcode: '202608210003',
       clientId: 'c3', clientName: 'María Elena Almonte', phone: '829-444-7890',
       status: 'Pagada', date: '20/08/2026 04:00 PM', delivery: '21/08/2026 04:00 PM',
       subtotal: 730, discount: 0, total: 730, paid: 730, balance: 0, isUrgent: false,
       items: [
-        { name: 'Vestido de Fiesta Rojo', service: 'Lavandería', qty: 1, price: 550 },
-        { name: 'Camisa Manga Larga Rayas', service: 'Lavandería', qty: 1, price: 180 }
+        { name: 'Vestido de Fiesta Rojo', service: 'Lavandería', qty: 1, price: 550, subtotal: 550 },
+        { name: 'Camisa Manga Larga Rayas', service: 'Lavandería', qty: 1, price: 180, subtotal: 180 }
       ]
     }
   ],
@@ -86,16 +95,21 @@ const DEFAULT_STATE = {
   ],
   cashMovements: [
     { id: 'cm1', time: '08:00 AM', type: 'Apertura', concept: 'Fondo Inicial de Turno', method: 'Efectivo', amount: 3000 },
-    { id: 'cm2', time: '01:05 PM', type: 'Cobro Factura', concept: 'Abono Factura SAS-2608-001', method: 'Efectivo', amount: 300 },
+    { id: 'cm2', time: '01:05 PM', type: 'Cobro Factura', concept: 'Abono Factura FAC-001001', method: 'Efectivo', amount: 300 },
     { id: 'cm3', time: '02:15 PM', type: 'Cobro Factura', concept: 'Pago 3 Fichas Autoservicio', method: 'Efectivo', amount: 525 },
-    { id: 'cm4', time: '04:10 PM', type: 'Cobro Factura', concept: 'Pago Total Factura LAV-2608-003', method: 'Tarjeta', amount: 730 }
+    { id: 'cm4', time: '04:10 PM', type: 'Cobro Factura', concept: 'Pago Total Factura FAC-001003', method: 'Tarjeta', amount: 730 }
   ]
 };
 
 function getState() {
   const saved = localStorage.getItem('syncops_laundry_state');
   if (saved) {
-    try { return JSON.parse(saved); } catch(e) {}
+    try { 
+      const parsed = JSON.parse(saved);
+      if (!parsed.config.invoicePrefix) parsed.config.invoicePrefix = 'FAC';
+      if (!parsed.config.nextInvoiceNumber) parsed.config.nextInvoiceNumber = 1004;
+      return parsed;
+    } catch(e) {}
   }
   localStorage.setItem('syncops_laundry_state', JSON.stringify(DEFAULT_STATE));
   return DEFAULT_STATE;
@@ -103,6 +117,13 @@ function getState() {
 
 function saveState(state) {
   localStorage.setItem('syncops_laundry_state', JSON.stringify(state));
+}
+
+function getFormattedNextInvoice() {
+  const state = getState();
+  const prefix = state.config?.invoicePrefix || 'FAC';
+  const num = state.config?.nextInvoiceNumber || 1001;
+  return `${prefix}-${num.toString().padStart(6, '0')}`;
 }
 
 // =====================================================================
@@ -147,7 +168,7 @@ function switchSection(sectionId, btnElement) {
     'dashboard': 'Panel Principal',
     'pos': 'Punto de Venta / POS',
     'facturacion': 'Facturas & Cobros',
-    'reportes': 'Reportes & Ingresos',
+    'reportes': 'Reportes Financieros',
     'inventario': 'Inventario Insumos',
     'clientes': 'Clientes & Hoteles',
     'configuracion': 'Configuración de la Tienda',
@@ -237,7 +258,7 @@ function renderDashboard() {
 }
 
 // =====================================================================
-// 4. MÓDULO 2: PUNTO DE VENTA (POS CON CATEGORÍAS)
+// 4. MÓDULO 2: PUNTO DE VENTA (POS CON PRECIOS PERSONALIZABLES)
 // =====================================================================
 let currentOrderItems = [];
 let currentPaymentMethod = 'Efectivo';
@@ -249,6 +270,11 @@ function renderPos() {
     select.innerHTML = state.clients.map(c => `
       <option value="${c.id}">${c.name} ${c.isHotel ? '(Hotel / Crédito)' : ''}</option>
     `).join('');
+  }
+
+  const invoiceInput = document.getElementById('posInvoiceNumber');
+  if (invoiceInput) {
+    invoiceInput.value = getFormattedNextInvoice();
   }
 
   const dateInput = document.getElementById('posDeliveryDate');
@@ -273,12 +299,12 @@ function filterCatalog(category, btnElement) {
 
   const items = (category === 'Todos') 
     ? state.catalog 
-    : state.catalog.filter(i => i.category === category || (category === 'Lavandería' && i.category === 'Ropa Formal') || (category === 'Lavandería' && i.category === 'Ropa Casual') || (category === 'Lavandería' && i.category === 'Ropa de Cama'));
+    : state.catalog.filter(i => i.category === category);
 
   grid.innerHTML = items.map(item => `
-    <div class="catalog-item-card" onclick="selectCatalogItem('${item.id}')">
+    <div class="catalog-item-card" onclick="selectCatalogItem('${item.id}')" title="Clic para cargar y ajustar precio">
       <div class="catalog-item-name">${item.name}</div>
-      <div class="catalog-item-price">RD$${item.price}</div>
+      <div class="catalog-item-price">RD$${item.price.toLocaleString('es-DO')}</div>
     </div>
   `).join('');
 }
@@ -288,12 +314,16 @@ function selectCatalogItem(itemId) {
   const item = state.catalog.find(i => i.id === itemId);
   if (!item) return;
 
-  document.getElementById('builderDesc').value = item.name;
+  // Limpiar emojis de la descripción si aplica
+  const cleanName = item.name.replace(/^[^\w\s\u00C0-\u017F]+/i, '').trim();
+
+  document.getElementById('builderDesc').value = cleanName;
   document.getElementById('builderPrice').value = item.price;
   document.getElementById('builderService').value = item.service;
-  document.getElementById('builderItemName').innerText = `Configuración: ${item.name}`;
+  document.getElementById('builderItemName').innerText = `Configuración: ${cleanName}`;
   
   toggleTailoringDrawer(item.service);
+  showToast(`Ítem "${cleanName}" cargado. Puedes personalizar su precio.`, 'info');
 }
 
 function toggleTailoringDrawer(service) {
@@ -307,7 +337,7 @@ function addItemToOrder() {
   const desc = document.getElementById('builderDesc').value.trim();
   const service = document.getElementById('builderService').value;
   const qty = parseFloat(document.getElementById('builderQty').value) || 1;
-  const price = parseFloat(document.getElementById('builderPrice').value) || 0;
+  const price = parseFloat(document.getElementById('builderPrice').value);
   const color = document.getElementById('builderColor').value.trim();
   const defects = document.getElementById('builderDefects').value.trim();
   const alteration = document.getElementById('tailorAlterationType').value.trim();
@@ -315,6 +345,10 @@ function addItemToOrder() {
 
   if (!desc) {
     showToast('Ingresa la descripción del artículo o servicio.', 'error');
+    return;
+  }
+  if (isNaN(price) || price < 0) {
+    showToast('Ingresa un precio unitario válido.', 'error');
     return;
   }
 
@@ -363,7 +397,7 @@ function renderPosItems() {
     <div class="pos-item-row">
       <div class="pos-item-info">
         <strong>${item.name} (${item.qty}x)</strong>
-        <span>Categoría: ${item.service} ${item.color ? '• ' + item.color : ''}</span>
+        <span>Categoría: ${item.service} ${item.color ? '• ' + item.color : ''} • Precio: RD$${item.price}</span>
         ${item.alteration ? `<div style="color: var(--blue-vibrant); font-size: .72rem; font-weight: 700;">Arreglo: ${item.alteration}</div>` : ''}
       </div>
       <div style="display: flex; align-items: center; gap: .75rem;">
@@ -423,10 +457,10 @@ function saveAndPrintOrder() {
   const total = Math.max(0, subtotal + (isUrgent ? subtotal * 0.15 : 0) - discount);
   const balance = Math.max(0, total - paid);
 
-  const prefix = currentOrderItems.some(i => i.service === 'Sastrería') ? 'SAS' : 'LAV';
-  const orderCount = state.orders.length + 1;
-  const ticket = `${prefix}-${new Date().getFullYear().toString().slice(-2)}${(new Date().getMonth()+1).toString().padStart(2,'0')}-${orderCount.toString().padStart(3,'0')}`;
-  const barcode = `${new Date().getFullYear()}${(new Date().getMonth()+1).toString().padStart(2,'0')}${new Date().getDate().toString().padStart(2,'0')}${orderCount.toString().padStart(4,'0')}`;
+  // Usar el número de factura definido por el usuario o de la secuencia
+  const customTicket = document.getElementById('posInvoiceNumber')?.value.trim();
+  const ticket = customTicket || getFormattedNextInvoice();
+  const barcode = `${new Date().getFullYear()}${(new Date().getMonth()+1).toString().padStart(2,'0')}${new Date().getDate().toString().padStart(2,'0')}${Math.floor(1000 + Math.random()*9000)}`;
 
   const newOrder = {
     id: 'ord_' + Date.now(),
@@ -448,6 +482,11 @@ function saveAndPrintOrder() {
   };
 
   state.orders.unshift(newOrder);
+
+  // Incrementar secuencia siguiente de factura
+  if (state.config) {
+    state.config.nextInvoiceNumber = (parseInt(state.config.nextInvoiceNumber) || 1001) + 1;
+  }
 
   if (paid > 0) {
     state.cashMovements.push({
@@ -471,6 +510,8 @@ function saveAndPrintOrder() {
   document.getElementById('posDiscount').value = '0';
   document.getElementById('posAmountPaid').value = '0';
   document.getElementById('posIsUrgent').checked = false;
+  document.getElementById('posInvoiceNumber').value = getFormattedNextInvoice();
+  
   renderPosItems();
   calculatePosTotal();
 
@@ -544,7 +585,7 @@ function renderFacturacion(filter = currentFactFilter, term = '') {
 }
 
 // =====================================================================
-// 6. MÓDULO 4: REPORTES FINANCIEROS & PDF EXPORT
+// 6. MÓDULO 4: REPORTES FINANCIEROS, EXCEL & PDF EXPORT
 // =====================================================================
 function renderReportes() {
   filterReportData();
@@ -633,6 +674,52 @@ function closeReportPdfModal() {
 
 function printFinancialReportDocument() {
   window.print();
+}
+
+// =====================================================================
+// EXPORTACIÓN A EXCEL (.CSV ESTRUCTURADO CON UTF-8 BOM)
+// =====================================================================
+function exportToExcel(target = 'all') {
+  const state = getState();
+  const cfg = state.config || DEFAULT_STATE.config;
+
+  let csvContent = '\uFEFF'; // BOM para que Excel abra UTF-8 con acentos y símbolos directamente
+
+  // Encabezado de la Empresa
+  csvContent += `"${cfg.businessName.replace(/"/g, '""')}"\n`;
+  csvContent += `"RNC: ${cfg.rnc}","Tel: ${cfg.phone}","Dirección: ${cfg.address.replace(/"/g, '""')}"\n`;
+  csvContent += `"Reporte Generado: ${new Date().toLocaleString('es-DO')}"\n\n`;
+
+  // Columnas
+  csvContent += `"Nº Factura","Cliente","Teléfono","Fecha","Entrega Estimada","Subtotal (RD$)","Descuento (RD$)","Total Factura (RD$)","Monto Cobrado (RD$)","Saldo Pendiente (RD$)","Estado de Pago"\n`;
+
+  state.orders.forEach(o => {
+    csvContent += `"${o.ticket}","${o.clientName.replace(/"/g, '""')}","${o.phone}","${o.date}","${o.delivery}",${o.subtotal.toFixed(2)},${o.discount.toFixed(2)},${o.total.toFixed(2)},${o.paid.toFixed(2)},${o.balance.toFixed(2)},"${o.status}"\n`;
+  });
+
+  // Totales
+  const totFact = state.orders.reduce((sum, o) => sum + o.total, 0);
+  const totPaid = state.orders.reduce((sum, o) => sum + o.paid, 0);
+  const totBal = state.orders.reduce((sum, o) => sum + o.balance, 0);
+
+  csvContent += `\n"TOTALES GENERALES:","","","","","","",${totFact.toFixed(2)},${totPaid.toFixed(2)},${totBal.toFixed(2)},""\n`;
+
+  // Descarga del archivo
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `SyncOps_Facturacion_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showToast('Hoja de cálculo Excel (.csv) descargada con éxito.', 'success');
+}
+
+function exportFinancialSummaryExcel() {
+  exportToExcel('all');
 }
 
 // =====================================================================
@@ -1024,7 +1111,7 @@ function selectSearchResult(type, id) {
 }
 
 // =====================================================================
-// 11. CONFIGURACIÓN DE LA TIENDA & PERFIL
+// 11. CONFIGURACIÓN DE LA TIENDA, SECUENCIA Y PERFIL
 // =====================================================================
 function switchSettingsTab(tabName, btnEl) {
   document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
@@ -1065,12 +1152,14 @@ function loadConfigInputs() {
   if (document.getElementById('cfgJobTitle')) document.getElementById('cfgJobTitle').value = user.role || 'Administrador General';
 
   const cfg = state.config || DEFAULT_STATE.config;
+  if (document.getElementById('cfgInvoicePrefix')) document.getElementById('cfgInvoicePrefix').value = cfg.invoicePrefix || 'FAC';
+  if (document.getElementById('cfgNextInvoiceNumber')) document.getElementById('cfgNextInvoiceNumber').value = cfg.nextInvoiceNumber || 1001;
   if (document.getElementById('cfgBusinessName')) document.getElementById('cfgBusinessName').value = cfg.businessName;
   if (document.getElementById('cfgRnc')) document.getElementById('cfgRnc').value = cfg.rnc;
   if (document.getElementById('cfgPhone')) document.getElementById('cfgPhone').value = cfg.phone;
   if (document.getElementById('cfgAddress')) document.getElementById('cfgAddress').value = cfg.address;
   if (document.getElementById('cfgStoreEmail')) document.getElementById('cfgStoreEmail').value = cfg.email || 'contacto@syncopslaundry.do';
-  if (document.getElementById('cfgPrinterWidth')) document.getElementById('cfgPrinterWidth').value = cfg.printerWidth;
+  if (document.getElementById('cfgPrinterWidth')) document.getElementById('cfgPrinterWidth').value = cfg.printerWidth || '80mm';
   if (document.getElementById('cfgTicketFooter')) document.getElementById('cfgTicketFooter').value = cfg.ticketFooter;
 }
 
@@ -1101,6 +1190,10 @@ function saveUserProfileExact(e) {
 function saveBusinessConfig(e) {
   if (e) e.preventDefault();
   const state = getState();
+  
+  const invoicePrefix = document.getElementById('cfgInvoicePrefix').value.trim().toUpperCase() || 'FAC';
+  const nextInvoiceNumber = parseInt(document.getElementById('cfgNextInvoiceNumber').value) || 1001;
+
   state.config = {
     businessName: document.getElementById('cfgBusinessName').value.trim(),
     rnc: document.getElementById('cfgRnc').value.trim(),
@@ -1108,11 +1201,18 @@ function saveBusinessConfig(e) {
     address: document.getElementById('cfgAddress').value.trim(),
     email: document.getElementById('cfgStoreEmail').value.trim(),
     printerWidth: document.getElementById('cfgPrinterWidth').value,
+    printerModel: 'epson-t20ii',
+    invoicePrefix,
+    nextInvoiceNumber,
     ticketFooter: document.getElementById('cfgTicketFooter').value.trim()
   };
 
   saveState(state);
-  showToast('Configuración de la tienda guardada.', 'success');
+  
+  const posInv = document.getElementById('posInvoiceNumber');
+  if (posInv) posInv.value = getFormattedNextInvoice();
+
+  showToast('Configuración y secuencia de facturas guardadas con éxito.', 'success');
 }
 
 // =====================================================================
@@ -1136,11 +1236,7 @@ function filterFaq(term) {
 
 function runQaTest(testType) {
   if (testType === 'ticket') {
-    const state = getState();
-    if (state.orders.length > 0) {
-      displayThermalTicket(state.orders[0]);
-      showToast('Test QA: Ticket generado correctamente.', 'success');
-    }
+    testEpsonT20II();
   } else if (testType === 'calc') {
     showToast('Test QA: Motor de facturación validado (0 errores).', 'success');
   } else if (testType === 'barcode') {
@@ -1163,7 +1259,7 @@ function submitSupportTicket(e) {
 }
 
 // =====================================================================
-// 13. TICKET TÉRMICO IMPRIMIBLE
+// 13. TICKET TÉRMICO IMPRIMIBLE (EPSON TM-T20II)
 // =====================================================================
 function displayThermalTicket(order) {
   const state = getState();
@@ -1183,7 +1279,7 @@ function displayThermalTicket(order) {
   const itemsBody = document.getElementById('tktItemsBody');
   itemsBody.innerHTML = order.items.map(item => `
     <div class="ticket-item-line">
-      <span>${item.qty}x ${item.name.slice(0, 22)}</span>
+      <span>${item.qty}x ${item.name.slice(0, 24)}</span>
       <span>RD$${item.subtotal.toLocaleString('es-DO')}</span>
     </div>
     ${item.alteration ? `<div style="font-size:.7rem; color:#475569; padding-left:.5rem;">* Arreglo: ${item.alteration}</div>` : ''}
@@ -1210,7 +1306,7 @@ function printThermalTicket() {
 function testEpsonT20II() {
   const testOrder = {
     id: 'test_epson',
-    ticket: 'EPSON-TEST-80MM',
+    ticket: 'FAC-TEST-0001',
     barcode: '202608219999',
     clientId: 'c1',
     clientName: 'PRUEBA EPSON TM-T20II',
@@ -1229,9 +1325,8 @@ function testEpsonT20II() {
   };
 
   displayThermalTicket(testOrder);
-  showToast('Comprobante preparado para impresora EPSON TM-T20II. Pulsa "Imprimir Ticket".', 'success');
+  showToast('Comprobante preparado para impresora EPSON TM-T20II. Pulsa "Imprimir en EPSON TM-T20II".', 'success');
 }
-
 
 // =====================================================================
 // 14. SISTEMA DE TOASTS

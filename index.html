@@ -65,7 +65,7 @@
       </button>
 
       <div class="nav-section-label">
-        <span>FINANZAS Y CATÁLOGO</span>
+        <span>FINANZAS Y REPORTES</span>
         <span class="badge-live">En vivo</span>
       </div>
 
@@ -75,7 +75,7 @@
           <line x1="12" y1="20" x2="12" y2="4"></line>
           <line x1="6" y1="20" x2="6" y2="14"></line>
         </svg>
-        <span>Reportes &amp; Ingresos</span>
+        <span>Reportes Financieros</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('inventario', this)">
@@ -208,7 +208,6 @@
         <!-- 4 TARJETAS KPI -->
         <div class="kpi-row">
           
-          <!-- Card 1: Ventas Hoy -->
           <div class="kpi-card-modern">
             <div>
               <div class="kpi-top-box">
@@ -229,7 +228,6 @@
             </div>
           </div>
 
-          <!-- Card 2: Prendas Procesadas -->
           <div class="kpi-card-modern">
             <div>
               <div class="kpi-top-box">
@@ -249,7 +247,6 @@
             </div>
           </div>
 
-          <!-- Card 3: Facturas Pendientes -->
           <div class="kpi-card-modern">
             <div>
               <div class="kpi-top-box">
@@ -267,7 +264,6 @@
             </div>
           </div>
 
-          <!-- Card 4: Clientes Registrados -->
           <div class="kpi-card-modern">
             <div>
               <div class="kpi-top-box">
@@ -365,7 +361,7 @@
               <table class="table" id="tableRecentOrders">
                 <thead>
                   <tr>
-                    <th>TICKET</th>
+                    <th>FACTURA</th>
                     <th>CLIENTE</th>
                     <th>ESTADO PAGO</th>
                     <th style="text-align: right;">TOTAL</th>
@@ -397,22 +393,27 @@
             <div class="card" style="margin-bottom: 1.25rem;">
               <div class="card-header-sm">
                 <span class="step-num">1</span>
-                <h4>Cliente &amp; Compromiso de Entrega</h4>
+                <h4>Cliente &amp; Número de Factura</h4>
                 <button class="btn btn-sm btn-outline" style="margin-left: auto;" onclick="openNewClientModal()">+ Registrar Cliente</button>
               </div>
 
-              <div class="form-row-2">
+              <!-- Definir y Previsualizar Número de Factura -->
+              <div class="form-row-3" style="margin-bottom: .75rem;">
+                <div class="form-group">
+                  <label>Nº de Factura Actual:</label>
+                  <input type="text" id="posInvoiceNumber" class="form-input font-mono font-bold text-blue" style="background: #EFF6FF; border-color: #93C5FD;" placeholder="FAC-001001" />
+                </div>
                 <div class="form-group">
                   <label>Cliente:</label>
                   <select id="posClientSelect" class="form-input" onchange="handleClientSelect(this)"></select>
                 </div>
                 <div class="form-group">
-                  <label>Fecha de Entrega Estimada:</label>
+                  <label>Fecha de Entrega:</label>
                   <input type="datetime-local" id="posDeliveryDate" class="form-input" />
                 </div>
               </div>
 
-              <div class="form-row-between" style="margin-top: .5rem;">
+              <div class="form-row-between" style="margin-top: .25rem;">
                 <label class="checkbox-label text-rose">
                   <input type="checkbox" id="posIsUrgent" onchange="calculatePosTotal()" />
                   <strong>Servicio Urgente / Prioritario (+15% Entrega Inmediata)</strong>
@@ -423,36 +424,39 @@
             <div class="card">
               <div class="card-header-sm">
                 <span class="step-num">2</span>
-                <h4>Catálogo por Categoría (Lavandería, Sastrería, Autoservicio)</h4>
+                <h4>Catálogo de Servicios &amp; Máquinas por Ítem</h4>
               </div>
 
               <!-- Pestañas por Categoría Requerida -->
               <div class="catalog-tabs">
                 <button class="catalog-tab active" onclick="filterCatalog('Todos', this)">Todos</button>
-                <button class="catalog-tab" onclick="filterCatalog('Lavandería', this)">Lavandería</button>
-                <button class="catalog-tab" onclick="filterCatalog('Sastrería', this)">Sastrería</button>
-                <button class="catalog-tab" onclick="filterCatalog('Autoservicio', this)">Autoservicio &amp; Fichas</button>
-                <button class="catalog-tab" onclick="filterCatalog('Hotelería', this)">Hotelería (x Kg)</button>
+                <button class="catalog-tab" onclick="filterCatalog('Lavandería', this)">🧺 Lavandería (Piezas)</button>
+                <button class="catalog-tab" onclick="filterCatalog('Sastrería', this)">✂️ Sastrería</button>
+                <button class="catalog-tab" onclick="filterCatalog('Autoservicio', this)">🪙 Autoservicio &amp; Máquinas</button>
+                <button class="catalog-tab" onclick="filterCatalog('Hotelería', this)">🏨 Hotelería (x Kg)</button>
               </div>
 
+              <!-- Grid de Ítems Clickeables -->
               <div class="catalog-grid" id="posCatalogGrid"></div>
 
+              <!-- Constructor de Ítem con Precio Totalmente Personalizable -->
               <div class="item-builder-box">
                 <div class="item-builder-header">
-                  <span id="builderItemName">Configuración del Artículo / Servicio:</span>
+                  <span id="builderItemName">Configuración del Artículo / Ropa por Pieza:</span>
+                  <span class="badge-pill bg-blue" style="font-size: .72rem;">Precio Editable</span>
                 </div>
 
                 <div class="form-row-3">
                   <div class="form-group">
-                    <label>Descripción / Servicio:</label>
-                    <input type="text" id="builderDesc" class="form-input" placeholder="Ej. Pantalón de Lino" />
+                    <label>Descripción / Prenda:</label>
+                    <input type="text" id="builderDesc" class="form-input" placeholder="Ej. Camisa de Lino / Vestido" />
                   </div>
                   <div class="form-group">
-                    <label>Categoría / Tipo:</label>
+                    <label>Categoría / Servicio:</label>
                     <select id="builderService" class="form-input" onchange="toggleTailoringDrawer(this.value)">
                       <option value="Lavandería">Lavandería (Lavado &amp; Planchado)</option>
                       <option value="Sastrería">Sastrería / Arreglo</option>
-                      <option value="Autoservicio">Autoservicio / Fichas &amp; Monedas</option>
+                      <option value="Autoservicio">Autoservicio / Máquina &amp; Ficha</option>
                       <option value="HotelVolumen">Hotelería / Gran Volumen (x Kg)</option>
                     </select>
                   </div>
@@ -463,17 +467,18 @@
                 </div>
 
                 <div class="form-row-3">
+                  <!-- PRECIO PERSONALIZABLE POR EL USUARIO -->
                   <div class="form-group">
-                    <label>Color / Detalles:</label>
-                    <input type="text" id="builderColor" class="form-input" placeholder="Ej. Azul Marino / Algodón" />
+                    <label style="color: #2563EB; font-weight: 800;">Precio Unitario Personalizado (RD$) *</label>
+                    <input type="number" id="builderPrice" class="form-input font-mono font-bold" value="180" style="border: 2px solid #3B82F6; background: #F8FAFC;" />
                   </div>
                   <div class="form-group">
-                    <label>Observaciones:</label>
-                    <input type="text" id="builderDefects" class="form-input" placeholder="Ej. Mancha en puño, cambio botón" />
+                    <label>Color / Tela:</label>
+                    <input type="text" id="builderColor" class="form-input" placeholder="Ej. Blanco / Algodón" />
                   </div>
                   <div class="form-group">
-                    <label>Precio Unitario (RD$):</label>
-                    <input type="number" id="builderPrice" class="form-input font-mono" value="180" />
+                    <label>Observaciones / Detalles:</label>
+                    <input type="text" id="builderDefects" class="form-input" placeholder="Ej. Mancha en cuello, botón extra" />
                   </div>
                 </div>
 
@@ -535,7 +540,7 @@
                 <div class="form-row-between" style="margin-top: .75rem;">
                   <div class="form-group" style="flex: 1; margin-right: .5rem;">
                     <label>Monto Abonado (RD$):</label>
-                    <input type="number" id="posAmountPaid" class="form-input font-mono font-bold" value="0" oninput="calculatePosTotal()" />
+                    <input type="number" id="posAmountPaid" class="form-input font-mono font-bold value-box" value="0" oninput="calculatePosTotal()" />
                   </div>
                   <button class="btn btn-outline" style="margin-top: 1.35rem;" onclick="payFullOrder()">Pagar Total</button>
                 </div>
@@ -556,18 +561,22 @@
       </section>
 
       <!-- ====================================================
-           3. SECCIÓN: FACTURACIÓN & HISTORIAL DE FACTURAS (NUEVO)
+           3. SECCIÓN: FACTURACIÓN & HISTORIAL DE FACTURAS
            ==================================================== -->
       <section id="section-facturacion" class="content-section">
         <div class="card">
           <div class="card-header">
             <div>
               <h2 class="greeting-title" style="font-size: 1.35rem;">Historial de Facturas &amp; Estado de Cobro</h2>
-              <p class="greeting-sub">Monitorea facturas emitidas, saldos pendientes y pagos recibidos.</p>
+              <p class="greeting-sub">Monitorea facturas emitidas, saldos pendientes y cobros registrados.</p>
             </div>
             
             <div style="display: flex; gap: .75rem; align-items: center;">
-              <input type="text" id="facturacionSearchInput" class="form-input" placeholder="Buscar por Nº Factura o Cliente..." style="width: 280px;" oninput="filterFacturacion(this.value)" />
+              <button class="btn btn-outline" onclick="exportToExcel('facturas')" style="display: flex; align-items: center; gap: .4rem; border-color: #10B981; color: #047857; font-weight: 700;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                <span>📊 Exportar a Excel</span>
+              </button>
+              <input type="text" id="facturacionSearchInput" class="form-input" placeholder="Buscar factura o cliente..." style="width: 250px;" oninput="filterFacturacion(this.value)" />
               <button class="btn btn-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">+ Nueva Factura</button>
             </div>
           </div>
@@ -600,19 +609,24 @@
       </section>
 
       <!-- ====================================================
-           4. SECCIÓN: REPORTES & INGRESOS (CON EXPORTACIÓN PDF)
+           4. SECCIÓN: REPORTES & INGRESOS (CON EXPORTACIÓN PDF Y EXCEL)
            ==================================================== -->
       <section id="section-reportes" class="content-section">
         <div class="page-header-row">
           <div>
             <h1 class="greeting-title">Reportes Financieros &amp; Ingresos</h1>
-            <p class="greeting-sub">Análisis de facturación, recaudación por método de pago y exportación a PDF.</p>
+            <p class="greeting-sub">Análisis de facturación, recaudación y exportación formal en PDF y Excel.</p>
           </div>
 
           <div style="display: flex; gap: .75rem;">
-            <button class="btn btn-primary" onclick="openPrintFinancialReport()" style="display: flex; align-items: center; gap: .5rem;">
+            <button class="btn btn-outline" onclick="exportFinancialSummaryExcel()" style="display: flex; align-items: center; gap: .4rem; border-color: #10B981; color: #047857; font-weight: 700; background: #ECFDF5;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              <span>📊 Descargar Excel (.xlsx / .csv)</span>
+            </button>
+
+            <button class="btn btn-primary" onclick="openPrintFinancialReport()" style="display: flex; align-items: center; gap: .5rem; background: #2563EB;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span>Generar / Imprimir Reporte PDF</span>
+              <span>📄 Generar Reporte PDF</span>
             </button>
           </div>
         </div>
@@ -804,13 +818,13 @@
       </section>
 
       <!-- ====================================================
-           7. SECCIÓN: CONFIGURACIÓN (CON DATOS DE LA TIENDA)
+           7. SECCIÓN: CONFIGURACIÓN (CON SECUENCIA DE FACTURAS)
            ==================================================== -->
       <section id="section-configuracion" class="content-section">
         
         <div class="settings-page-header">
           <h1 class="settings-main-title">Configuración</h1>
-          <p class="settings-main-subtitle">Administración de la tienda, datos fiscales, perfil y preferencias</p>
+          <p class="settings-main-subtitle">Administración de la tienda, secuencia de facturas, datos fiscales y perfil</p>
         </div>
 
         <div class="settings-layout-exact">
@@ -834,7 +848,7 @@
 
             <button class="settings-tab-btn" onclick="switchSettingsTab('impresora', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-              <span>Impresora Térmica POS</span>
+              <span>Impresora EPSON TM-T20II</span>
             </button>
 
             <div style="margin-top: 2.5rem;">
@@ -848,12 +862,28 @@
           <!-- LADO DERECHO: CONTENIDO DE CONFIGURACIÓN -->
           <div class="settings-content-card">
             
-            <!-- PESTAÑA 1: DATOS DE LA TIENDA (REQUERIDO) -->
+            <!-- PESTAÑA 1: DATOS DE LA TIENDA & SECUENCIA DE FACTURA -->
             <div id="settings-tab-tienda" class="settings-tab-pane active">
-              <h4 class="settings-section-subtitle" style="margin-top: 0;">Configuración General de la Tienda / Negocio</h4>
-              <p class="text-muted" style="margin-bottom: 1.5rem;">Estos datos aparecen en las facturas y tickets térmicos entregados a los clientes.</p>
+              <h4 class="settings-section-subtitle" style="margin-top: 0;">Configuración General &amp; Secuencia de Facturación</h4>
+              <p class="text-muted" style="margin-bottom: 1.5rem;">Personaliza el nombre de la tienda, datos fiscales y el número de factura actual.</p>
 
               <form onsubmit="saveBusinessConfig(event)">
+                
+                <!-- Secuencia y Número de Factura -->
+                <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: var(--r-md); padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
+                  <strong style="color: #166534; font-size: .92rem;">Numeración &amp; Secuencia de Facturas</strong>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: .75rem;">
+                    <div>
+                      <label style="font-size: .78rem; font-weight: 700; color: #166534;">Prefijo de Factura (Ej. FAC, LAV, B02):</label>
+                      <input type="text" id="cfgInvoicePrefix" class="form-input font-mono font-bold" value="FAC" required />
+                    </div>
+                    <div>
+                      <label style="font-size: .78rem; font-weight: 700; color: #166534;">Número Siguiente / Actual:</label>
+                      <input type="number" id="cfgNextInvoiceNumber" class="form-input font-mono font-bold" value="1001" required />
+                    </div>
+                  </div>
+                </div>
+
                 <div class="form-group" style="margin-bottom: 1.25rem;">
                   <label>Nombre de la Tienda / Razón Social *</label>
                   <input type="text" id="cfgBusinessName" class="form-input" value="SyncOps Laundry &amp; Tailoring Suite" required />
@@ -892,7 +922,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary" style="background: #4F46E5; font-weight: 700; padding: .65rem 1.6rem; border-radius: 8px;">
-                  Guardar Configuración de la Tienda
+                  Guardar Configuración &amp; Secuencia
                 </button>
               </form>
             </div>
@@ -1043,11 +1073,11 @@
 
             <div class="faq-item">
               <button class="faq-question" onclick="toggleFaq(this)">
-                <span>¿Cómo funciona la facturación por volumen para hoteles?</span>
+                <span>¿Cómo personalizar el precio de lavado y planchado por piezas?</span>
                 <span class="faq-toggle">+</span>
               </button>
               <div class="faq-answer">
-                Las cuentas hoteleras permiten registrar recepciones por peso en kilos (lotes de toallas, sábanas o mantelería). Si la orden no se abona de inmediato, el saldo restante se acumula automáticamente en la cuenta corriente del hotel, respetando su límite de crédito autorizado.
+                Al hacer clic en cualquier prenda o escribir una nueva, el campo "Precio Unitario Personalizado (RD$)" se mantiene completamente editable. Puedes asignar cualquier valor exacto que desees para esa prenda o servicio particular.
               </div>
             </div>
           </div>
@@ -1066,20 +1096,20 @@
             </div>
 
             <div class="qa-metric-row">
-              <span>Motor de Base de Datos:</span>
-              <strong class="font-mono">SQLite 3.45 (Modo WAL Híbrido)</strong>
+              <span>Impresora POS por Defecto:</span>
+              <strong class="font-mono text-blue">EPSON TM-T20II (80mm ESC/POS OK)</strong>
+            </div>
+            <div class="qa-metric-row">
+              <span>Exportación a Excel / CSV:</span>
+              <strong class="font-mono text-emerald">Activa (UTF-8 BOM Compatible)</strong>
+            </div>
+            <div class="qa-metric-row">
+              <span>Motor de Facturación:</span>
+              <strong class="font-mono">Secuencia Reactiva Dinámica</strong>
             </div>
             <div class="qa-metric-row">
               <span>Persistencia Local:</span>
-              <strong class="font-mono text-blue">Activa (localStorage OK)</strong>
-            </div>
-            <div class="qa-metric-row">
-              <span>Latencia de Renderizado:</span>
-              <strong class="font-mono">2.4 ms (Instantáneo)</strong>
-            </div>
-            <div class="qa-metric-row">
-              <span>Servicio de Impresión POS:</span>
-              <strong class="font-mono">ESC/POS Thermal Driver OK</strong>
+              <strong class="font-mono text-blue">localStorage OK</strong>
             </div>
 
             <div class="card-header-sm" style="margin-top: 1.5rem;">
@@ -1087,8 +1117,8 @@
             </div>
 
             <div class="qa-buttons-grid">
-              <button class="btn btn-outline" onclick="runQaTest('ticket')">Test 1: Prueba de Ticket Térmico</button>
-              <button class="btn btn-outline" onclick="runQaTest('calc')">Test 2: Test de Cálculo de Totales</button>
+              <button class="btn btn-outline" onclick="testEpsonT20II()">Test 1: Prueba Impresora EPSON TM-T20II</button>
+              <button class="btn btn-outline" onclick="exportToExcel('facturas')">Test 2: Exportar Facturas a Excel</button>
               <button class="btn btn-outline" onclick="runQaTest('barcode')">Test 3: Validación Código de Barras</button>
               <button class="btn btn-outline" onclick="runQaTest('reset')">Test 4: Restaurar Datos de Demostración</button>
             </div>
@@ -1102,7 +1132,7 @@
             <form onsubmit="submitSupportTicket(event)">
               <div class="form-group">
                 <label>Asunto de la Consulta / Incidencia:</label>
-                <input type="text" id="supportSubject" class="form-input" placeholder="Ej. Duda con sincronización de impresora" required />
+                <input type="text" id="supportSubject" class="form-input" placeholder="Ej. Configuración de impresora EPSON" required />
               </div>
 
               <div class="form-group">
@@ -1135,21 +1165,21 @@
        MODAL: REPORTE FINANCIERO IMPRIMIBLE / PDF
        ============================================== -->
   <div class="modal-overlay" id="reportPdfModal">
-    <div class="modal-card modal-lg" style="max-width: 850px;">
+    <div class="modal-card modal-lg" style="max-width: 880px;">
       <div class="modal-header">
-        <h3>Reporte Oficial de Ingresos &amp; Facturación</h3>
+        <h3>Reporte Financiero Oficial &amp; Exportación PDF</h3>
         <button class="btn-close" onclick="closeReportPdfModal()">✕</button>
       </div>
-      <div class="modal-body" id="reportPdfPrintArea" style="padding: 2rem;">
+      <div class="modal-body" id="reportPdfPrintArea" style="padding: 2.25rem;">
         <div class="pdf-report-sheet">
           <div class="pdf-report-header">
             <div>
-              <h2 id="pdfStoreName" style="color: #1E3A8A; font-size: 1.35rem; font-weight: 900; margin: 0;">SYNCOPS LAUNDRY &amp; TAILORING SUITE</h2>
-              <p id="pdfStoreMeta" style="color: #64748B; font-size: .82rem; margin: .25rem 0;">Av. Winston Churchill #102 • Tel: (809) 555-7962 • RNC: 131-89745-1</p>
+              <h2 id="pdfStoreName" style="color: #1E3A8A; font-size: 1.4rem; font-weight: 900; margin: 0; letter-spacing: -0.5px;">SYNCOPS LAUNDRY &amp; TAILORING SUITE</h2>
+              <p id="pdfStoreMeta" style="color: #64748B; font-size: .84rem; margin: .35rem 0 0;">Av. Winston Churchill #102 • Tel: (809) 555-7962 • RNC: 131-89745-1</p>
             </div>
             <div style="text-align: right;">
-              <span class="badge-pill bg-blue" style="font-size: .75rem;">REPORTE FINANCIERO</span>
-              <div id="pdfGeneratedDate" style="font-size: .75rem; color: #64748B; margin-top: .35rem;">Fecha: 21/08/2026</div>
+              <span class="badge-pill bg-blue" style="font-size: .78rem; font-weight: 800; padding: .35rem .75rem;">REPORTE FINANCIERO OFICIAL</span>
+              <div id="pdfGeneratedDate" style="font-size: .78rem; color: #64748B; margin-top: .45rem;">Fecha de Emisión: 21/08/2026</div>
             </div>
           </div>
 
@@ -1172,7 +1202,7 @@
             </div>
           </div>
 
-          <h4 style="font-size: .92rem; font-weight: 800; color: #1E293B; margin: 1.5rem 0 .75rem 0;">Desglose de Facturas Emitidas:</h4>
+          <h4 style="font-size: .95rem; font-weight: 800; color: #1E293B; margin: 1.75rem 0 .75rem 0;">Desglose Detallado de Facturas Emitidas:</h4>
           
           <table class="pdf-table">
             <thead>
@@ -1203,7 +1233,12 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeReportPdfModal()">Cerrar</button>
-        <button class="btn btn-primary" onclick="printFinancialReportDocument()">Imprimir / Guardar como PDF</button>
+        <button class="btn btn-outline" onclick="exportFinancialSummaryExcel()" style="border-color: #10B981; color: #047857; font-weight: 700;">
+          📊 Descargar Excel
+        </button>
+        <button class="btn btn-primary" onclick="printFinancialReportDocument()" style="background: #2563EB;">
+          📄 Imprimir / Guardar como PDF
+        </button>
       </div>
     </div>
   </div>
@@ -1329,7 +1364,7 @@
         <div style="background: var(--bg-hover); padding: 1rem; border-radius: var(--r-md); margin-bottom: 1rem;">
           <div style="display: flex; justify-content: space-between; margin-bottom: .25rem;">
             <span>Nº Factura:</span>
-            <strong id="payModalTicket" class="font-mono text-blue">SAS-2608-001</strong>
+            <strong id="payModalTicket" class="font-mono text-blue">FAC-001001</strong>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: .25rem;">
             <span>Cliente:</span>
@@ -1363,11 +1398,11 @@
     </div>
   </div>
 
-  <!-- MODAL DE TICKET TÉRMICO IMPRIMIBLE -->
+  <!-- MODAL DE TICKET TÉRMICO IMPRIMIBLE (EPSON TM-T20II) -->
   <div class="modal-overlay" id="ticketModal">
     <div class="modal-card modal-ticket">
       <div class="modal-header">
-        <h3>Comprobante / Ticket Térmico POS</h3>
+        <h3>Comprobante / Ticket Térmico POS (EPSON 80mm)</h3>
         <button class="btn-close" onclick="closeTicketModal()">✕</button>
       </div>
       <div class="modal-body" id="ticketPrintArea">
@@ -1380,7 +1415,7 @@
           </div>
           <div class="ticket-divider">================================</div>
           <div class="ticket-meta">
-            <div><strong>FACTURA:</strong> <span id="tktNum">LAV-2026-001</span></div>
+            <div><strong>FACTURA:</strong> <span id="tktNum">FAC-001001</span></div>
             <div><strong>FECHA:</strong> <span id="tktDate">21/08/2026 04:30 PM</span></div>
             <div><strong>ENTREGA:</strong> <span id="tktDelivery">22/08/2026 04:30 PM</span></div>
             <div><strong>CLIENTE:</strong> <span id="tktClient">Carlos Manuel Fernández</span></div>
@@ -1414,7 +1449,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeTicketModal()">Cerrar</button>
-        <button class="btn btn-primary" onclick="printThermalTicket()">Imprimir Ticket</button>
+        <button class="btn btn-primary" onclick="printThermalTicket()">Imprimir en EPSON TM-T20II</button>
       </div>
     </div>
   </div>
