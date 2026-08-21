@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Acceso al Sistema — SyncOps Laundry Suite</title>
+  <title>Iniciar Sesión — SyncOps Dashboard</title>
   
   <!-- Google Fonts: Inter + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,163 +12,150 @@
   
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="login-body">
-  <!-- Fondo Geométrico Split-Screen -->
-  <div class="bg-split-left"></div>
-  <div class="bg-split-right">
-    <canvas id="particleCanvas"></canvas>
+<body class="login-page-exact">
+
+  <!-- Fondo Geométrico Split Exacto -->
+  <div class="login-bg-split">
+    <div class="split-white-side"></div>
+    <div class="split-blue-side"></div>
   </div>
 
-  <!-- Contenedor Central -->
-  <div class="login-wrapper">
-    <div class="login-card">
+  <!-- Tarjeta Central Exacta -->
+  <div class="exact-login-container">
+    <div class="exact-login-card">
       
-      <!-- Lado Izquierdo: Formulario -->
-      <div class="login-form-side">
-        <!-- Logo de Marca -->
-        <div class="brand-badge-login">
-          <div class="brand-badge-square">SO</div>
-          <div class="brand-text">
-            <span class="brand-title">Sync<span class="brand-highlight">Ops</span></span>
-            <span class="brand-sub">LAUNDRY &amp; SUITE</span>
-          </div>
+      <!-- ==============================================
+           LADO IZQUIERDO: BRANDING SYNCOPS (BLANCO)
+           ============================================== -->
+      <div class="exact-brand-side">
+        <!-- Logo 3 Pétalos / Llama Azul -->
+        <div class="exact-brand-logo">
+          <svg width="68" height="68" viewBox="0 0 100 100" fill="none">
+            <!-- Pétalo Izquierdo -->
+            <path d="M40 70C35 55 32 40 40 28C44 42 45 58 40 70Z" fill="url(#petalBlueGrad)" />
+            <!-- Pétalo Central -->
+            <path d="M50 78C44 58 42 35 50 18C58 35 56 58 50 78Z" fill="url(#petalBlueGrad)" />
+            <!-- Pétalo Derecho -->
+            <path d="M60 70C65 55 68 40 60 28C56 42 55 58 60 70Z" fill="url(#petalBlueGrad)" />
+            <defs>
+              <linearGradient id="petalBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3B82F6" />
+                <stop offset="100%" stop-color="#1D4ED8" />
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
 
-        <div class="login-header">
-          <h1 id="authTitle">Iniciar Sesión</h1>
-          <p id="authSubtitle">Terminal de gestión operativa para lavandería, sastrería y autoservicio.</p>
-        </div>
+        <h1 class="exact-brand-title">SYNCOPS DASHBOARD</h1>
+        <p class="exact-brand-sub">Plataforma de Ingeniería de Alto Rendimiento</p>
 
-        <!-- Selector de Cuenta Rápida -->
-        <div class="quick-login-box">
-          <div class="quick-login-label">ACCESO RÁPIDO DE OPERADOR</div>
-          <div class="google-account-card" onclick="loginDirect('Luis Bravo Bello', 'luisb@gmail.com', 'Administrador')">
-            <div class="google-avatar">LB</div>
-            <div class="google-info">
-              <span class="google-name">Luis Bravo Bello</span>
-              <span class="google-email">luisb@gmail.com • Administrador</span>
-            </div>
-            <span class="badge-role">Principal</span>
-          </div>
-        </div>
+        <div class="exact-brand-divider"></div>
 
-        <div class="divider">
-          <span>o ingresar con credenciales</span>
-        </div>
-
-        <!-- Formulario -->
-        <form id="loginForm" onsubmit="handleAuthSubmit(event)">
-          <div class="form-group" id="nameFieldGroup" style="display: none;">
-            <label>Nombre Completo</label>
-            <input type="text" id="regName" class="form-input" placeholder="Ej. Carlos Almonte" />
-          </div>
-
-          <div class="form-group">
-            <label>Correo Electrónico</label>
-            <input type="email" id="authEmail" class="form-input" placeholder="usuario@syncops.do" required value="luisb@gmail.com" />
-          </div>
-
-          <div class="form-group">
-            <label>Contraseña</label>
-            <input type="password" id="authPassword" class="form-input" placeholder="••••••••" required value="123456" />
-          </div>
-
-          <div class="form-row-between">
-            <label class="checkbox-label">
-              <input type="checkbox" id="rememberMe" checked />
-              <span>Recordar sesión</span>
-            </label>
-            <a href="#" class="link-muted" onclick="showToast('Usa el acceso rápido para ingresar directamente.')">Recuperar contraseña</a>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-block" id="btnSubmit">
-            <span>Acceder al Sistema</span>
-          </button>
-        </form>
-
-        <div class="login-footer">
-          <span id="toggleAuthText">¿No tienes cuenta registrada?</span>
-          <button type="button" class="btn-link" id="btnToggleAuth" onclick="toggleAuthMode()">Crear cuenta</button>
-        </div>
+        <p class="exact-no-account-text">¿Aún no tienes una cuenta de equipo?</p>
+        
+        <button type="button" class="exact-btn-create-account" onclick="toggleAuthMode()">
+          <span id="btnCreateText">Crear Nueva Cuenta</span>
+        </button>
       </div>
 
-      <!-- Lado Derecho: Panel Visual Minimalista -->
-      <div class="login-info-side">
-        <div class="info-content">
-          <div class="pill-chip">
-            <span class="pulse-dot"></span> Terminal Operativa v2.4
-          </div>
+      <!-- ==============================================
+           LADO DERECHO: FORMULARIO INICIAR SESIÓN (AZUL ROYAL)
+           ============================================== -->
+      <div class="exact-form-side">
+        <h2 class="exact-form-title" id="authHeaderTitle">Iniciar Sesión</h2>
+        <p class="exact-form-sub" id="authHeaderSub">Ingresa con tus credenciales o cuenta de Google</p>
+
+        <form id="exactLoginForm" onsubmit="handleAuthSubmit(event)">
           
-          <h2>Control Operativo de Lavandería, Taller &amp; Autoservicio</h2>
-          <p>Plataforma para control de recepción, flujo de confección y arreglos, gestión de torres con monedas y facturación para cuentas corporativas hoteleras.</p>
-
-          <div class="features-list">
-            <div class="feature-item">
-              <div class="feature-bullet">01</div>
-              <div class="feature-text">
-                <strong>Recepción &amp; Taller de Sastrería</strong>
-                <span>Registro de medidas, entalles y emisión de ticket con código de barras.</span>
-              </div>
-            </div>
-
-            <div class="feature-item">
-              <div class="feature-bullet">02</div>
-              <div class="feature-text">
-                <strong>Monitoreo de Torres de Monedas</strong>
-                <span>Supervisión de ciclos de lavado en tiempo real y recaudación de cajetín.</span>
-              </div>
-            </div>
-
-            <div class="feature-item">
-              <div class="feature-bullet">03</div>
-              <div class="feature-text">
-                <strong>Cuentas por Cobrar para Hoteles</strong>
-                <span>Facturación por lotes de mantelería, lencería y crédito corporativo.</span>
-              </div>
-            </div>
+          <div class="exact-field-group" id="groupNameField" style="display: none;">
+            <label class="exact-field-label">Full name</label>
+            <input type="text" id="exactAuthName" class="exact-field-input" placeholder="Luis Bravo Bello" />
           </div>
-        </div>
+
+          <div class="exact-field-group">
+            <label class="exact-field-label">Your email</label>
+            <input type="email" id="exactAuthEmail" class="exact-field-input" value="alex.rivera@syncops.io" required />
+          </div>
+
+          <div class="exact-field-group">
+            <label class="exact-field-label">Password</label>
+            <input type="password" id="exactAuthPassword" class="exact-field-input" value="••••••••••••" required />
+          </div>
+
+          <div class="exact-options-row">
+            <label class="exact-checkbox-label">
+              <input type="checkbox" id="exactRemember" checked />
+              <span>Remember me</span>
+            </label>
+            <a href="#" class="exact-forgot-link" onclick="showToast('Usa el botón Google o pulsa Sign In para entrar directamente.')">Recover password</a>
+          </div>
+
+          <button type="submit" class="exact-btn-signin" id="exactBtnSubmit">
+            SIGN IN
+          </button>
+
+          <div class="exact-divider-or">
+            <span>O CONTINUAR CON</span>
+          </div>
+
+          <div class="exact-social-row">
+            <button type="button" class="exact-btn-social" onclick="loginDirect('Luis Bravo', 'luis.bravo@syncops.io', 'Administrador')">
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.97 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+              </svg>
+              <span>Google</span>
+            </button>
+
+            <button type="button" class="exact-btn-social" onclick="loginDirect('Alex Rivera', 'alex.rivera@syncops.io', 'Ingeniero Líder')">
+              <svg width="18" height="18" viewBox="0 0 23 23">
+                <path fill="#f35325" d="M1 1h10v10H1z"/>
+                <path fill="#81bc06" d="M12 1h10v10H12z"/>
+                <path fill="#05a6f0" d="M1 12h10v10H1z"/>
+                <path fill="#ffba08" d="M12 12h10v10H12z"/>
+              </svg>
+              <span>Microsoft</span>
+            </button>
+          </div>
+
+        </form>
       </div>
 
     </div>
   </div>
 
-  <!-- Toast Container -->
   <div id="toastContainer" class="toast-container"></div>
 
   <script src="app.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (typeof initParticleCanvas === 'function') {
-        initParticleCanvas('particleCanvas');
-      }
-    });
+    let isRegisterMode = false;
 
-    let isSignUp = false;
     function toggleAuthMode() {
-      isSignUp = !isSignUp;
-      document.body.classList.toggle('sign-up-mode', isSignUp);
-      document.getElementById('nameFieldGroup').style.display = isSignUp ? 'block' : 'none';
-      document.getElementById('authTitle').innerText = isSignUp ? 'Crear Cuenta' : 'Iniciar Sesión';
-      document.getElementById('authSubtitle').innerText = isSignUp ? 'Registra un nuevo operador.' : 'Terminal de gestión operativa.';
-      document.getElementById('btnSubmit').querySelector('span').innerText = isSignUp ? 'Registrar y Acceder' : 'Acceder al Sistema';
-      document.getElementById('toggleAuthText').innerText = isSignUp ? '¿Ya tienes una cuenta?' : '¿No tienes cuenta registrada?';
-      document.getElementById('btnToggleAuth').innerText = isSignUp ? 'Iniciar Sesión' : 'Crear cuenta';
+      isRegisterMode = !isRegisterMode;
+      document.getElementById('groupNameField').style.display = isRegisterMode ? 'block' : 'none';
+      document.getElementById('authHeaderTitle').innerText = isRegisterMode ? 'Crear Cuenta' : 'Iniciar Sesión';
+      document.getElementById('authHeaderSub').innerText = isRegisterMode ? 'Completa tus datos para unirte al equipo' : 'Ingresa con tus credenciales o cuenta de Google';
+      document.getElementById('exactBtnSubmit').innerText = isRegisterMode ? 'SIGN UP' : 'SIGN IN';
+      document.getElementById('btnCreateText').innerText = isRegisterMode ? 'Ya tengo cuenta' : 'Crear Nueva Cuenta';
     }
 
     function loginDirect(name, email, role) {
       const user = { name, email, role, avatar: name.split(' ').map(n=>n[0]).join('').slice(0,2) };
       localStorage.setItem('syncops_user', JSON.stringify(user));
       sessionStorage.setItem('syncops_user', JSON.stringify(user));
-      showToast(`Sesión iniciada: ${name}`, 'success');
-      setTimeout(() => { window.location.href = 'index.html'; }, 500);
+      showToast(`Bienvenido, ${name}`, 'success');
+      setTimeout(() => { window.location.href = 'index.html'; }, 400);
     }
 
     function handleAuthSubmit(e) {
       e.preventDefault();
-      const email = document.getElementById('authEmail').value.trim();
-      const name = isSignUp ? document.getElementById('regName').value.trim() : (email.split('@')[0] || 'Operador');
-      loginDirect(name || 'Luis Bravo', email, 'Operador');
+      const email = document.getElementById('exactAuthEmail').value.trim();
+      const name = isRegisterMode 
+        ? (document.getElementById('exactAuthName').value.trim() || 'Luis Bravo')
+        : (email.includes('alex') ? 'Alex Rivera' : 'Luis Bravo');
+      loginDirect(name, email, 'Administrador');
     }
   </script>
 </body>
