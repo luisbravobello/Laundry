@@ -36,28 +36,26 @@ const DEFAULT_STATE = {
     { id: '11', name: 'Cambio de Zipper / Cremallera', category: 'Sastrería', service: 'Sastrería', price: 300 },
     { id: '12', name: 'Ajuste de Mangas / Hombros', category: 'Sastrería', service: 'Sastrería', price: 400 },
 
-    // 3. Máquinas: Servicio Personal vs Autoservicio (Cliente)
-    { id: '13', name: 'Máquina Pequeña — Servicio Completo (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1000 },
-    { id: '14', name: 'Máquina Pequeña — Solo Lavado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 500 },
-    { id: '15', name: 'Máquina Pequeña — Solo Secado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 500 },
-    { id: '16', name: 'Máquina Pequeña — Autoservicio Cliente (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 800 },
-    { id: '17', name: 'Máquina Pequeña — Autoservicio Cliente (Solo Lavado)', category: 'Autoservicio', service: 'Autoservicio', price: 400 },
-    { id: '18', name: 'Máquina Pequeña — Autoservicio Cliente (Solo Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 400 },
+    // 3. 4 Torres (Torres 1, 2, 3, 4) — Servicio Asistido vs Autoservicio
+    { id: '13', name: 'Torre — Servicio Asistido (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1000 },
+    { id: '14', name: 'Torre — Solo Lavado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 500 },
+    { id: '15', name: 'Torre — Solo Secado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 500 },
+    { id: '16', name: 'Torre — Autoservicio Cliente (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 800 },
+    { id: '17', name: 'Torre — Autoservicio Cliente (Solo Lavado)', category: 'Autoservicio', service: 'Autoservicio', price: 400 },
+    { id: '18', name: 'Torre — Autoservicio Cliente (Solo Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 400 },
 
-    { id: '19', name: 'Máquina Grande — Servicio Completo (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1400 },
-    { id: '20', name: 'Máquina Grande — Solo Lavado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 700 },
-    { id: '21', name: 'Máquina Grande — Solo Secado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 700 },
-    { id: '22', name: 'Máquina Grande — Autoservicio Cliente (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1200 },
-    { id: '23', name: 'Máquina Grande — Autoservicio Cliente (Solo Lavado)', category: 'Autoservicio', service: 'Autoservicio', price: 600 },
-    { id: '24', name: 'Máquina Grande — Autoservicio Cliente (Solo Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 600 },
+    // 4. Lavadora y Secadora Industrial
+    { id: '19', name: 'Industrial — Servicio Asistido (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1400 },
+    { id: '20', name: 'Lavadora Industrial — Solo Lavado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 700 },
+    { id: '21', name: 'Secadora Industrial — Solo Secado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 700 },
+    { id: '22', name: 'Industrial — Autoservicio Cliente (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1200 },
+    { id: '23', name: 'Lavadora Industrial — Autoservicio (Solo Lavado)', category: 'Autoservicio', service: 'Autoservicio', price: 600 },
+    { id: '24', name: 'Secadora Industrial — Autoservicio (Solo Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 600 },
 
+    // 5. Insumos & Fichas
     { id: '25', name: 'Ficha / Moneda Estándar', category: 'Autoservicio', service: 'Autoservicio', price: 100 },
     { id: '26', name: 'Dosis Detergente Industrial', category: 'Autoservicio', service: 'Autoservicio', price: 60 },
-    { id: '27', name: 'Dosis Suavizante Textil', category: 'Autoservicio', service: 'Autoservicio', price: 50 },
-
-    // 4. Hotelería & Volumen
-    { id: '28', name: 'Lote Toallas Hotel (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 75 },
-    { id: '29', name: 'Lencería & Mantelería (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 85 }
+    { id: '27', name: 'Dosis Suavizante Textil', category: 'Autoservicio', service: 'Autoservicio', price: 50 }
   ],
   clients: [],
   orders: [],
@@ -72,6 +70,7 @@ function getState() {
       const parsed = JSON.parse(saved);
       if (!parsed.config.invoicePrefix) parsed.config.invoicePrefix = 'FAC';
       if (!parsed.config.nextInvoiceNumber) parsed.config.nextInvoiceNumber = 1001;
+      parsed.catalog = DEFAULT_STATE.catalog;
       return parsed;
     } catch(e) {}
   }
