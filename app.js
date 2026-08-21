@@ -246,6 +246,9 @@ function renderDashboard() {
         <td style="text-align: right;"><strong class="font-mono">RD$${o.total.toLocaleString('es-DO')}</strong><div style="font-size: .72rem; color: ${o.balance > 0 ? '#DC2626' : '#059669'}; font-weight: 700;">${o.balance > 0 ? 'Pend: RD$' + o.balance : 'Pagado'}</div></td>
         <td>
           <div style="display: flex; gap: .35rem;">
+            <button class="btn btn-outline btn-sm" onclick="openEditInvoiceModal('${o.id}')" title="Editar Factura">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            </button>
             ${o.balance > 0 ? `<button class="btn btn-outline btn-sm" onclick="openPayOrderModal('${o.id}')">Cobrar $</button>` : ''}
             <button class="btn btn-outline btn-sm" onclick="displayThermalTicket(getState().orders.find(x=>x.id==='${o.id}'))">Ticket</button>
           </div>
@@ -600,6 +603,9 @@ function renderFacturacion(filter = currentFactFilter, term = '') {
       </td>
       <td>
         <div style="display: flex; gap: .35rem;">
+          <button class="btn btn-outline btn-sm" onclick="openEditInvoiceModal('${o.id}')" title="Editar Factura / Detalles">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+          </button>
           ${o.balance > 0 ? `<button class="btn btn-primary btn-sm" onclick="openPayOrderModal('${o.id}')">Cobrar $</button>` : ''}
           <button class="btn btn-outline btn-sm" onclick="displayThermalTicket(getState().orders.find(x=>x.id==='${o.id}'))">Ticket</button>
         </div>
@@ -1052,6 +1058,75 @@ function submitPayOrder(e) {
   closePayOrderModal();
   showToast(`Cobro de RD$${amount} registrado para ${order.ticket}.`, 'success');
 }
+
+// =====================================================================
+// MODAL: EDITAR FACTURA (LÁPIZ)
+// =====================================================================
+function openEditInvoiceModal(orderId) {
+  const state = getState();
+  const order = state.orders.find(o => o.id === orderId);
+  if (!order) return;
+
+  document.getElementById('editOrderId').value = order.id;
+  document.getElementById('editInvoiceTicket').value = order.ticket;
+  document.getElementById('editInvoiceDate').value = order.date;
+  document.getElementById('editInvoiceClient').value = order.clientName;
+  document.getElementById('editInvoicePhone').value = order.phone || '';
+  document.getElementById('editInvoiceTotal').value = order.total;
+  document.getElementById('editInvoicePaid').value = order.paid;
+  document.getElementById('editInvoiceBalance').value = `RD$${order.balance.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+  document.getElementById('editInvoiceDelivery').value = order.delivery || '';
+
+  document.getElementById('editInvoiceModal').classList.add('active');
+}
+
+function closeEditInvoiceModal() {
+  const modal = document.getElementById('editInvoiceModal');
+  if (modal) modal.classList.remove('active');
+}
+
+function calculateEditInvoiceBalance() {
+  const total = parseFloat(document.getElementById('editInvoiceTotal').value) || 0;
+  const paid = parseFloat(document.getElementById('editInvoicePaid').value) || 0;
+  const bal = Math.max(0, total - paid);
+  document.getElementById('editInvoiceBalance').value = `RD$${bal.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+}
+
+function saveEditInvoice(e) {
+  e.preventDefault();
+  const state = getState();
+  const orderId = document.getElementById('editOrderId').value;
+  const order = state.orders.find(o => o.id === orderId);
+  if (!order) return;
+
+  const ticket = document.getElementById('editInvoiceTicket').value.trim();
+  const date = document.getElementById('editInvoiceDate').value.trim();
+  const clientName = document.getElementById('editInvoiceClient').value.trim();
+  const phone = document.getElementById('editInvoicePhone').value.trim();
+  const total = parseFloat(document.getElementById('editInvoiceTotal').value) || 0;
+  const paid = parseFloat(document.getElementById('editInvoicePaid').value) || 0;
+  const delivery = document.getElementById('editInvoiceDelivery').value.trim();
+  const balance = Math.max(0, total - paid);
+
+  order.ticket = ticket;
+  order.date = date;
+  order.clientName = clientName;
+  order.phone = phone;
+  order.total = total;
+  order.paid = paid;
+  order.balance = balance;
+  order.delivery = delivery;
+  order.status = (balance === 0) ? 'Pagada' : 'Pendiente';
+
+  saveState(state);
+  renderDashboard();
+  renderFacturacion();
+  renderReportes();
+  closeEditInvoiceModal();
+
+  showToast(`Factura ${ticket} editada y actualizada correctamente.`, 'success');
+}
+
 
 // =====================================================================
 // 10. BÚSQUEDA GLOBAL (⌘K)
