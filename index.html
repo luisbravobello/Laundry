@@ -322,24 +322,54 @@
           </div>
         </div>
 
-        <!-- GRÁFICA DE TENDENCIA OPERATIVA (DINÁMICA Y LIMPIA) -->
-        <div class="chart-card">
-          <div class="chart-header">
-            <span class="chart-title">Gráfica de Burndown &amp; Flujo Operativo</span>
-            <div class="chart-legends">
-              <div class="legend-item">
-                <span class="legend-dot-plan"></span>
-                <span>Planificado</span>
-              </div>
-              <div class="legend-item">
-                <span class="legend-dot-real"></span>
-                <span>Real</span>
-              </div>
+        <!-- 1. TARJETA FORTEXA: VENTAS MENSUALES (BAR CHART) -->
+        <div class="fortexa-analytics-card">
+          <div class="fortexa-chart-header">
+            <div>
+              <h3 class="fortexa-chart-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                <span>Ventas Mensuales</span>
+              </h3>
+              <p class="fortexa-chart-sub">Facturación e-CF &amp; Servicios • Últimos 12 meses</p>
+            </div>
+            <div class="fortexa-period-tabs">
+              <button type="button" class="fortexa-period-tab" onclick="changeSalesPeriod('3M', this)">3M</button>
+              <button type="button" class="fortexa-period-tab" onclick="changeSalesPeriod('6M', this)">6M</button>
+              <button type="button" class="fortexa-period-tab active" onclick="changeSalesPeriod('12M', this)">12M</button>
+              <button type="button" class="fortexa-period-tab" onclick="changeSalesPeriod('Año', this)">Año</button>
             </div>
           </div>
 
-          <div class="chart-svg-container" id="dashboardChartContainer">
-            <!-- Renderizado dinámicamente por JavaScript -->
+          <div class="fortexa-bar-chart-wrapper" id="monthlySalesChartContainer">
+            <!-- Renderizado dinámicamente -->
+          </div>
+        </div>
+
+        <!-- 2. TARJETA FORTEXA: INGRESOS & SERVICIOS POR CATEGORÍA (DONUT CHART) -->
+        <div class="fortexa-analytics-card">
+          <div class="fortexa-chart-header">
+            <div>
+              <h3 class="fortexa-chart-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9333EA" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                <span>Ingresos &amp; Facturación por Categoría</span>
+              </h3>
+              <p class="fortexa-chart-sub">Distribución porcentual de servicios prestados</p>
+            </div>
+            <div class="fortexa-period-tabs">
+              <button type="button" class="fortexa-period-tab" onclick="changeCategoryPeriod('3M', this)">3M</button>
+              <button type="button" class="fortexa-period-tab" onclick="changeCategoryPeriod('6M', this)">6M</button>
+              <button type="button" class="fortexa-period-tab active" onclick="changeCategoryPeriod('12M', this)">12M</button>
+              <button type="button" class="fortexa-period-tab" onclick="changeCategoryPeriod('Año', this)">Año</button>
+            </div>
+          </div>
+
+          <div class="fortexa-donut-layout">
+            <div class="fortexa-donut-svg-box" id="categoryDonutChartContainer">
+              <!-- Renderizado SVG circular dinámico -->
+            </div>
+            <div class="fortexa-category-list" id="categoryBreakdownList">
+              <!-- Lista de categorías renderizada dinámicamente -->
+            </div>
           </div>
         </div>
 

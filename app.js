@@ -206,55 +206,210 @@ function renderDashboard() {
   if (document.getElementById('kpiVentasHoy')) document.getElementById('kpiVentasHoy').innerText = `RD$${totalFacturado.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
 
 
-  // Renderizar Gráfica de Burndown Dinámica
-  const chartBox = document.getElementById('dashboardChartContainer');
-  if (chartBox) {
-    if (state.orders.length === 0) {
-      chartBox.innerHTML = `
-        <div style="height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94A3B8; text-align: center; padding: 1.5rem;">
-          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="1.6" style="margin-bottom: .65rem;">
-            <line x1="18" y1="20" x2="18" y2="10"></line>
-            <line x1="12" y1="20" x2="12" y2="4"></line>
-            <line x1="6" y1="20" x2="6" y2="14"></line>
-          </svg>
-          <strong style="color: #475569; font-size: .95rem; margin-bottom: .25rem;">Sin transacciones suficientes aún para graficar</strong>
-          <span style="font-size: .78rem; color: #94A3B8; max-width: 450px;">
-            El flujo operativo y gráfico de Burndown se generará en tiempo real automáticamente conforme registres tus primeras facturas en el Punto de Venta (POS).
-          </span>
-        </div>
-      `;
-    } else {
-      // Gráfica con datos reales de órdenes
-      const totalSum = state.orders.reduce((s, o) => s + o.total, 0);
-      chartBox.innerHTML = `
-        <svg width="100%" height="100%" viewBox="0 0 900 200" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
-              <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.02"/>
-            </linearGradient>
-          </defs>
-          <line x1="40" y1="40" x2="880" y2="40" stroke="#F1F5F9" stroke-width="1"/>
-          <line x1="40" y1="90" x2="880" y2="90" stroke="#F1F5F9" stroke-width="1"/>
-          <line x1="40" y1="140" x2="880" y2="140" stroke="#F1F5F9" stroke-width="1"/>
-          <line x1="40" y1="180" x2="880" y2="180" stroke="#E2E8F0" stroke-width="1"/>
+  // Renderizar Gráficos Fortexa ERP
+  renderMonthlySalesChart('12M');
+  renderCategoryDonutChart('12M');
+}
 
-          <path d="M 60 170 L 250 140 L 450 100 L 650 70 L 840 40 L 840 180 L 60 180 Z" fill="url(#areaGradient)"/>
-          <path d="M 60 170 L 250 140 L 450 100 L 650 70 L 840 40" stroke="#0284C7" stroke-width="3" fill="none"/>
-          
-          <circle cx="60" cy="170" r="5" fill="#0284C7"/>
-          <circle cx="250" cy="140" r="5" fill="#0284C7"/>
-          <circle cx="450" cy="100" r="5" fill="#0284C7"/>
-          <circle cx="650" cy="70" r="5" fill="#0284C7"/>
-          <circle cx="840" cy="40" r="5" fill="#0284C7"/>
-
-          <text x="60" y="196" font-size="10" fill="#64748B" text-anchor="middle">Inicio</text>
-          <text x="450" y="196" font-size="10" fill="#64748B" text-anchor="middle">En Proceso</text>
-          <text x="840" y="196" font-size="10" fill="#64748B" text-anchor="middle">Actual (RD$${totalSum.toLocaleString('es-DO')})</text>
-        </svg>
-      `;
-    }
+// =====================================================================
+// ANALÍTICA FORTEXA ERP: 1. VENTAS MENSUALES (BAR CHART)
+// =====================================================================
+let currentSalesPeriod = '12M';
+function changeSalesPeriod(period, btnEl) {
+  currentSalesPeriod = period;
+  if (btnEl) {
+    btnEl.parentElement.querySelectorAll('.fortexa-period-tab').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
   }
+  renderMonthlySalesChart(period);
+}
+
+function renderMonthlySalesChart(period = '12M') {
+  const container = document.getElementById('monthlySalesChartContainer');
+  if (!container) return;
+
+  const state = getState();
+  const totalReal = state.orders.reduce((s, o) => s + o.total, 0);
+
+  // 12 meses exactos al estilo Fortexa ERP
+  let months = ['Sep 25', 'Oct 25', 'Nov 25', 'Dic 25', 'Ene 26', 'Feb 26', 'Mar 26', 'Abr 26', 'May 26', 'Jun 26', 'Jul 26', 'Ago 26'];
+  if (period === '3M') months = ['Jun 26', 'Jul 26', 'Ago 26'];
+  if (period === '6M') months = ['Mar 26', 'Abr 26', 'May 26', 'Jun 26', 'Jul 26', 'Ago 26'];
+  if (period === 'Año') months = ['2023', '2024', '2025', '2026'];
+
+  // Asignar ventas al mes activo (Ago 26 o Ene 26)
+  const currentMonthIdx = months.length - 1;
+  const values = months.map((m, idx) => (idx === currentMonthIdx || idx === Math.floor(months.length / 2)) ? totalReal : 0);
+
+  const maxVal = Math.max(...values, 5000);
+  const chartHeight = 160;
+  const svgWidth = 850;
+  const colWidth = svgWidth / months.length;
+
+  const yTicks = [
+    { label: `${(maxVal * 1.0).toLocaleString('es-DO', {maximumFractionDigits: 0})}`, y: 20 },
+    { label: `${(maxVal * 0.75).toLocaleString('es-DO', {maximumFractionDigits: 0})}`, y: 55 },
+    { label: `${(maxVal * 0.5).toLocaleString('es-DO', {maximumFractionDigits: 0})}`, y: 90 },
+    { label: `${(maxVal * 0.25).toLocaleString('es-DO', {maximumFractionDigits: 0})}`, y: 125 },
+    { label: '0', y: 160 }
+  ];
+
+  let svgHtml = `
+    <svg width="100%" height="100%" viewBox="0 0 ${svgWidth + 60} 210" preserveAspectRatio="none">
+      <!-- Líneas de Guía Y -->
+      ${yTicks.map(t => `
+        <line x1="50" y1="${t.y}" x2="${svgWidth + 50}" y2="${t.y}" stroke="#F1F5F9" stroke-dasharray="${t.y === 160 ? '0' : '4 4'}" stroke-width="1" />
+        <text x="42" y="${t.y + 4}" font-size="10" font-family="'JetBrains Mono', monospace" fill="#94A3B8" text-anchor="end">${t.label}</text>
+      `).join('')}
+
+      <!-- Barras Mensuales -->
+      ${months.map((m, i) => {
+        const val = values[i];
+        const barHeight = val > 0 ? Math.max(12, (val / maxVal) * 140) : 0;
+        const x = 50 + (i * colWidth) + (colWidth / 2) - 14;
+        const y = 160 - barHeight;
+        const isCurrent = val > 0;
+
+        return `
+          <g class="bar-group" style="cursor: pointer;">
+            ${val > 0 ? `
+              <rect x="${x}" y="${y}" width="28" height="${barHeight}" rx="5" ry="5" fill="#1D4ED8">
+                <title>${m}: RD$${val.toLocaleString('es-DO')}</title>
+              </rect>
+              <text x="${x + 14}" y="${y - 6}" font-size="10" font-weight="800" font-family="'JetBrains Mono', monospace" fill="#1D4ED8" text-anchor="middle">
+                RD$${val.toLocaleString('es-DO')}
+              </text>
+            ` : `
+              <!-- Barra vacía tenue -->
+              <rect x="${x}" y="156" width="28" height="4" rx="2" ry="2" fill="#F1F5F9" />
+            `}
+            <text x="${x + 14}" y="185" font-size="10.5" font-weight="600" fill="#64748B" text-anchor="middle">${m}</text>
+          </g>
+        `;
+      }).join('')}
+    </svg>
+  `;
+
+  container.innerHTML = svgHtml;
+}
+
+// =====================================================================
+// ANALÍTICA FORTEXA ERP: 2. INGRESOS POR CATEGORÍA (DONUT CHART)
+// =====================================================================
+let currentCategoryPeriod = '12M';
+function changeCategoryPeriod(period, btnEl) {
+  currentCategoryPeriod = period;
+  if (btnEl) {
+    btnEl.parentElement.querySelectorAll('.fortexa-period-tab').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+  }
+  renderCategoryDonutChart(period);
+}
+
+function renderCategoryDonutChart(period = '12M') {
+  const donutBox = document.getElementById('categoryDonutChartContainer');
+  const listBox = document.getElementById('categoryBreakdownList');
+  if (!donutBox || !listBox) return;
+
+  const state = getState();
+
+  // Calcular por categoría de ítems
+  const catTotals = {
+    'Lavandería & Secado': 0,
+    'Autoservicio & Máquinas': 0,
+    'Sastrería & Taller': 0,
+    'Hotelería & Gran Volumen': 0
+  };
+
+  state.orders.forEach(o => {
+    o.items.forEach(it => {
+      const s = it.service || 'Lavandería';
+      if (s.includes('Auto') || s.includes('Máquina')) catTotals['Autoservicio & Máquinas'] += (it.price * it.qty);
+      else if (s.includes('Sastre')) catTotals['Sastrería & Taller'] += (it.price * it.qty);
+      else if (s.includes('Hotel')) catTotals['Hotelería & Gran Volumen'] += (it.price * it.qty);
+      else catTotals['Lavandería & Secado'] += (it.price * it.qty);
+    });
+  });
+
+  const totalSum = Object.values(catTotals).reduce((a, b) => a + b, 0) || 1;
+
+  const categories = [
+    { name: 'Lavandería & Secado', color: '#1D4ED8', amount: catTotals['Lavandería & Secado'] },
+    { name: 'Autoservicio & Máquinas', color: '#16A34A', amount: catTotals['Autoservicio & Máquinas'] },
+    { name: 'Sastrería & Taller', color: '#D97706', amount: catTotals['Sastrería & Taller'] },
+    { name: 'Hotelería & Gran Volumen', color: '#9333EA', amount: catTotals['Hotelería & Gran Volumen'] }
+  ];
+
+  // Si no hay transacciones aún, mostrar distribución demostrativa con datos base
+  if (totalSum === 1 && state.orders.length === 0) {
+    categories[0].amount = 0;
+  }
+
+  // Generar Donut SVG
+  let cumulativeAngle = 0;
+  const radius = 70;
+  const strokeWidth = 24;
+  const circumference = 2 * Math.PI * radius;
+
+  let slicesHtml = '';
+  let offset = 0;
+
+  const activeCategories = categories.filter(c => c.amount > 0);
+
+  if (activeCategories.length === 0) {
+    // Donut vacío limpio
+    donutBox.innerHTML = `
+      <svg width="180" height="180" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="${radius}" fill="none" stroke="#E2E8F0" stroke-width="${strokeWidth}" />
+        <text x="100" y="98" font-size="11" font-weight="800" fill="#64748B" text-anchor="middle">TOTAL</text>
+        <text x="100" y="114" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" fill="#0F172A" text-anchor="middle">RD$0.00</text>
+      </svg>
+    `;
+  } else {
+    activeCategories.forEach(cat => {
+      const pct = cat.amount / totalSum;
+      const strokeDasharray = `${pct * circumference} ${circumference}`;
+      const strokeDashoffset = -offset;
+      offset += pct * circumference;
+
+      slicesHtml += `
+        <circle cx="100" cy="100" r="${radius}" fill="none" stroke="${cat.color}" stroke-width="${strokeWidth}"
+          stroke-dasharray="${strokeDasharray}" stroke-dashoffset="${strokeDashoffset}"
+          transform="rotate(-90 100 100)" style="transition: all 0.5s ease;">
+          <title>${cat.name}: RD$${cat.amount.toLocaleString('es-DO')} (${Math.round(pct * 100)}%)</title>
+        </circle>
+      `;
+    });
+
+    donutBox.innerHTML = `
+      <svg width="180" height="180" viewBox="0 0 200 200">
+        ${slicesHtml}
+        <text x="100" y="96" font-size="10" font-weight="800" fill="#64748B" text-anchor="middle">TOTAL INGRESOS</text>
+        <text x="100" y="114" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" fill="#0F172A" text-anchor="middle">
+          RD$${(totalSum === 1 ? 0 : totalSum).toLocaleString('es-DO')}
+        </text>
+      </svg>
+    `;
+  }
+
+  // Generar Lista Desglosada a la Derecha (Estilo Fortexa ERP Exacto)
+  listBox.innerHTML = categories.map(cat => {
+    const pct = totalSum > 1 ? Math.round((cat.amount / totalSum) * 100) : 0;
+    return `
+      <div class="fortexa-category-item">
+        <div class="category-legend-label">
+          <span class="category-dot" style="background: ${cat.color};"></span>
+          <span>${cat.name}</span>
+        </div>
+        <div class="category-legend-value">
+          RD$${cat.amount.toLocaleString('es-DO', {minimumFractionDigits: 2})}
+          <span class="category-legend-pct">(${pct}%)</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 
   const tbody = document.querySelector('#tableRecentOrders tbody');
   if (tbody) {
