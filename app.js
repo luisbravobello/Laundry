@@ -36,26 +36,16 @@ const DEFAULT_STATE = {
     { id: '11', name: 'Cambio de Zipper / Cremallera', category: 'Sastrería', service: 'Sastrería', price: 300 },
     { id: '12', name: 'Ajuste de Mangas / Hombros', category: 'Sastrería', service: 'Sastrería', price: 400 },
 
-    // 3. 4 Torres (Torres 1, 2, 3, 4) — Servicio Asistido vs Autoservicio
+    // 3. 4 Torres (Torres 1, 2, 3, 4) — Asistido y Autoservicio
     { id: '13', name: 'Torre — Servicio Asistido (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1000 },
-    { id: '14', name: 'Torre — Solo Lavado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 500 },
-    { id: '15', name: 'Torre — Solo Secado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 500 },
-    { id: '16', name: 'Torre — Autoservicio Cliente (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 800 },
-    { id: '17', name: 'Torre — Autoservicio Cliente (Solo Lavado)', category: 'Autoservicio', service: 'Autoservicio', price: 400 },
-    { id: '18', name: 'Torre — Autoservicio Cliente (Solo Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 400 },
+    { id: '14', name: 'Torre — Autoservicio Cliente (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 800 },
 
-    // 4. Lavadora y Secadora Industrial
-    { id: '19', name: 'Industrial — Servicio Asistido (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1400 },
-    { id: '20', name: 'Lavadora Industrial — Solo Lavado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 700 },
-    { id: '21', name: 'Secadora Industrial — Solo Secado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 700 },
-    { id: '22', name: 'Industrial — Autoservicio Cliente (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1200 },
-    { id: '23', name: 'Lavadora Industrial — Autoservicio (Solo Lavado)', category: 'Autoservicio', service: 'Autoservicio', price: 600 },
-    { id: '24', name: 'Secadora Industrial — Autoservicio (Solo Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 600 },
+    // 4. Lavadora y Secadora Industrial — Asistido y Autoservicio
+    { id: '15', name: 'Industrial — Servicio Asistido (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1400 },
+    { id: '16', name: 'Industrial — Autoservicio Cliente (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1200 },
 
-    // 5. Insumos & Fichas
-    { id: '25', name: 'Ficha / Moneda Estándar', category: 'Autoservicio', service: 'Autoservicio', price: 100 },
-    { id: '26', name: 'Dosis Detergente Industrial', category: 'Autoservicio', service: 'Autoservicio', price: 60 },
-    { id: '27', name: 'Dosis Suavizante Textil', category: 'Autoservicio', service: 'Autoservicio', price: 50 }
+    // 5. Insumo / Producto de Venta
+    { id: '17', name: 'Suavizante Downy', category: 'Autoservicio', service: 'Autoservicio', price: 150 }
   ],
   clients: [],
   orders: [],
