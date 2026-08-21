@@ -50,55 +50,10 @@ const DEFAULT_STATE = {
     { id: '21', name: '🏨 Lote Toallas Hotel (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 75 },
     { id: '22', name: '🍽️ Lencería & Mantelería (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 85 }
   ],
-  clients: [
-    { id: 'c1', name: 'Carlos Manuel Fernández', phone: '809-555-1234', isHotel: false, balance: 250, creditLimit: 0, ordersCount: 4 },
-    { id: 'c2', name: 'Hotel Boutique Colonial Santo Domingo', phone: '809-688-9000', isHotel: true, balance: 18500, creditLimit: 50000, ordersCount: 28 },
-    { id: 'c3', name: 'María Elena Almonte', phone: '829-444-7890', isHotel: false, balance: 0, creditLimit: 0, ordersCount: 2 }
-  ],
-  orders: [
-    {
-      id: 'o1', ticket: 'FAC-001001', barcode: '202608210001',
-      clientId: 'c1', clientName: 'Carlos Manuel Fernández', phone: '809-555-1234',
-      status: 'Pendiente', date: '21/08/2026 01:00 PM', delivery: '23/08/2026 05:00 PM',
-      subtotal: 550, discount: 0, total: 550, paid: 300, balance: 250, isUrgent: false,
-      items: [
-        { name: 'Pantalón de Vestir Azul Marino', service: 'Sastrería', qty: 1, price: 350, subtotal: 350, alteration: 'Ajuste de Cintura + Ruedo 39 pulg' },
-        { name: 'Camisa de Lino Blanco', service: 'Lavandería', qty: 1, price: 200, subtotal: 200 }
-      ]
-    },
-    {
-      id: 'o2', ticket: 'FAC-001002', barcode: '202608210002',
-      clientId: 'c2', clientName: 'Hotel Boutique Colonial Santo Domingo', phone: '809-688-9000',
-      status: 'Pendiente', date: '21/08/2026 03:00 PM', delivery: '22/08/2026 02:00 PM',
-      subtotal: 4500, discount: 0, total: 4500, paid: 0, balance: 4500, isUrgent: true,
-      items: [
-        { name: 'Lote Toallas Grandes Blancas (Hotel)', service: 'HotelVolumen', qty: 60, price: 75, subtotal: 4500 }
-      ]
-    },
-    {
-      id: 'o3', ticket: 'FAC-001003', barcode: '202608210003',
-      clientId: 'c3', clientName: 'María Elena Almonte', phone: '829-444-7890',
-      status: 'Pagada', date: '20/08/2026 04:00 PM', delivery: '21/08/2026 04:00 PM',
-      subtotal: 730, discount: 0, total: 730, paid: 730, balance: 0, isUrgent: false,
-      items: [
-        { name: 'Vestido de Fiesta Rojo', service: 'Lavandería', qty: 1, price: 550, subtotal: 550 },
-        { name: 'Camisa Manga Larga Rayas', service: 'Lavandería', qty: 1, price: 180, subtotal: 180 }
-      ]
-    }
-  ],
-  inventory: [
-    { id: 'i1', code: '746001001', name: 'Detergente Líquido Industrial Bio-Clean', category: 'Detergentes', unit: 'Galones', stock: 18, minStock: 5, cost: 450, provider: 'Químicos del Caribe' },
-    { id: 'i2', code: '746001002', name: 'Suavizante Textil Aroma Fresh', category: 'Suavizantes', unit: 'Galones', stock: 4, minStock: 6, cost: 380, provider: 'Químicos del Caribe' },
-    { id: 'i3', code: '746001005', name: 'Ganchos de Alambre Reforzados (Caja 500)', category: 'Fundas & Ganchos', unit: 'Cajas', stock: 2, minStock: 3, cost: 1100, provider: 'Plásticos Industriales' },
-    { id: 'i4', code: '746001006', name: 'Hilos Gutermann Surtidos Sastrería', category: 'Sastrería', unit: 'Conos', stock: 24, minStock: 10, cost: 180, provider: 'Importadora Textil' },
-    { id: 'i5', code: '746001007', name: 'Zippers / Cremalleras Metálicas YKK', category: 'Sastrería', unit: 'Packs', stock: 12, minStock: 5, cost: 450, provider: 'Importadora Textil' }
-  ],
-  cashMovements: [
-    { id: 'cm1', time: '08:00 AM', type: 'Apertura', concept: 'Fondo Inicial de Turno', method: 'Efectivo', amount: 3000 },
-    { id: 'cm2', time: '01:05 PM', type: 'Cobro Factura', concept: 'Abono Factura FAC-001001', method: 'Efectivo', amount: 300 },
-    { id: 'cm3', time: '02:15 PM', type: 'Cobro Factura', concept: 'Pago 3 Fichas Autoservicio', method: 'Efectivo', amount: 525 },
-    { id: 'cm4', time: '04:10 PM', type: 'Cobro Factura', concept: 'Pago Total Factura FAC-001003', method: 'Tarjeta', amount: 730 }
-  ]
+  clients: [],
+  orders: [],
+  inventory: [],
+  cashMovements: []
 };
 
 function getState() {
@@ -107,7 +62,7 @@ function getState() {
     try { 
       const parsed = JSON.parse(saved);
       if (!parsed.config.invoicePrefix) parsed.config.invoicePrefix = 'FAC';
-      if (!parsed.config.nextInvoiceNumber) parsed.config.nextInvoiceNumber = 1004;
+      if (!parsed.config.nextInvoiceNumber) parsed.config.nextInvoiceNumber = 1001;
       return parsed;
     } catch(e) {}
   }
@@ -267,9 +222,13 @@ function renderPos() {
   const state = getState();
   const select = document.getElementById('posClientSelect');
   if (select) {
-    select.innerHTML = state.clients.map(c => `
-      <option value="${c.id}">${c.name} ${c.isHotel ? '(Hotel / Crédito)' : ''}</option>
-    `).join('');
+    if (state.clients.length === 0) {
+      select.innerHTML = '<option value="">Cliente Mostrador (General)</option>';
+    } else {
+      select.innerHTML = state.clients.map(c => `
+        <option value="${c.id}">${c.name} ${c.isHotel ? '(Hotel / Crédito)' : ''}</option>
+      `).join('');
+    }
   }
 
   const invoiceInput = document.getElementById('posInvoiceNumber');
@@ -286,6 +245,7 @@ function renderPos() {
 
   filterCatalog('Todos');
 }
+
 
 function filterCatalog(category, btnElement) {
   const state = getState();
@@ -447,7 +407,10 @@ function saveAndPrintOrder() {
 
   const state = getState();
   const clientId = document.getElementById('posClientSelect').value;
-  const client = state.clients.find(c => c.id === clientId) || state.clients[0];
+  const client = (state.clients.length > 0)
+    ? (state.clients.find(c => c.id === clientId) || state.clients[0])
+    : { id: 'c_general', name: 'Cliente Mostrador (General)', phone: '809-555-0000', isHotel: false, balance: 0 };
+
   const delivery = document.getElementById('posDeliveryDate').value;
   const discount = parseFloat(document.getElementById('posDiscount').value) || 0;
   const paid = parseFloat(document.getElementById('posAmountPaid').value) || 0;
@@ -747,14 +710,15 @@ function renderInventory() {
         </div>
       </td>
     </tr>
-  `).join('');
+  `).join('') || '<tr><td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No hay insumos registrados. Haz clic en "+ Nuevo Insumo" para registrar tus productos.</td></tr>';
 
   if (restockSelect) {
-    restockSelect.innerHTML = state.inventory.map(i => `
-      <option value="${i.id}">${i.name} (Actual: ${i.stock} ${i.unit})</option>
-    `).join('');
+    restockSelect.innerHTML = (state.inventory.length > 0)
+      ? state.inventory.map(i => `<option value="${i.id}">${i.name} (Actual: ${i.stock} ${i.unit})</option>`).join('')
+      : '<option value="">-- Sin insumos registrados --</option>';
   }
 }
+
 
 function openNewInsumoModal(insumoId = null) {
   const state = getState();
@@ -890,8 +854,9 @@ function renderClients() {
         </div>
       </td>
     </tr>
-  `).join('');
+  `).join('') || '<tr><td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No hay clientes registrados aún. Haz clic en "+ Registrar Cliente" para agregar tu primer cliente.</td></tr>';
 }
+
 
 function openNewClientModal(clientId = null) {
   const state = getState();

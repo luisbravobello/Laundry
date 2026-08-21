@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iniciar Sesión — SyncOps Dashboard</title>
+  <title>Acceso Administrador — SyncOps Dashboard</title>
   
   <!-- Google Fonts: Inter + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -43,41 +43,49 @@
         </div>
 
         <h1 class="exact-brand-title">SYNCOPS DASHBOARD</h1>
-        <p class="exact-brand-sub">Suite de Gestión para Lavanderías &amp; Sastrería</p>
+        <p class="exact-brand-sub" id="brandSubText">Suite de Gestión para Lavanderías &amp; Sastrería</p>
 
         <div class="exact-brand-divider"></div>
 
-        <p class="exact-no-account-text">¿Aún no tienes una cuenta de equipo?</p>
+        <p class="exact-no-account-text" id="toggleQuestionText">¿Ya tienes una cuenta de administrador?</p>
         
         <button type="button" class="exact-btn-create-account" onclick="toggleAuthMode()">
-          <span id="btnCreateText">Crear Nueva Cuenta</span>
+          <span id="btnCreateText">Iniciar Sesión</span>
         </button>
       </div>
 
       <!-- ==============================================
-           LADO DERECHO: FORMULARIO INICIAR SESIÓN (AZUL ROYAL)
+           LADO DERECHO: FORMULARIO REGISTRO / ACCESO
            ============================================== -->
       <div class="exact-form-side">
-        <h2 class="exact-form-title" id="authHeaderTitle">Iniciar Sesión</h2>
-        <p class="exact-form-sub" id="authHeaderSub">Ingresa con tus credenciales de operador</p>
+        <h2 class="exact-form-title" id="authHeaderTitle">Registro de Administrador</h2>
+        <p class="exact-form-sub" id="authHeaderSub">Crea tu cuenta de administrador para iniciar el sistema limpio</p>
 
         <form id="exactLoginForm" onsubmit="handleAuthSubmit(event)">
           
-          <div class="exact-field-group" id="groupNameField" style="display: none;">
-            <label class="exact-field-label">Nombre Completo</label>
-            <input type="text" id="exactAuthName" class="exact-field-input" placeholder="Luis Bravo" />
+          <!-- Campo: Nombre del Administrador -->
+          <div class="exact-field-group" id="groupNameField">
+            <label class="exact-field-label">Nombre Completo del Administrador</label>
+            <input type="text" id="exactAuthName" class="exact-field-input" placeholder="Ej. Luis Bravo" required />
           </div>
 
+          <!-- Campo: Nombre de la Tienda (Solo en registro) -->
+          <div class="exact-field-group" id="groupStoreField">
+            <label class="exact-field-label">Nombre de la Tienda / Negocio</label>
+            <input type="text" id="exactStoreName" class="exact-field-input" placeholder="Ej. SyncOps Laundry & Suite" value="SyncOps Laundry &amp; Suite" />
+          </div>
+
+          <!-- Campo: Correo Electrónico -->
           <div class="exact-field-group">
             <label class="exact-field-label">Correo Electrónico</label>
-            <input type="email" id="exactAuthEmail" class="exact-field-input" value="luisb@gmail.com" required placeholder="tu-email@syncops.io" />
+            <input type="email" id="exactAuthEmail" class="exact-field-input" required placeholder="admin@syncopslaundry.do" />
           </div>
 
-          <!-- Campo de Contraseña con Botón de Mostrar/Ocultar -->
+          <!-- Campo: Contraseña con Toggle Ojo -->
           <div class="exact-field-group">
             <label class="exact-field-label">Contraseña</label>
             <div class="password-input-container">
-              <input type="password" id="exactAuthPassword" class="exact-field-input" value="••••••••••••" required placeholder="••••••••" style="padding-right: 42px;" />
+              <input type="password" id="exactAuthPassword" class="exact-field-input" required placeholder="Crea una contraseña segura" style="padding-right: 42px;" />
               <button type="button" class="btn-toggle-eye" onclick="togglePasswordVisibility()" title="Mostrar / Ocultar contraseña">
                 <svg id="eyeIconOpen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -96,12 +104,11 @@
               <input type="checkbox" id="exactRemember" checked />
               <span>Recordar sesión</span>
             </label>
-            <a href="#" class="exact-forgot-link" onclick="showToast('Ingresa con tu correo y contraseña habitual.', 'info')">¿Olvidaste tu contraseña?</a>
           </div>
 
-          <!-- Botón de Inicio de Sesión Simple y Limpio -->
+          <!-- Botón Simple y Limpio -->
           <button type="submit" class="exact-btn-simple" id="exactBtnSubmit">
-            <span>Iniciar Sesión</span>
+            <span>Registrarme como Administrador &amp; Acceder</span>
           </button>
 
         </form>
@@ -114,7 +121,16 @@
 
   <script src="app.js"></script>
   <script>
-    let isRegisterMode = false;
+    // Comprobar si ya existe un administrador registrado previamente
+    const savedAdmin = JSON.parse(localStorage.getItem('syncops_registered_admin') || 'null');
+    let isRegisterMode = !savedAdmin; // Si no hay admin, inicia en Registro. Si ya hay, en Login.
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateFormView();
+      if (savedAdmin) {
+        document.getElementById('exactAuthEmail').value = savedAdmin.email || '';
+      }
+    });
 
     function togglePasswordVisibility() {
       const pwdInput = document.getElementById('exactAuthPassword');
@@ -134,28 +150,158 @@
 
     function toggleAuthMode() {
       isRegisterMode = !isRegisterMode;
-      document.getElementById('groupNameField').style.display = isRegisterMode ? 'block' : 'none';
-      document.getElementById('authHeaderTitle').innerText = isRegisterMode ? 'Crear Cuenta' : 'Iniciar Sesión';
-      document.getElementById('authHeaderSub').innerText = isRegisterMode ? 'Completa tus datos para unirte al equipo' : 'Ingresa con tus credenciales de operador';
-      document.getElementById('exactBtnSubmit').querySelector('span').innerText = isRegisterMode ? 'Registrarme' : 'Iniciar Sesión';
-      document.getElementById('btnCreateText').innerText = isRegisterMode ? 'Ya tengo cuenta' : 'Crear Nueva Cuenta';
+      updateFormView();
     }
 
-    function loginDirect(name, email, role) {
-      const user = { name, email, role, avatar: name.split(' ').map(n=>n[0]).join('').slice(0,2) };
-      localStorage.setItem('syncops_user', JSON.stringify(user));
-      sessionStorage.setItem('syncops_user', JSON.stringify(user));
-      showToast(`Bienvenido, ${name}`, 'success');
-      setTimeout(() => { window.location.href = 'index.html'; }, 300);
+    function updateFormView() {
+      const nameGroup = document.getElementById('groupNameField');
+      const storeGroup = document.getElementById('groupStoreField');
+      const headerTitle = document.getElementById('authHeaderTitle');
+      const headerSub = document.getElementById('authHeaderSub');
+      const submitBtnSpan = document.getElementById('exactBtnSubmit').querySelector('span');
+      const toggleQ = document.getElementById('toggleQuestionText');
+      const btnCreateText = document.getElementById('btnCreateText');
+
+      if (isRegisterMode) {
+        nameGroup.style.display = 'block';
+        storeGroup.style.display = 'block';
+        document.getElementById('exactAuthName').required = true;
+        headerTitle.innerText = 'Registro de Administrador';
+        headerSub.innerText = 'Crea tu cuenta de administrador para iniciar el sistema limpio';
+        submitBtnSpan.innerText = 'Registrarme como Administrador & Acceder';
+        toggleQ.innerText = '¿Ya tienes una cuenta de administrador?';
+        btnCreateText.innerText = 'Iniciar Sesión';
+      } else {
+        nameGroup.style.display = 'none';
+        storeGroup.style.display = 'none';
+        document.getElementById('exactAuthName').required = false;
+        headerTitle.innerText = 'Iniciar Sesión';
+        headerSub.innerText = 'Ingresa con tus credenciales de administrador';
+        submitBtnSpan.innerText = 'Iniciar Sesión';
+        toggleQ.innerText = '¿Deseas configurar un nuevo administrador?';
+        btnCreateText.innerText = 'Crear Administrador';
+      }
     }
 
     function handleAuthSubmit(e) {
       e.preventDefault();
       const email = document.getElementById('exactAuthEmail').value.trim();
-      const name = isRegisterMode 
-        ? (document.getElementById('exactAuthName').value.trim() || 'Luis Bravo')
-        : (email.includes('alex') ? 'Alex Rivera' : 'Luis Bravo');
-      loginDirect(name, email, 'Administrador');
+      const password = document.getElementById('exactAuthPassword').value.trim();
+
+      if (!email || !password) {
+        showToast('Completa todos los campos obligatorios.', 'error');
+        return;
+      }
+
+      if (isRegisterMode) {
+        const name = document.getElementById('exactAuthName').value.trim();
+        const store = document.getElementById('exactStoreName').value.trim() || 'SyncOps Laundry & Suite';
+
+        if (!name) {
+          showToast('Ingresa tu nombre completo de administrador.', 'error');
+          return;
+        }
+
+        const adminUser = {
+          name,
+          email,
+          role: 'Administrador General',
+          store,
+          avatar: name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()
+        };
+
+        // Guardar cuenta de administrador registrada
+        localStorage.setItem('syncops_registered_admin', JSON.stringify({ ...adminUser, password }));
+        localStorage.setItem('syncops_user', JSON.stringify(adminUser));
+        sessionStorage.setItem('syncops_user', JSON.stringify(adminUser));
+
+        // Inicializar estado completamente limpio
+        initializeCleanSystem(adminUser, store);
+
+        showToast(`¡Administrador ${name} registrado con éxito!`, 'success');
+        setTimeout(() => { window.location.href = 'index.html'; }, 350);
+
+      } else {
+        const registered = JSON.parse(localStorage.getItem('syncops_registered_admin') || 'null');
+        
+        if (registered && registered.email === email && registered.password === password) {
+          const user = {
+            name: registered.name,
+            email: registered.email,
+            role: registered.role || 'Administrador General',
+            avatar: registered.avatar || 'AD'
+          };
+          localStorage.setItem('syncops_user', JSON.stringify(user));
+          sessionStorage.setItem('syncops_user', JSON.stringify(user));
+          showToast(`Bienvenido de nuevo, ${user.name}`, 'success');
+          setTimeout(() => { window.location.href = 'index.html'; }, 300);
+        } else {
+          // Si no coincide o no existe, permitir inicio rápido con esas credenciales
+          const user = {
+            name: email.split('@')[0].replace('.', ' ').toUpperCase(),
+            email,
+            role: 'Administrador General',
+            avatar: email.slice(0, 2).toUpperCase()
+          };
+          localStorage.setItem('syncops_user', JSON.stringify(user));
+          sessionStorage.setItem('syncops_user', JSON.stringify(user));
+          showToast(`Bienvenido, ${user.name}`, 'success');
+          setTimeout(() => { window.location.href = 'index.html'; }, 300);
+        }
+      }
+    }
+
+    function initializeCleanSystem(admin, storeName) {
+      const cleanState = {
+        config: {
+          businessName: storeName || 'SyncOps Laundry & Tailoring Suite',
+          rnc: '131-89745-1',
+          phone: '(809) 555-7962',
+          address: 'Av. Winston Churchill #102, Santo Domingo',
+          email: admin.email,
+          printerWidth: '80mm',
+          printerModel: 'epson-t20ii',
+          invoicePrefix: 'FAC',
+          nextInvoiceNumber: 1001,
+          ticketFooter: 'Prendas no retiradas tras 30 días pasan a disposición legal. ¡Gracias por su preferencia!'
+        },
+        catalog: [
+          // 1. Lavandería (Prendas por pieza con precios base editables)
+          { id: '1', name: '👔 Camisa de Vestir / Manga Larga', category: 'Lavandería', service: 'Lavandería', price: 180 },
+          { id: '2', name: '👖 Pantalón de Vestir / Gabardina', category: 'Lavandería', service: 'Lavandería', price: 200 },
+          { id: '3', name: '🤵 Traje Completo (2 Piezas)', category: 'Lavandería', service: 'Lavandería', price: 450 },
+          { id: '4', name: '👗 Vestido Casual / Fiesta', category: 'Lavandería', service: 'Lavandería', price: 350 },
+          { id: '5', name: '🛏️ Edredón / Acolchado King Size', category: 'Lavandería', service: 'Lavandería', price: 600 },
+          { id: '6', name: '🛌 Juego de Sábanas Completo', category: 'Lavandería', service: 'Lavandería', price: 350 },
+          { id: '7', name: '👕 Polo / Camiseta Casual', category: 'Lavandería', service: 'Lavandería', price: 130 },
+          { id: '8', name: '🧥 Chaqueta / Blazer Casual', category: 'Lavandería', service: 'Lavandería', price: 300 },
+          
+          // 2. Sastrería
+          { id: '9', name: '✂️ Ruedo / Dobladillo de Pantalón', category: 'Sastrería', service: 'Sastrería', price: 250 },
+          { id: '10', name: '📐 Ajuste de Cintura / Entalle', category: 'Sastrería', service: 'Sastrería', price: 350 },
+          { id: '11', name: '🤐 Cambio de Zipper / Cremallera', category: 'Sastrería', service: 'Sastrería', price: 300 },
+          { id: '12', name: '🧵 Ajuste de Mangas / Hombros', category: 'Sastrería', service: 'Sastrería', price: 400 },
+
+          // 3. Autoservicio & Máquinas
+          { id: '14', name: '🧺 Torre Lavadora Autoservicio (30 Lbs)', category: 'Autoservicio', service: 'Autoservicio', price: 175 },
+          { id: '15', name: '🌀 Torre Secadora Autoservicio (35 min)', category: 'Autoservicio', service: 'Autoservicio', price: 150 },
+          { id: '16', name: '🏭 Lavadora Industrial (75 Lbs)', category: 'Autoservicio', service: 'Autoservicio', price: 450 },
+          { id: '17', name: '🔥 Secadora Industrial (80 Lbs)', category: 'Autoservicio', service: 'Autoservicio', price: 400 },
+          { id: '18', name: '🪙 Ficha / Moneda Estándar', category: 'Autoservicio', service: 'Autoservicio', price: 60 },
+          { id: '19', name: '🧴 Dosis Detergente Bio-Clean', category: 'Autoservicio', service: 'Autoservicio', price: 60 },
+          { id: '20', name: '🌸 Dosis Suavizante Aroma Fresh', category: 'Autoservicio', service: 'Autoservicio', price: 50 },
+
+          // 4. Hotelería
+          { id: '21', name: '🏨 Lote Toallas Hotel (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 75 },
+          { id: '22', name: '🍽️ Lencería & Mantelería (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 85 }
+        ],
+        clients: [],       // Totalmente limpio
+        orders: [],        // Totalmente limpio
+        inventory: [],     // Totalmente limpio
+        cashMovements: []  // Totalmente limpio
+      };
+
+      localStorage.setItem('syncops_laundry_state', JSON.stringify(cleanState));
     }
   </script>
 </body>
