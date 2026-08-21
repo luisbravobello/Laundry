@@ -187,19 +187,20 @@ function initApp() {
 function renderDashboard() {
   const state = getState();
 
-  const ventasCobros = state.cashMovements
-    .filter(m => m.type !== 'Apertura')
-    .reduce((sum, m) => sum + m.amount, 0);
-
-  const prendasTotal = state.orders.reduce((sum, o) => sum + o.items.length, 0);
+  const totalFacturado = state.orders.reduce((sum, o) => sum + o.total, 0);
+  const totalPendiente = state.orders.reduce((sum, o) => sum + o.balance, 0);
   const facturasPendientes = state.orders.filter(o => o.balance > 0).length;
   const clientesCount = state.clients.length;
+  const particularesCount = state.clients.filter(c => !c.isHotel).length;
+  const hotelesCount = state.clients.filter(c => c.isHotel).length;
 
-  if (document.getElementById('kpiVentasHoy')) document.getElementById('kpiVentasHoy').innerText = `RD$${ventasCobros.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
-  if (document.getElementById('kpiPrendasTaller')) document.getElementById('kpiPrendasTaller').innerText = prendasTotal;
-  if (document.getElementById('kpiPrendasProgress')) document.getElementById('kpiPrendasProgress').style.width = `${Math.min(100, prendasTotal * 10)}%`;
+  if (document.getElementById('kpiClientesCount')) document.getElementById('kpiClientesCount').innerText = clientesCount;
+  if (document.getElementById('kpiParticularesCount')) document.getElementById('kpiParticularesCount').innerText = particularesCount;
+  if (document.getElementById('kpiHotelesCount')) document.getElementById('kpiHotelesCount').innerText = hotelesCount;
+  if (document.getElementById('kpiCxPPendiente')) document.getElementById('kpiCxPPendiente').innerText = `RD$${totalPendiente.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
   if (document.getElementById('kpiFacturasPendientesCount')) document.getElementById('kpiFacturasPendientesCount').innerText = facturasPendientes;
-  if (document.getElementById('kpiClientesCount')) document.getElementById('kpiClientesCount').innerHTML = `${clientesCount} <span class="kpi-number-sub">activas</span>`;
+  if (document.getElementById('kpiVentasHoy')) document.getElementById('kpiVentasHoy').innerText = `RD$${totalFacturado.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+
 
   // Renderizar Gráfica de Burndown Dinámica
   const chartBox = document.getElementById('dashboardChartContainer');

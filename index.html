@@ -138,149 +138,188 @@
   </aside>
 
   <!-- ==============================================
-       MAIN LAYOUT & TOPBAR
+       MAIN LAYOUT & TOPBAR (FORTEXA ERP)
        ============================================== -->
   <div class="main-layout">
     
     <header class="topbar">
-      <!-- Izquierda: Hamburger & Breadcrumbs -->
+      <!-- Izquierda: Sidebar Toggle & Breadcrumbs -->
       <div class="topbar-left">
-        <button class="btn-menu-toggle" title="Menu">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <button class="btn-sidebar-toggle" title="Contraer barra lateral" onclick="document.querySelector('.sidebar').classList.toggle('collapsed')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
         </button>
-        <div class="breadcrumb">
+        <div class="breadcrumbs">
+          <a href="#" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Inicio</span>
+          </a>
+          <span class="breadcrumbs-sep">&gt;</span>
           <span>SyncOps</span>
-          <span>&gt;</span>
-          <span class="breadcrumb-active" id="currentSectionTitle">Panel Principal</span>
+          <span class="breadcrumbs-sep">&gt;</span>
+          <span class="breadcrumbs-current" id="currentSectionTitle">Panel Principal</span>
         </div>
       </div>
 
-      <!-- Centro: Barra de Búsqueda ⌘K con Dropdown -->
-      <div style="position: relative;">
-        <div class="search-capsule">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="globalSearchInput" class="search-input" placeholder="Buscar facturas, clientes, insumos... ⌘K" oninput="handleGlobalSearch(this.value)" />
-          <span class="search-shortcut">⌘K</span>
-        </div>
-        <div id="globalSearchResults" class="search-dropdown-menu" style="display: none;"></div>
-      </div>
-
-      <!-- Derecha: Botón Primario + Notificación + Avatar -->
+      <!-- Derecha: Selector de Empresa + Search + Badges + Notificaciones -->
       <div class="topbar-right">
-        <button class="btn-primary-action" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          <span>+ Nueva Factura</span>
+        <div class="org-selector-pill" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[5])">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>
+          <span id="topbarOrgName">SyncOps Suite</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+
+        <div class="status-counter-pill" title="Módulos Activos">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+          <span>1/4</span>
+        </div>
+
+        <div class="topbar-search-box">
+          <svg class="search-icon-fixed" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="globalSearchInput" class="topbar-search-input" placeholder="Buscar... Ctrl K" oninput="handleGlobalSearch(this.value)" />
+          <span class="search-shortcut-badge">Ctrl K</span>
+          <div id="globalSearchResults" class="search-dropdown-menu" style="display: none;"></div>
+        </div>
+
+        <button class="topbar-action-btn" title="Asistente de Productividad" onclick="showToast('Asistente SyncOps activo y sincronizado.', 'info')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
         </button>
 
-        <button class="btn-icon-topbar" title="Notificaciones" onclick="showToast('Sistema operativo en línea.', 'info')">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="notif-badge-dot"></span>
+        <button class="topbar-action-btn" title="Notificaciones" onclick="showToast('Todas las alertas operativas al día.', 'success')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="badge-count-red">9+</span>
         </button>
 
-        <div class="topbar-avatar" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[5])">LB</div>
+        <button class="topbar-action-btn" title="Modo Pantalla / Configuración" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[5])">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        </button>
+
+        <div class="topbar-avatar" id="topbarAvatarPill" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[5])">LB</div>
       </div>
     </header>
 
     <div class="content-wrapper">
 
       <!-- ====================================================
-           1. SECCIÓN: DASHBOARD (PANEL PRINCIPAL)
+           1. SECCIÓN: DASHBOARD (PANEL PRINCIPAL FORTEXA ERP)
            ==================================================== -->
       <section id="section-dashboard" class="content-section active">
         
-        <div class="page-header-row">
+        <!-- HEADER DE PÁGINA FORTEXA -->
+        <div class="fortexa-page-header">
           <div>
-            <h1 class="greeting-title" id="dashboardGreeting">Buenas tardes, Luis</h1>
-            <p class="greeting-sub">Resumen ejecutivo y métricas de <strong>Facturación &amp; Operaciones</strong>.</p>
+            <button class="btn-back-link" onclick="history.back()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Volver</span>
+            </button>
+            <div class="fortexa-title-box">
+              <h1 class="fortexa-title">Panel Principal</h1>
+              <span class="badge-live-pill"><span style="color: #2563EB;">●</span> EN VIVO</span>
+            </div>
+            <p class="fortexa-sub" id="dashboardGreeting">Gestiona tu catálogo de operaciones, facturación y clientes</p>
           </div>
 
-          <div class="header-badges-row">
-            <div class="status-pill-green">
-              <span class="pill-dot"></span>
-              <span>Terminal Activa • En Línea</span>
-            </div>
-            <button class="btn-link-action" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
-              <span>+ Nueva Factura POS →</span>
+          <!-- BOTONES DE ACCIÓN FORTEXA ERP -->
+          <div class="fortexa-actions-group">
+            <button class="btn-fortexa-outline" onclick="testEpsonT20II()" title="Descargar plantilla de prueba">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Plantilla</span>
+            </button>
+            <button class="btn-fortexa-outline" onclick="exportToExcel('facturas')" title="Exportar reporte de facturas">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Importar Excel</span>
+            </button>
+            <button class="btn-fortexa-outline" onclick="exportToExcel('facturas')" title="Compartir XLSX">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              <span>Compartir XLSX</span>
+            </button>
+            <button class="btn-fortexa-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>+ Nueva Factura POS</span>
             </button>
           </div>
         </div>
 
-        <!-- 4 TARJETAS KPI -->
-        <div class="kpi-row">
+        <!-- FILA DE 5 TARJETAS KPI (FORTEXA ERP) -->
+        <div class="fortexa-kpi-row">
           
-          <div class="kpi-card-modern">
-            <div>
-              <div class="kpi-top-box">
-                <div class="kpi-icon-container bg-icon-purple">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                </div>
-                <span class="kpi-label-text">Ingresos Cobrados</span>
-              </div>
-              <div class="kpi-main-number" id="kpiVentasHoy">
-                RD$0.00
-              </div>
+          <!-- Card 1: Total Clientes -->
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
-            <div class="kpi-footer-row">
-              <span class="trend-positive" id="kpiVentasTrend">▲ Cobros en caja &amp; transferencias</span>
-              <svg class="sparkline-svg" id="kpiSparklineSvg" viewBox="0 0 75 26">
-                <path d="M2,20 L73,20" stroke="#CBD5E1" stroke-width="2" fill="none" />
-              </svg>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number" id="kpiClientesCount">0</div>
+              <div class="fortexa-kpi-label">Total Clientes</div>
             </div>
           </div>
 
-          <div class="kpi-card-modern">
-            <div>
-              <div class="kpi-top-box">
-                <div class="kpi-icon-container bg-icon-cyan">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                </div>
-                <span class="kpi-label-text">Prendas Procesadas</span>
-              </div>
-              <div class="kpi-main-number">
-                <span id="kpiPrendasTaller">0</span> <span class="kpi-number-sub">prendas</span>
-              </div>
+          <!-- Card 2: Particulares -->
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-green">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </div>
-            <div>
-              <div class="kpi-progress-bar">
-                <div class="kpi-progress-fill" id="kpiPrendasProgress" style="width: 0%;"></div>
-              </div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number" id="kpiParticularesCount">0</div>
+              <div class="fortexa-kpi-label">Nacionales / Particulares</div>
             </div>
           </div>
 
-          <div class="kpi-card-modern">
-            <div>
-              <div class="kpi-top-box">
-                <div class="kpi-icon-container bg-icon-rose">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="8" height="14" x="8" y="6" rx="4"></rect><path d="m19 7-3 2"></path><path d="m5 7 3 2"></path><path d="m19 19-3-2"></path><path d="m5 19 3-2"></path><path d="M20 13h-4"></path><path d="M4 13h4"></path></svg>
-                </div>
-                <span class="kpi-label-text">Facturas con Saldo</span>
-              </div>
-              <div class="kpi-main-number" style="color: #0F172A;" id="kpiFacturasPendientesCount">
-                0
-              </div>
+          <!-- Card 3: Hoteles & Corporativos -->
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>
             </div>
-            <div class="kpi-footer-row">
-              <span class="trend-alert">▼ Cuentas por cobrar activas</span>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number" id="kpiHotelesCount">0</div>
+              <div class="fortexa-kpi-label">Hoteles &amp; Empresas</div>
             </div>
           </div>
 
-          <div class="kpi-card-modern">
-            <div>
-              <div class="kpi-top-box">
-                <div class="kpi-icon-container bg-icon-emerald">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                </div>
-                <span class="kpi-label-text">Cuentas &amp; Clientes</span>
-              </div>
-              <div class="kpi-main-number" id="kpiClientesCount">
-                0 <span class="kpi-number-sub">activas</span>
-              </div>
+          <!-- Card 4: Cuentas por Cobrar Pendiente -->
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-amber">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             </div>
-            <div class="kpi-footer-row">
-              <span class="trend-positive">▲ Cuentas particulares &amp; hoteles</span>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number font-mono text-amber" id="kpiCxPPendiente">RD$0.00</div>
+              <div class="fortexa-kpi-label">CxP Pendiente (<span id="kpiFacturasPendientesCount">0</span>)</div>
             </div>
           </div>
 
+          <!-- Card 5: Total Facturado / Cobrado -->
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number font-mono text-blue" id="kpiVentasHoy">RD$0.00</div>
+              <div class="fortexa-kpi-label">Total Facturado</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TARJETA DE BÚSQUEDA Y FILTRADO FORTEXA ERP -->
+        <div class="fortexa-filter-card">
+          <div class="fortexa-filter-title">Buscar Registro / Factura</div>
+          <div class="fortexa-filter-row">
+            <div class="fortexa-filter-input-box">
+              <svg class="fortexa-filter-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" class="fortexa-filter-input" placeholder="Nombre, RNC, Ticket o Email..." oninput="handleGlobalSearch(this.value)" />
+            </div>
+            <button class="btn-fortexa-outline" onclick="renderDashboard()" title="Actualizar datos">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              <span>Actualizar</span>
+            </button>
+            <button class="btn-fortexa-outline" onclick="exportToExcel('dashboard')" title="Exportar vista actual">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Exportar vista</span>
+            </button>
+            <button class="btn-fortexa-outline" onclick="showToast('Vista de columnas optimizada.', 'info')" title="Ajustar columnas">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+              <span>Columnas</span>
+            </button>
+          </div>
         </div>
 
         <!-- GRÁFICA DE TENDENCIA OPERATIVA (DINÁMICA Y LIMPIA) -->

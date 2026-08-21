@@ -165,7 +165,7 @@ body {
 .btn-logout-clean:hover { color: var(--accent-rose); background: #FFF1F2; }
 
 /* ================================================================
-   TOPBAR (EXACT MATCH SCREENSHOT)
+   TOPBAR (FORTEXA ERP EXACT MATCH)
    ================================================================ */
 .main-layout {
   margin-left: var(--sidebar-w);
@@ -177,19 +177,6 @@ body {
   height: var(--topbar-h);
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
-  padding: 0 1.75rem;
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 90;
-}
-.topbar-left {
-  display: flex; align-items: center; gap: 1rem;
-}
-.btn-menu-toggle {
-  background: transparent; border: 1px solid var(--border);
-  border-radius: var(--r-sm); padding: 5px 7px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  color: var(--text-muted);
-}
 .breadcrumb {
   display: flex; align-items: center; gap: .5rem;
   font-size: .84rem; color: var(--text-dim); font-weight: 500;
