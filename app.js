@@ -443,8 +443,6 @@ function renderCategoryDonutChart(period = '12M') {
     `;
   }).join('');
 }
-}
-
 
 // =====================================================================
 // 4. MÓDULO 2: PUNTO DE VENTA (POS CON PRECIOS PERSONALIZABLES)
