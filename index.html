@@ -132,7 +132,7 @@
 
     <!-- Footer de Usuario -->
     <div class="sidebar-user">
-      <div class="user-avatar-circle" id="userAvatar">AR</div>
+      <div class="user-avatar-circle" id="userAvatar">LB</div>
       <div class="user-meta">
         <strong id="userName">Luis Bravo</strong>
         <span>Admin • POS 01</span>
@@ -161,58 +161,61 @@
         </div>
       </div>
 
-      <!-- Centro: Barra de Búsqueda ⌘K -->
-      <div class="search-capsule">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="search-input" placeholder="Buscar tareas, proyectos, miembros..." />
-        <span class="search-shortcut">⌘K</span>
+      <!-- Centro: Barra de Búsqueda ⌘K con Dropdown -->
+      <div style="position: relative;">
+        <div class="search-capsule">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="globalSearchInput" class="search-input" placeholder="Buscar órdenes, clientes, insumos... ⌘K" oninput="handleGlobalSearch(this.value)" />
+          <span class="search-shortcut">⌘K</span>
+        </div>
+        <div id="globalSearchResults" class="search-dropdown-menu" style="display: none;"></div>
       </div>
 
       <!-- Derecha: Botón Primario + Notificación + Avatar -->
       <div class="topbar-right">
         <button class="btn-primary-action" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          <span>+ Nueva Tarea</span>
+          <span>+ Nueva Orden</span>
         </button>
 
-        <button class="btn-icon-topbar" title="Notificaciones">
+        <button class="btn-icon-topbar" title="Notificaciones" onclick="showToast('Sistema operativo al día. 0 errores.', 'info')">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           <span class="notif-badge-dot"></span>
         </button>
 
-        <div class="topbar-avatar" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[7])">AR</div>
+        <div class="topbar-avatar" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[7])">LB</div>
       </div>
     </header>
 
     <div class="content-wrapper">
 
       <!-- ====================================================
-           1. SECCIÓN: DASHBOARD (EXACT MATCH SCREENSHOT)
+           1. SECCIÓN: DASHBOARD
            ==================================================== -->
       <section id="section-dashboard" class="content-section active">
         
         <!-- Saludo & Badges Superiores -->
         <div class="page-header-row">
           <div>
-            <h1 class="greeting-title">Buenas tardes, Luis</h1>
-            <p class="greeting-sub">Resumen ejecutivo y métricas en tiempo real de <strong>Sprint 7</strong>.</p>
+            <h1 class="greeting-title" id="dashboardGreeting">Buenas tardes, Luis</h1>
+            <p class="greeting-sub">Resumen ejecutivo y métricas en tiempo real de <strong>Lavandería &amp; Taller</strong>.</p>
           </div>
 
           <div class="header-badges-row">
             <div class="status-pill-green">
               <span class="pill-dot"></span>
-              <span>Sprint 7 • Ola de Innovación Q3</span>
+              <span>Turno 01 • Caja Abierta</span>
             </div>
             <button class="btn-link-action" onclick="switchSection('kanban', document.querySelectorAll('.nav-item')[2])">
-              <span>Ver Sprint Activo →</span>
+              <span>Ver Flujo en Taller →</span>
             </button>
           </div>
         </div>
 
-        <!-- 4 TARJETAS KPI MODERNAS (EXACT MATCH SCREENSHOT) -->
+        <!-- 4 TARJETAS KPI MODERNAS (EXACT MATCH) -->
         <div class="kpi-row">
           
-          <!-- Card 1: Velocidad del Equipo -->
+          <!-- Card 1: Ventas Hoy -->
           <div class="kpi-card-modern">
             <div>
               <div class="kpi-top-box">
@@ -221,21 +224,21 @@
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                   </svg>
                 </div>
-                <span class="kpi-label-text">Velocidad del Equipo</span>
+                <span class="kpi-label-text">Ventas del Día</span>
               </div>
-              <div class="kpi-main-number">
-                42 <span class="kpi-number-sub">pts</span>
+              <div class="kpi-main-number" id="kpiVentasHoy">
+                RD$1,555.00
               </div>
             </div>
             <div class="kpi-footer-row">
-              <span class="trend-positive">▲ +18% vs sprint anterior</span>
+              <span class="trend-positive">▲ +18% vs día anterior</span>
               <svg class="sparkline-svg" viewBox="0 0 75 26">
                 <path d="M2,20 Q15,5 30,18 T55,8 T73,4" />
               </svg>
             </div>
           </div>
 
-          <!-- Card 2: Puntos Completados -->
+          <!-- Card 2: Prendas en Taller -->
           <div class="kpi-card-modern">
             <div>
               <div class="kpi-top-box">
@@ -245,20 +248,20 @@
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                   </svg>
                 </div>
-                <span class="kpi-label-text">Puntos Completados</span>
+                <span class="kpi-label-text">Prendas en Taller</span>
               </div>
               <div class="kpi-main-number">
-                68 <span class="kpi-number-sub">/ 112</span>
+                <span id="kpiPrendasTaller">2</span> <span class="kpi-number-sub">/ 8</span>
               </div>
             </div>
             <div>
               <div class="kpi-progress-bar">
-                <div class="kpi-progress-fill" style="width: 60%;"></div>
+                <div class="kpi-progress-fill" style="width: 25%;"></div>
               </div>
             </div>
           </div>
 
-          <!-- Card 3: Bugs Abiertos -->
+          <!-- Card 3: Insumos Críticos -->
           <div class="kpi-card-modern">
             <div>
               <div class="kpi-top-box">
@@ -271,18 +274,18 @@
                     <path d="m10 4 1 2"></path><path d="m14 4-1 2"></path>
                   </svg>
                 </div>
-                <span class="kpi-label-text">Bugs Abiertos</span>
+                <span class="kpi-label-text">Alertas de Insumos</span>
               </div>
-              <div class="kpi-main-number" style="color: #0F172A;">
-                7
+              <div class="kpi-main-number" style="color: #0F172A;" id="kpiInsumosAlertCount">
+                2
               </div>
             </div>
             <div class="kpi-footer-row">
-              <span class="trend-alert">▼ 2 reportados hoy</span>
+              <span class="trend-alert">▼ 2 requieren compra hoy</span>
             </div>
           </div>
 
-          <!-- Card 4: Latencia API Gateway -->
+          <!-- Card 4: Autoservicio (Torres) -->
           <div class="kpi-card-modern">
             <div>
               <div class="kpi-top-box">
@@ -291,23 +294,23 @@
                     <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
                   </svg>
                 </div>
-                <span class="kpi-label-text">Latencia API Gateway (p95)</span>
+                <span class="kpi-label-text">Torres Autoservicio</span>
               </div>
-              <div class="kpi-main-number">
-                48 <span class="kpi-number-sub">ms</span>
+              <div class="kpi-main-number" id="kpiAutoservicio">
+                2 <span class="kpi-number-sub">en uso</span>
               </div>
             </div>
             <div class="kpi-footer-row">
-              <span class="trend-positive">▲ 84% más rápido con Redis</span>
+              <span class="trend-positive">▲ 3 torres disponibles</span>
             </div>
           </div>
 
         </div>
 
-        <!-- GRÁFICA DE BURNDOWN — SPRINT 7 (EXACT MATCH SCREENSHOT) -->
+        <!-- GRÁFICA DE TENDENCIA OPERATIVA -->
         <div class="chart-card">
           <div class="chart-header">
-            <span class="chart-title">Gráfica de Burndown — Sprint 7</span>
+            <span class="chart-title">Gráfica de Burndown &amp; Flujo Operativo</span>
             <div class="chart-legends">
               <div class="legend-item">
                 <span class="legend-dot-plan"></span>
@@ -386,6 +389,7 @@
                     <th>CLIENTE</th>
                     <th>ESTADO</th>
                     <th style="text-align: right;">TOTAL</th>
+                    <th>ACCIONES</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -686,7 +690,7 @@
       </section>
 
       <!-- ====================================================
-           5. SECCIÓN: INVENTARIO & INSUMOS
+           5. SECCIÓN: INVENTARIO & INSUMOS (CON CRUD COMPLETO)
            ==================================================== -->
       <section id="section-inventario" class="content-section">
         <div class="grid-2col-wide">
@@ -739,7 +743,7 @@
       </section>
 
       <!-- ====================================================
-           6. SECCIÓN: CLIENTES & HOTELES
+           6. SECCIÓN: CLIENTES & HOTELES (CON CRUD COMPLETO)
            ==================================================== -->
       <section id="section-clientes" class="content-section">
         <div class="card">
@@ -760,7 +764,8 @@
                   <th>TIPO DE CUENTA</th>
                   <th>SALDO PENDIENTE</th>
                   <th>LÍMITE CRÉDITO</th>
-                  <th>ÓRDENES TOTALES</th>
+                  <th>ÓRDENES</th>
+                  <th>ACCIONES</th>
                 </tr>
               </thead>
               <tbody id="clientsTableBody"></tbody>
@@ -846,7 +851,7 @@
       </section>
 
       <!-- ====================================================
-           8. SECCIÓN: CONFIGURACIÓN & PERFIL (COMPLETA Y FUNCIONAL)
+           8. SECCIÓN: CONFIGURACIÓN & PERFIL
            ==================================================== -->
       <section id="section-configuracion" class="content-section">
         <div class="grid-2col">
@@ -1059,6 +1064,167 @@
         </div>
       </section>
 
+    </div>
+  </div>
+
+  <!-- ==============================================
+       MODAL 1: REGISTRAR / EDITAR CLIENTE (CRUD)
+       ============================================== -->
+  <div class="modal-overlay" id="clientModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="clientModalTitle">Registrar Nuevo Cliente</h3>
+        <button class="btn-close" onclick="closeClientModal()">✕</button>
+      </div>
+      <form onsubmit="saveClientModal(event)" style="padding: 1.5rem;">
+        <input type="hidden" id="modalClientId" />
+        
+        <div class="form-group">
+          <label>Nombre Completo / Razón Social *</label>
+          <input type="text" id="modalClientName" class="form-input" placeholder="Ej. Hotel Boutique Colonial" required />
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Teléfono *</label>
+            <input type="text" id="modalClientPhone" class="form-input font-mono" placeholder="Ej. 809-555-1234" required />
+          </div>
+          <div class="form-group">
+            <label>Tipo de Cuenta</label>
+            <select id="modalClientIsHotel" class="form-input">
+              <option value="false">Particular (Sin Crédito)</option>
+              <option value="true">Hotel / Corporativo (Con Crédito)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Límite de Crédito (RD$)</label>
+          <input type="number" id="modalClientCreditLimit" class="form-input font-mono" value="0" min="0" />
+        </div>
+
+        <div class="modal-footer" style="padding: 1rem 0 0; background: transparent;">
+          <button type="button" class="btn btn-outline" onclick="closeClientModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Cliente</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       MODAL 2: REGISTRAR / EDITAR INSUMO (CRUD)
+       ============================================== -->
+  <div class="modal-overlay" id="insumoModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="insumoModalTitle">Registrar Nuevo Insumo</h3>
+        <button class="btn-close" onclick="closeInsumoModal()">✕</button>
+      </div>
+      <form onsubmit="saveInsumoModal(event)" style="padding: 1.5rem;">
+        <input type="hidden" id="modalInsumoId" />
+        
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Código de Barras / SKU *</label>
+            <input type="text" id="modalInsumoCode" class="form-input font-mono" placeholder="746001008" required />
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="modalInsumoCategory" class="form-input">
+              <option value="Detergentes">Detergentes</option>
+              <option value="Suavizantes">Suavizantes</option>
+              <option value="Fundas & Ganchos">Fundas &amp; Ganchos</option>
+              <option value="Sastrería">Sastrería</option>
+              <option value="Químicos Especiales">Químicos Especiales</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Nombre del Insumo *</label>
+          <input type="text" id="modalInsumoName" class="form-input" placeholder="Ej. Quitamanchas Enzimático 5L" required />
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Stock Inicial</label>
+            <input type="number" id="modalInsumoStock" class="form-input font-mono" value="10" min="0" required />
+          </div>
+          <div class="form-group">
+            <label>Stock Mínimo</label>
+            <input type="number" id="modalInsumoMin" class="form-input font-mono" value="5" min="1" required />
+          </div>
+          <div class="form-group">
+            <label>Unidad</label>
+            <input type="text" id="modalInsumoUnit" class="form-input" value="Galones" required />
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Costo Unitario (RD$)</label>
+            <input type="number" id="modalInsumoCost" class="form-input font-mono" value="450" required />
+          </div>
+          <div class="form-group">
+            <label>Proveedor</label>
+            <input type="text" id="modalInsumoProvider" class="form-input" placeholder="Químicos del Caribe" required />
+          </div>
+        </div>
+
+        <div class="modal-footer" style="padding: 1rem 0 0; background: transparent;">
+          <button type="button" class="btn btn-outline" onclick="closeInsumoModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Insumo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       MODAL 3: COBRAR SALDO PENDIENTE DE ORDEN (CRUD)
+       ============================================== -->
+  <div class="modal-overlay" id="payOrderModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Cobrar Saldo de Orden</h3>
+        <button class="btn-close" onclick="closePayOrderModal()">✕</button>
+      </div>
+      <form onsubmit="submitPayOrder(event)" style="padding: 1.5rem;">
+        <input type="hidden" id="payModalOrderId" />
+        
+        <div style="background: var(--bg-hover); padding: 1rem; border-radius: var(--r-md); margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: .25rem;">
+            <span>Ticket:</span>
+            <strong id="payModalTicket" class="font-mono text-blue">SAS-2608-001</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: .25rem;">
+            <span>Cliente:</span>
+            <strong id="payModalClient">Carlos Manuel Fernández</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; color: #DC2626; font-weight: 800; font-size: 1.05rem; border-top: 1px dashed var(--border); padding-top: .5rem; margin-top: .5rem;">
+            <span>Saldo Pendiente:</span>
+            <span id="payModalBalance" class="font-mono">RD$250.00</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Monto a Pagar (RD$):</label>
+          <input type="number" id="payModalAmount" class="form-input font-mono font-bold font-lg" required />
+        </div>
+
+        <div class="form-group">
+          <label>Método de Pago:</label>
+          <select id="payModalMethod" class="form-input">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Tarjeta">Tarjeta POS</option>
+            <option value="Transferencia">Transferencia Bancaria</option>
+          </select>
+        </div>
+
+        <div class="modal-footer" style="padding: 1rem 0 0; background: transparent;">
+          <button type="button" class="btn btn-outline" onclick="closePayOrderModal()">Cancelar</button>
+          <button type="submit" class="btn btn-success">Registrar Pago &amp; Actualizar</button>
+        </div>
+      </form>
     </div>
   </div>
 

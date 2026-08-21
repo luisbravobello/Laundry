@@ -1,5 +1,6 @@
 /**
- * SyncOps — Clean Laundry & Tailoring Suite (Web App Logic)
+ * SyncOps — Complete Laundry & Tailoring Web Suite
+ * Full Interactive CRUD & Reactive Store
  */
 
 // =====================================================================
@@ -70,7 +71,7 @@ function initParticleCanvas(canvasId) {
 }
 
 // =====================================================================
-// 2. ESTADO GLOBAL & PERSISTENCIA
+// 2. ESTADO GLOBAL & PERSISTENCIA (LOCALSTORAGE)
 // =====================================================================
 const DEFAULT_STATE = {
   config: {
@@ -96,7 +97,7 @@ const DEFAULT_STATE = {
     { id: '12', name: 'Lote Toallas Hotel (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 75 }
   ],
   clients: [
-    { id: 'c1', name: 'Carlos Manuel Fernández', phone: '809-555-1234', isHotel: false, balance: 0, creditLimit: 0, ordersCount: 4 },
+    { id: 'c1', name: 'Carlos Manuel Fernández', phone: '809-555-1234', isHotel: false, balance: 250, creditLimit: 0, ordersCount: 4 },
     { id: 'c2', name: 'Hotel Boutique Colonial Santo Domingo', phone: '809-688-9000', isHotel: true, balance: 18500, creditLimit: 50000, ordersCount: 28 },
     { id: 'c3', name: 'María Elena Almonte', phone: '829-444-7890', isHotel: false, balance: 0, creditLimit: 0, ordersCount: 2 }
   ],
@@ -167,7 +168,7 @@ function saveState(state) {
 }
 
 // =====================================================================
-// 3. INICIALIZACIÓN Y RUTAS SPA
+// 3. INICIALIZACIÓN Y NAVEGACIÓN
 // =====================================================================
 document.addEventListener('DOMContentLoaded', () => {
   if (document.body.classList.contains('app-body')) {
@@ -184,8 +185,10 @@ function checkAuth() {
   }
   const nameEl = document.getElementById('userName');
   const avatarEl = document.getElementById('userAvatar');
-  if (nameEl) nameEl.innerText = user.name || 'Luis Bravo Bello';
+  const greetingEl = document.getElementById('dashboardGreeting');
+  if (nameEl) nameEl.innerText = user.name || 'Luis Bravo';
   if (avatarEl) avatarEl.innerText = user.avatar || 'LB';
+  if (greetingEl) greetingEl.innerText = `Buenas tardes, ${user.name ? user.name.split(' ')[0] : 'Luis'}`;
 }
 
 function logout() {
@@ -203,20 +206,20 @@ function switchSection(sectionId, btnElement) {
   if (btnElement) btnElement.classList.add('active');
 
   const titles = {
-    'dashboard': 'Panel de Control & Métricas',
-    'pos': 'Punto de Venta / Recepción de Prendas',
-    'kanban': 'Tablero de Taller & Flujo de Prendas',
-    'autoservicio': 'Monitoreo de Autoservicio & Torres',
-    'inventario': 'Inventario de Insumos & Suministros',
-    'clientes': 'Directorio de Clientes & Hoteles',
-    'caja': 'Control de Caja & Arqueo',
-    'configuracion': 'Configuración del Negocio & Perfil',
-    'faq': 'Preguntas Frecuentes & Manual Operativo',
-    'ayuda': 'Diagnóstico del Sistema & Soporte QA'
+    'dashboard': 'Panel Principal',
+    'pos': 'Punto de Venta / POS',
+    'kanban': 'Tablero Kanban',
+    'autoservicio': 'Autoservicio & Torres',
+    'inventario': 'Inventario Insumos',
+    'clientes': 'Clientes & Hoteles',
+    'caja': 'Control de Caja',
+    'configuracion': 'Configuración & Perfil',
+    'faq': 'Preguntas Frecuentes',
+    'ayuda': 'Ayuda & QA'
   };
 
   const titleEl = document.getElementById('currentSectionTitle');
-  if (titleEl) titleEl.innerText = titles[sectionId] || 'SyncOps Laundry Suite';
+  if (titleEl) titleEl.innerText = titles[sectionId] || 'SyncOps Suite';
 
   if (sectionId === 'dashboard') renderDashboard();
   if (sectionId === 'pos') renderPos();
@@ -229,13 +232,7 @@ function switchSection(sectionId, btnElement) {
 }
 
 function initApp() {
-  setInterval(() => {
-    const clock = document.getElementById('liveClock');
-    if (clock) clock.innerText = new Date().toLocaleTimeString('es-DO');
-  }, 1000);
-
   setInterval(tickMachineCycles, 1000);
-
   renderDashboard();
   renderPos();
   renderKanban();
@@ -247,7 +244,7 @@ function initApp() {
 }
 
 // =====================================================================
-// 4. MÓDULO: DASHBOARD
+// 4. MÓDULO 1: DASHBOARD
 // =====================================================================
 function renderDashboard() {
   const state = getState();
@@ -261,17 +258,12 @@ function renderDashboard() {
     .reduce((sum, o) => sum + o.items.length, 0);
 
   const maquinasEnUso = state.machines.filter(m => m.status === 'EnCiclo').length;
-  const maquinasLibres = state.machines.filter(m => m.status === 'Disponible').length;
-
-  const creditoHoteles = state.clients
-    .filter(c => c.isHotel)
-    .reduce((sum, c) => sum + c.balance, 0);
+  const insumosAlertas = state.inventory.filter(i => i.stock <= i.minStock).length;
 
   document.getElementById('kpiVentasHoy').innerText = `RD$${ventasHoy.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
   document.getElementById('kpiPrendasTaller').innerText = prendasTaller;
-  document.getElementById('kpiMaquinasUso').innerText = maquinasEnUso;
-  document.getElementById('kpiAutoservicio').innerHTML = `<span class="text-blue">${maquinasEnUso}</span> <span class="kpi-dim">en uso / ${maquinasLibres} libres</span>`;
-  document.getElementById('kpiHotelesCredito').innerText = `RD$${creditoHoteles.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+  document.getElementById('kpiInsumosAlertCount').innerText = insumosAlertas;
+  document.getElementById('kpiAutoservicio').innerHTML = `${maquinasEnUso} <span class="kpi-number-sub">en uso</span>`;
 
   const tbody = document.querySelector('#tableRecentOrders tbody');
   if (tbody) {
@@ -281,6 +273,12 @@ function renderDashboard() {
         <td><strong>${o.clientName}</strong></td>
         <td><span class="status-badge ${getStatusClass(o.status)}"><span class="status-dot"></span> ${o.status}</span></td>
         <td style="text-align: right;"><strong class="font-mono">RD$${o.total.toLocaleString('es-DO')}</strong><div style="font-size: .72rem; color: #DC2626; font-weight: 700;">${o.balance > 0 ? 'Pend: RD$' + o.balance : 'Pagado'}</div></td>
+        <td>
+          <div style="display: flex; gap: .35rem;">
+            ${o.balance > 0 ? `<button class="btn btn-outline btn-sm" onclick="openPayOrderModal('${o.id}')">Cobrar $</button>` : ''}
+            <button class="btn btn-outline btn-sm" onclick="displayThermalTicket(getState().orders.find(x=>x.id==='${o.id}'))">Ticket</button>
+          </div>
+        </td>
       </tr>
     `).join('');
   }
@@ -316,7 +314,7 @@ function getStatusClass(status) {
 }
 
 // =====================================================================
-// 5. MÓDULO: PUNTO DE VENTA (POS)
+// 5. MÓDULO 2: PUNTO DE VENTA (POS)
 // =====================================================================
 let currentOrderItems = [];
 let currentPaymentMethod = 'Efectivo';
@@ -557,7 +555,7 @@ function saveAndPrintOrder() {
 }
 
 // =====================================================================
-// 6. MÓDULO: TABLERO KANBAN DE TALLER
+// 6. MÓDULO 3: TABLERO KANBAN DE TALLER
 // =====================================================================
 function renderKanban(filter = '') {
   const state = getState();
@@ -583,14 +581,17 @@ function renderKanban(filter = '') {
     card.innerHTML = `
       <div class="kanban-card-top">
         <span class="kanban-ticket">${order.ticket}</span>
-        <span style="font-size: .75rem; font-weight: 800; color: var(--text-muted);">${order.items.length} prendas</span>
+        <span style="font-size: .75rem; font-weight: 800; color: var(--text-muted);">${order.items.length} pzs</span>
       </div>
       <div class="kanban-customer">${order.clientName}</div>
       <div class="kanban-meta">Entrega: ${order.delivery}</div>
-      ${order.isUrgent ? '<div class="badge-pill bg-rose font-bold" style="background:#FFE4E6; color:#E11D48; margin-bottom:.5rem;">Urgente</div>' : ''}
-      <button class="kanban-btn-advance" onclick="advanceOrderStatus('${order.id}')">
-        ${getNextStepLabel(order.status)}
-      </button>
+      ${order.isUrgent ? '<div class="badge-pill bg-rose font-bold" style="background:#FFE4E6; color:#E11D48; margin-bottom:.5rem;">⚡ Urgente</div>' : ''}
+      <div style="display: flex; gap: .35rem;">
+        <button class="kanban-btn-advance" style="flex: 1;" onclick="advanceOrderStatus('${order.id}')">
+          ${getNextStepLabel(order.status)}
+        </button>
+        ${order.balance > 0 ? `<button class="btn btn-outline btn-sm" onclick="openPayOrderModal('${order.id}')" title="Cobrar Saldo">$</button>` : ''}
+      </div>
     `;
 
     if (order.status === 'Recibido' && cols['Recibido']) {
@@ -647,7 +648,7 @@ function filterKanban(val) {
 }
 
 // =====================================================================
-// 7. MÓDULO: AUTOSERVICIO & TORRES
+// 7. MÓDULO 4: AUTOSERVICIO & TORRES
 // =====================================================================
 function renderMachines() {
   const state = getState();
@@ -824,7 +825,7 @@ function sellTokens() {
 }
 
 // =====================================================================
-// 8. MÓDULO: INVENTARIO, CLIENTES & CAJA
+// 8. CRUD COMPLETO: INVENTARIO DE INSUMOS
 // =====================================================================
 function renderInventory() {
   const state = getState();
@@ -841,7 +842,11 @@ function renderInventory() {
       <td><span class="font-mono">${i.minStock} ${i.unit}</span></td>
       <td><span class="font-mono">RD$${i.cost}</span></td>
       <td>
-        <button class="btn btn-outline btn-sm" onclick="addStockItem('${i.id}', 5)">+5 ${i.unit}</button>
+        <div style="display: flex; gap: .35rem;">
+          <button class="btn btn-outline btn-sm" onclick="openNewInsumoModal('${i.id}')">Editar</button>
+          <button class="btn btn-outline btn-sm" onclick="addStockItem('${i.id}', 5)">+5</button>
+          <button class="btn btn-outline btn-sm" style="color:#DC2626;" onclick="deleteInsumo('${i.id}')">✕</button>
+        </div>
       </td>
     </tr>
   `).join('');
@@ -851,6 +856,89 @@ function renderInventory() {
       <option value="${i.id}">${i.name} (Actual: ${i.stock} ${i.unit})</option>
     `).join('');
   }
+}
+
+function openNewInsumoModal(insumoId = null) {
+  const state = getState();
+  const modal = document.getElementById('insumoModal');
+  const title = document.getElementById('insumoModalTitle');
+  if (!modal) return;
+
+  if (insumoId) {
+    const item = state.inventory.find(i => i.id === insumoId);
+    if (item) {
+      title.innerText = 'Editar Insumo';
+      document.getElementById('modalInsumoId').value = item.id;
+      document.getElementById('modalInsumoCode').value = item.code;
+      document.getElementById('modalInsumoName').value = item.name;
+      document.getElementById('modalInsumoCategory').value = item.category;
+      document.getElementById('modalInsumoStock').value = item.stock;
+      document.getElementById('modalInsumoMin').value = item.minStock;
+      document.getElementById('modalInsumoUnit').value = item.unit;
+      document.getElementById('modalInsumoCost').value = item.cost;
+      document.getElementById('modalInsumoProvider').value = item.provider;
+    }
+  } else {
+    title.innerText = 'Registrar Nuevo Insumo';
+    document.getElementById('modalInsumoId').value = '';
+    document.getElementById('modalInsumoCode').value = '746' + Math.floor(100000 + Math.random()*900000);
+    document.getElementById('modalInsumoName').value = '';
+    document.getElementById('modalInsumoStock').value = '10';
+    document.getElementById('modalInsumoMin').value = '5';
+    document.getElementById('modalInsumoUnit').value = 'Galones';
+    document.getElementById('modalInsumoCost').value = '450';
+    document.getElementById('modalInsumoProvider').value = 'Químicos del Caribe';
+  }
+
+  modal.classList.add('active');
+}
+
+function closeInsumoModal() {
+  const modal = document.getElementById('insumoModal');
+  if (modal) modal.classList.remove('active');
+}
+
+function saveInsumoModal(e) {
+  e.preventDefault();
+  const state = getState();
+  const id = document.getElementById('modalInsumoId').value;
+  const code = document.getElementById('modalInsumoCode').value.trim();
+  const name = document.getElementById('modalInsumoName').value.trim();
+  const category = document.getElementById('modalInsumoCategory').value;
+  const stock = parseFloat(document.getElementById('modalInsumoStock').value) || 0;
+  const minStock = parseFloat(document.getElementById('modalInsumoMin').value) || 1;
+  const unit = document.getElementById('modalInsumoUnit').value.trim();
+  const cost = parseFloat(document.getElementById('modalInsumoCost').value) || 0;
+  const provider = document.getElementById('modalInsumoProvider').value.trim();
+
+  if (id) {
+    const item = state.inventory.find(i => i.id === id);
+    if (item) {
+      Object.assign(item, { code, name, category, stock, minStock, unit, cost, provider });
+      showToast('Insumo actualizado exitosamente.', 'success');
+    }
+  } else {
+    state.inventory.push({
+      id: 'i_' + Date.now(),
+      code, name, category, stock, minStock, unit, cost, provider
+    });
+    showToast('Nuevo insumo registrado.', 'success');
+  }
+
+  saveState(state);
+  renderInventory();
+  renderDashboard();
+  closeInsumoModal();
+}
+
+function deleteInsumo(insumoId) {
+  if (!confirm('¿Deseas eliminar este insumo del inventario?')) return;
+  const state = getState();
+  state.inventory = state.inventory.filter(i => i.id !== insumoId);
+  saveState(state);
+  renderInventory();
+  renderDashboard();
+  showToast('Insumo eliminado.', 'info');
 }
 
 function addStockItem(itemId, delta) {
@@ -873,6 +961,9 @@ function executeQuickRestock() {
   }
 }
 
+// =====================================================================
+// 9. CRUD COMPLETO: CLIENTES & CUENTAS DE HOTELES
+// =====================================================================
 function renderClients() {
   const state = getState();
   const tbody = document.getElementById('clientsTableBody');
@@ -894,10 +985,235 @@ function renderClients() {
       </td>
       <td><span class="font-mono">${c.creditLimit > 0 ? 'RD$' + c.creditLimit.toLocaleString('es-DO') : 'Sin Crédito'}</span></td>
       <td><span class="font-mono">${c.ordersCount}</span></td>
+      <td>
+        <div style="display: flex; gap: .35rem;">
+          <button class="btn btn-outline btn-sm" onclick="openNewClientModal('${c.id}')">Editar</button>
+          <button class="btn btn-outline btn-sm" style="color:#DC2626;" onclick="deleteClient('${c.id}')">✕</button>
+        </div>
+      </td>
     </tr>
   `).join('');
 }
 
+function openNewClientModal(clientId = null) {
+  const state = getState();
+  const modal = document.getElementById('clientModal');
+  const title = document.getElementById('clientModalTitle');
+  if (!modal) return;
+
+  if (clientId) {
+    const c = state.clients.find(x => x.id === clientId);
+    if (c) {
+      title.innerText = 'Editar Cliente / Empresa';
+      document.getElementById('modalClientId').value = c.id;
+      document.getElementById('modalClientName').value = c.name;
+      document.getElementById('modalClientPhone').value = c.phone;
+      document.getElementById('modalClientIsHotel').value = c.isHotel ? 'true' : 'false';
+      document.getElementById('modalClientCreditLimit').value = c.creditLimit || 0;
+    }
+  } else {
+    title.innerText = 'Registrar Nuevo Cliente';
+    document.getElementById('modalClientId').value = '';
+    document.getElementById('modalClientName').value = '';
+    document.getElementById('modalClientPhone').value = '';
+    document.getElementById('modalClientIsHotel').value = 'false';
+    document.getElementById('modalClientCreditLimit').value = '0';
+  }
+
+  modal.classList.add('active');
+}
+
+function closeClientModal() {
+  const modal = document.getElementById('clientModal');
+  if (modal) modal.classList.remove('active');
+}
+
+function saveClientModal(e) {
+  e.preventDefault();
+  const state = getState();
+  const id = document.getElementById('modalClientId').value;
+  const name = document.getElementById('modalClientName').value.trim();
+  const phone = document.getElementById('modalClientPhone').value.trim();
+  const isHotel = document.getElementById('modalClientIsHotel').value === 'true';
+  const creditLimit = parseFloat(document.getElementById('modalClientCreditLimit').value) || 0;
+
+  if (id) {
+    const c = state.clients.find(x => x.id === id);
+    if (c) {
+      c.name = name;
+      c.phone = phone;
+      c.isHotel = isHotel;
+      c.creditLimit = creditLimit;
+      showToast('Cliente actualizado.', 'success');
+    }
+  } else {
+    state.clients.push({
+      id: 'c_' + Date.now(),
+      name, phone, isHotel, balance: 0, creditLimit, ordersCount: 0
+    });
+    showToast('Nuevo cliente registrado.', 'success');
+  }
+
+  saveState(state);
+  renderClients();
+  renderPos();
+  renderDashboard();
+  closeClientModal();
+}
+
+function deleteClient(clientId) {
+  if (!confirm('¿Deseas eliminar este cliente?')) return;
+  const state = getState();
+  state.clients = state.clients.filter(c => c.id !== clientId);
+  saveState(state);
+  renderClients();
+  renderPos();
+  showToast('Cliente eliminado.', 'info');
+}
+
+// =====================================================================
+// 10. MODAL DE COBRO DE SALDO PENDIENTE (CRUD)
+// =====================================================================
+function openPayOrderModal(orderId) {
+  const state = getState();
+  const order = state.orders.find(o => o.id === orderId);
+  if (!order) return;
+
+  document.getElementById('payModalOrderId').value = order.id;
+  document.getElementById('payModalTicket').innerText = order.ticket;
+  document.getElementById('payModalClient').innerText = order.clientName;
+  document.getElementById('payModalBalance').innerText = `RD$${order.balance.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+  document.getElementById('payModalAmount').value = order.balance;
+
+  document.getElementById('payOrderModal').classList.add('active');
+}
+
+function closePayOrderModal() {
+  document.getElementById('payOrderModal').classList.remove('active');
+}
+
+function submitPayOrder(e) {
+  e.preventDefault();
+  const state = getState();
+  const orderId = document.getElementById('payModalOrderId').value;
+  const amount = parseFloat(document.getElementById('payModalAmount').value) || 0;
+  const method = document.getElementById('payModalMethod').value;
+
+  const order = state.orders.find(o => o.id === orderId);
+  if (!order || amount <= 0) return;
+
+  order.paid += amount;
+  order.balance = Math.max(0, order.total - order.paid);
+
+  state.cashMovements.push({
+    id: 'cm_' + Date.now(),
+    time: new Date().toLocaleTimeString('es-DO', {hour:'2-digit', minute:'2-digit'}),
+    type: 'Cobro Saldo',
+    concept: `Saldo Ticket ${order.ticket} (${order.clientName})`,
+    method,
+    amount
+  });
+
+  const client = state.clients.find(c => c.id === order.clientId);
+  if (client && client.isHotel) {
+    client.balance = Math.max(0, client.balance - amount);
+  }
+
+  saveState(state);
+  renderDashboard();
+  renderKanban();
+  renderCash();
+  renderClients();
+  closePayOrderModal();
+  showToast(`Pago de RD$${amount} registrado para ${order.ticket}.`, 'success');
+}
+
+// =====================================================================
+// 11. BÚSQUEDA GLOBAL (⌘K TOPBAR SEARCH)
+// =====================================================================
+function handleGlobalSearch(query) {
+  const box = document.getElementById('globalSearchResults');
+  if (!box) return;
+
+  const term = query.toLowerCase().trim();
+  if (!term) {
+    box.style.display = 'none';
+    box.innerHTML = '';
+    return;
+  }
+
+  const state = getState();
+  const matchingOrders = state.orders.filter(o => o.ticket.toLowerCase().includes(term) || o.clientName.toLowerCase().includes(term));
+  const matchingClients = state.clients.filter(c => c.name.toLowerCase().includes(term) || c.phone.includes(term));
+  const matchingInventory = state.inventory.filter(i => i.name.toLowerCase().includes(term) || i.code.includes(term));
+
+  let html = '';
+  if (matchingOrders.length > 0) {
+    html += '<div style="font-size: .65rem; font-weight: 800; color: var(--text-dim); padding: 4px 8px;">ÓRDENES</div>';
+    matchingOrders.slice(0, 3).forEach(o => {
+      html += `
+        <div class="search-result-item" onclick="selectSearchResult('order', '${o.id}')">
+          <span class="search-result-title">${o.ticket} — ${o.clientName}</span>
+          <span class="search-result-desc">Estado: ${o.status} • Total: RD$${o.total}</span>
+        </div>
+      `;
+    });
+  }
+
+  if (matchingClients.length > 0) {
+    html += '<div style="font-size: .65rem; font-weight: 800; color: var(--text-dim); padding: 4px 8px; margin-top: 4px;">CLIENTES</div>';
+    matchingClients.slice(0, 3).forEach(c => {
+      html += `
+        <div class="search-result-item" onclick="selectSearchResult('client', '${c.id}')">
+          <span class="search-result-title">${c.name}</span>
+          <span class="search-result-desc">Tel: ${c.phone} • ${c.isHotel ? 'Hotel' : 'Particular'}</span>
+        </div>
+      `;
+    });
+  }
+
+  if (matchingInventory.length > 0) {
+    html += '<div style="font-size: .65rem; font-weight: 800; color: var(--text-dim); padding: 4px 8px; margin-top: 4px;">INSUMOS</div>';
+    matchingInventory.slice(0, 3).forEach(i => {
+      html += `
+        <div class="search-result-item" onclick="selectSearchResult('inventory', '${i.id}')">
+          <span class="search-result-title">${i.name}</span>
+          <span class="search-result-desc">Stock: ${i.stock} ${i.unit} • Código: ${i.code}</span>
+        </div>
+      `;
+    });
+  }
+
+  if (!html) {
+    html = '<div style="padding: 1rem; text-align: center; font-size: .8rem; color: var(--text-dim);">No se encontraron resultados.</div>';
+  }
+
+  box.innerHTML = html;
+  box.style.display = 'block';
+}
+
+function selectSearchResult(type, id) {
+  const box = document.getElementById('globalSearchResults');
+  if (box) box.style.display = 'none';
+  document.getElementById('globalSearchInput').value = '';
+
+  if (type === 'order') {
+    switchSection('kanban', document.querySelectorAll('.nav-item')[2]);
+    const state = getState();
+    const order = state.orders.find(o => o.id === id);
+    if (order) displayThermalTicket(order);
+  } else if (type === 'client') {
+    switchSection('clientes', document.querySelectorAll('.nav-item')[5]);
+    openNewClientModal(id);
+  } else if (type === 'inventory') {
+    switchSection('inventario', document.querySelectorAll('.nav-item')[4]);
+    openNewInsumoModal(id);
+  }
+}
+
+// =====================================================================
+// 12. CONTROL DE CAJA
+// =====================================================================
 function renderCash() {
   const state = getState();
   const tbody = document.getElementById('cashMovementsTableBody');
@@ -930,7 +1246,7 @@ function closeCashShift() {
 }
 
 // =====================================================================
-// 9. NUEVO MÓDULO: CONFIGURACIÓN & PERFIL
+// 13. CONFIGURACIÓN & PERFIL
 // =====================================================================
 function loadConfigInputs() {
   const state = getState();
@@ -938,7 +1254,7 @@ function loadConfigInputs() {
   
   const nameEl = document.getElementById('cfgUserName');
   const emailEl = document.getElementById('cfgUserEmail');
-  if (nameEl) nameEl.value = user.name || 'Luis Bravo Bello';
+  if (nameEl) nameEl.value = user.name || 'Luis Bravo';
   if (emailEl) emailEl.value = user.email || 'luisb@gmail.com';
 
   const cfg = state.config || DEFAULT_STATE.config;
@@ -953,7 +1269,6 @@ function loadConfigInputs() {
 function saveUserProfile() {
   const name = document.getElementById('cfgUserName').value.trim();
   const email = document.getElementById('cfgUserEmail').value.trim();
-  const newPass = document.getElementById('cfgNewPass').value.trim();
 
   if (!name || !email) {
     showToast('Nombre y correo son obligatorios.', 'error');
@@ -984,7 +1299,7 @@ function saveBusinessConfig() {
 }
 
 // =====================================================================
-// 10. NUEVO MÓDULO: FAQ (PREGUNTAS FRECUENTES)
+// 14. FAQ & AYUDA QA
 // =====================================================================
 function toggleFaq(buttonEl) {
   const item = buttonEl.closest('.faq-item');
@@ -1002,20 +1317,17 @@ function filterFaq(term) {
   });
 }
 
-// =====================================================================
-// 11. NUEVO MÓDULO: AYUDA & DIAGNÓSTICO QA
-// =====================================================================
 function runQaTest(testType) {
   if (testType === 'ticket') {
     const state = getState();
     if (state.orders.length > 0) {
       displayThermalTicket(state.orders[0]);
-      showToast('Test QA: Ticket de prueba generado correctamente.', 'success');
+      showToast('Test QA: Ticket generado correctamente.', 'success');
     }
   } else if (testType === 'calc') {
-    showToast('Test QA: Motor de cálculo y balance validado (0 errores).', 'success');
+    showToast('Test QA: Motor de cálculo validado (0 errores).', 'success');
   } else if (testType === 'barcode') {
-    showToast('Test QA: Formato Code128 / EAN13 verificado.', 'success');
+    showToast('Test QA: Formato Code128 verificado.', 'success');
   } else if (testType === 'reset') {
     if (confirm('¿Deseas restablecer todos los datos de demostración a su estado original?')) {
       localStorage.removeItem('syncops_laundry_state');
@@ -1034,7 +1346,7 @@ function submitSupportTicket(e) {
 }
 
 // =====================================================================
-// 12. TICKET TÉRMICO IMPRIMIBLE
+// 15. TICKET TÉRMICO IMPRIMIBLE
 // =====================================================================
 function displayThermalTicket(order) {
   const state = getState();
@@ -1079,7 +1391,7 @@ function printThermalTicket() {
 }
 
 // =====================================================================
-// 13. SISTEMA DE TOASTS
+// 16. SISTEMA DE NOTIFICACIONES (TOASTS)
 // =====================================================================
 function showToast(message, type = 'info') {
   const container = document.getElementById('toastContainer');
