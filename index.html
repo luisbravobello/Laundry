@@ -184,9 +184,8 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
         </button>
 
-        <button class="topbar-action-btn" title="Notificaciones" onclick="showToast('Todas las alertas operativas al día.', 'success')">
+        <button class="topbar-action-btn" title="Notificaciones" onclick="showToast('Bandeja de notificaciones limpia. No hay alertas pendientes.', 'info')">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="badge-count-red">9+</span>
         </button>
 
         <button class="topbar-action-btn" title="Modo Pantalla / Configuración" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[5])">
@@ -585,23 +584,56 @@
       </section>
 
       <!-- ====================================================
-           3. SECCIÓN: FACTURACIÓN & HISTORIAL DE FACTURAS
+           3. SECCIÓN: FACTURACIÓN & HISTORIAL DE FACTURAS (FORTEXA ERP)
            ==================================================== -->
       <section id="section-facturacion" class="content-section">
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h2 class="greeting-title" style="font-size: 1.35rem;">Historial de Facturas &amp; Estado de Cobro</h2>
-              <p class="greeting-sub">Monitorea facturas emitidas, saldos pendientes y cobros registrados.</p>
+        <!-- HEADER DE PÁGINA FORTEXA -->
+        <div class="fortexa-page-header">
+          <div>
+            <button class="btn-back-link" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Volver al Panel</span>
+            </button>
+            <div class="fortexa-title-box">
+              <h1 class="fortexa-title">Historial de Facturas &amp; Cobros</h1>
+              <span class="badge-live-pill"><span style="color: #2563EB;">●</span> EN VIVO</span>
             </div>
-            
-            <div style="display: flex; gap: .75rem; align-items: center;">
-              <button class="btn btn-outline" onclick="exportToExcel('facturas')" style="display: flex; align-items: center; gap: .4rem; border-color: #10B981; color: #047857; font-weight: 700;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-                <span>📊 Exportar a Excel</span>
-              </button>
-              <input type="text" id="facturacionSearchInput" class="form-input" placeholder="Buscar factura o cliente..." style="width: 250px;" oninput="filterFacturacion(this.value)" />
-              <button class="btn btn-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">+ Nueva Factura</button>
+            <p class="fortexa-sub">Monitorea facturas emitidas, saldos pendientes y cobros registrados</p>
+          </div>
+
+          <!-- BOTONES DE ACCIÓN FORTEXA ERP -->
+          <div class="fortexa-actions-group">
+            <button class="btn-fortexa-outline" onclick="exportToExcel('facturas')" title="Exportar reporte de facturas">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+              <span>Exportar Excel</span>
+            </button>
+            <button class="btn-fortexa-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>+ Nueva Factura POS</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- TARJETA DE BÚSQUEDA Y FILTRADO FORTEXA ERP -->
+        <div class="fortexa-filter-card">
+          <div class="fortexa-filter-title">Buscar Factura / Cliente</div>
+          <div class="fortexa-filter-row">
+            <div class="fortexa-filter-input-box">
+              <svg class="fortexa-filter-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="facturacionSearchInput" class="fortexa-filter-input" placeholder="Buscar factura, cliente, teléfono..." oninput="filterFacturacion(this.value)" />
+            </div>
+            <button class="btn-fortexa-outline" onclick="renderFacturacion()" title="Actualizar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              <span>Actualizar</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card" style="border-radius: var(--r-lg); border: 1px solid var(--border);">
+          <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: .85rem;">
+            <div>
+              <h3 style="font-size: 1.1rem; font-weight: 800; color: #0F172A;">Registro de Comprobantes Emitidos</h3>
+              <p style="font-size: .78rem; color: var(--text-muted); margin-top: 2px;">Visualiza y edita facturas con el botón de lápiz ✏️</p>
             </div>
           </div>
 
@@ -633,80 +665,88 @@
       </section>
 
       <!-- ====================================================
-           4. SECCIÓN: REPORTES & INGRESOS (CON EXPORTACIÓN PDF Y EXCEL)
+           4. SECCIÓN: REPORTES & INGRESOS (DISEÑO FORTEXA ERP)
            ==================================================== -->
       <section id="section-reportes" class="content-section">
-        <div class="page-header-row">
+        
+        <!-- HEADER DE PÁGINA FORTEXA -->
+        <div class="fortexa-page-header">
           <div>
-            <h1 class="greeting-title">Reportes Financieros &amp; Ingresos</h1>
-            <p class="greeting-sub">Análisis de facturación, recaudación y exportación formal en PDF y Excel.</p>
+            <button class="btn-back-link" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Volver al Panel</span>
+            </button>
+            <div class="fortexa-title-box">
+              <h1 class="fortexa-title">Reportes Financieros &amp; Ingresos</h1>
+              <span class="badge-live-pill"><span style="color: #2563EB;">●</span> EN VIVO</span>
+            </div>
+            <p class="fortexa-sub">Análisis de facturación, recaudación y exportación formal en PDF y Excel</p>
           </div>
 
-          <div style="display: flex; gap: .75rem;">
-            <button class="btn btn-outline" onclick="exportFinancialSummaryExcel()" style="display: flex; align-items: center; gap: .4rem; border-color: #10B981; color: #047857; font-weight: 700; background: #ECFDF5;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
-              <span>📊 Descargar Excel (.xlsx / .csv)</span>
+          <!-- BOTONES DE ACCIÓN FORTEXA ERP -->
+          <div class="fortexa-actions-group">
+            <button class="btn-fortexa-outline" onclick="exportFinancialSummaryExcel()" title="Descargar Excel">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              <span>Descargar Excel (.xlsx)</span>
             </button>
-
-            <button class="btn btn-primary" onclick="openPrintFinancialReport()" style="display: flex; align-items: center; gap: .5rem; background: #2563EB;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span>📄 Generar Reporte PDF</span>
+            <button class="btn-fortexa-primary" onclick="openPrintFinancialReport()" title="Generar Reporte PDF">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Generar Reporte PDF</span>
             </button>
           </div>
         </div>
 
-        <!-- 4 KPI Cards de Finanzas -->
-        <div class="kpi-row" style="margin-bottom: 1.5rem;">
-          <div class="kpi-card-modern">
-            <div class="kpi-top-box">
-              <div class="kpi-icon-container bg-icon-purple">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-              </div>
-              <span class="kpi-label-text">Total Facturado</span>
+        <!-- 4 KPI Cards de Finanzas Fortexa -->
+        <div class="fortexa-kpi-row" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 1.5rem;">
+          
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
             </div>
-            <div class="kpi-main-number" id="repTotalFacturado">RD$0.00</div>
-            <div class="kpi-footer-row"><span class="trend-positive">Valor total de servicios emitidos</span></div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number font-mono text-blue" id="repTotalFacturado">RD$0.00</div>
+              <div class="fortexa-kpi-label">Total Facturado</div>
+            </div>
           </div>
 
-          <div class="kpi-card-modern">
-            <div class="kpi-top-box">
-              <div class="kpi-icon-container bg-icon-emerald">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-              <span class="kpi-label-text">Total Recaudado / Cobrado</span>
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-green">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <div class="kpi-main-number text-emerald" id="repTotalCobrado">RD$0.00</div>
-            <div class="kpi-footer-row"><span class="trend-positive">Efectivo, Tarjetas y Bancos</span></div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number font-mono text-green" id="repTotalCobrado">RD$0.00</div>
+              <div class="fortexa-kpi-label">Total Recaudado / Cobrado</div>
+            </div>
           </div>
 
-          <div class="kpi-card-modern">
-            <div class="kpi-top-box">
-              <div class="kpi-icon-container bg-icon-rose">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              </div>
-              <span class="kpi-label-text">Cuentas por Cobrar (Saldos)</span>
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-amber">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             </div>
-            <div class="kpi-main-number text-rose" id="repTotalPendiente">RD$0.00</div>
-            <div class="kpi-footer-row"><span class="trend-alert">Saldos pendientes de cobro</span></div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number font-mono text-amber" id="repTotalPendiente">RD$0.00</div>
+              <div class="fortexa-kpi-label">Cuentas por Cobrar (Saldos)</div>
+            </div>
           </div>
 
-          <div class="kpi-card-modern">
-            <div class="kpi-top-box">
-              <div class="kpi-icon-container bg-icon-cyan">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
-              </div>
-              <span class="kpi-label-text">Total de Facturas</span>
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
             </div>
-            <div class="kpi-main-number" id="repTotalFacturasCount">0</div>
-            <div class="kpi-footer-row"><span class="trend-positive">Transacciones procesadas</span></div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number" id="repTotalFacturasCount">0</div>
+              <div class="fortexa-kpi-label">Total de Facturas</div>
+            </div>
           </div>
+
         </div>
 
-        <!-- Filtros Rápidos de Reporte -->
-        <div class="card" style="margin-bottom: 1.5rem;">
-          <div class="form-row-3" style="align-items: flex-end;">
+        <!-- Filtros Rápidos Fortexa ERP -->
+        <div class="fortexa-filter-card" style="margin-bottom: 1.5rem;">
+          <div class="fortexa-filter-title">Filtros de Análisis Financiero</div>
+          <div class="form-row-3" style="align-items: flex-end; margin-bottom: 0;">
             <div class="form-group">
-              <label>Período de Análisis:</label>
+              <label class="field-label">Período de Análisis:</label>
               <select id="reportPeriodSelect" class="form-input" onchange="filterReportData()">
                 <option value="all">Todo el Historial</option>
                 <option value="today">Hoy</option>
@@ -716,7 +756,7 @@
             </div>
 
             <div class="form-group">
-              <label>Estado de Pago:</label>
+              <label class="field-label">Estado de Pago:</label>
               <select id="reportStatusSelect" class="form-input" onchange="filterReportData()">
                 <option value="all">Todas las Facturas</option>
                 <option value="paid">Sólo Pagadas</option>
@@ -725,16 +765,19 @@
             </div>
 
             <div class="form-group">
-              <label>Buscar en Reporte:</label>
+              <label class="field-label">Buscar en Reporte:</label>
               <input type="text" id="reportSearchInput" class="form-input" placeholder="Filtrar por cliente o factura..." oninput="filterReportData()" />
             </div>
           </div>
         </div>
 
         <!-- Tabla Detallada de Ingresos -->
-        <div class="card">
-          <div class="card-header">
-            <h3>Detalle de Transacciones e Ingresos</h3>
+        <div class="card" style="border-radius: var(--r-lg); border: 1px solid var(--border);">
+          <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: .85rem;">
+            <div>
+              <h3 style="font-size: 1.1rem; font-weight: 800; color: #0F172A;">Detalle de Transacciones e Ingresos</h3>
+              <p style="font-size: .78rem; color: var(--text-muted); margin-top: 2px;">Comprobantes, recaudación y saldos calculados en tiempo real</p>
+            </div>
           </div>
           <div class="table-responsive">
             <table class="table">
