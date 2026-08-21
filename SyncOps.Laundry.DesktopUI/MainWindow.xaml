@@ -7,13 +7,12 @@
         xmlns:views="clr-namespace:SyncOps.Laundry.DesktopUI.Views.Pages"
         mc:Ignorable="d"
         Title="SyncOps Laundry &amp; Tailoring Suite — ERP &amp; POS" 
-        Height="820" Width="1360"
+        Height="840" Width="1380"
         MinHeight="720" MinWidth="1100"
         WindowStartupLocation="CenterScreen"
-        Background="{StaticResource BgSubtleBrush}">
+        Background="{StaticResource BgBaseBrush}">
 
     <Window.Resources>
-        <!-- DataTemplates para vincular automáticamente cada ViewModel con su View -->
         <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
             <views:DashboardView/>
         </DataTemplate>
@@ -39,14 +38,14 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260"/>
+            <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- ==============================================
-             BARRA LATERAL DE NAVEGACIÓN (Sidebar Sapphire)
+             BARRA LATERAL (SIDEBAR BLANCO MODERNO SYNCOPS)
              ============================================== -->
-        <Border Grid.Column="0" Background="{StaticResource BrandGradientBrush}">
+        <Border Grid.Column="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,1,0">
             <Grid Margin="16,20,16,16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -54,84 +53,97 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- LOGO & TITULO DE MARCA -->
-                <StackPanel Grid.Row="0" Margin="4,0,4,28">
-                    <Grid Margin="0,0,0,8">
-                        <StackPanel Orientation="Horizontal">
-                            <Border Background="{StaticResource BlueLightBrush}" CornerRadius="8" Padding="8,6" Margin="0,0,10,0">
-                                <Path Data="{StaticResource IconWasher}" Fill="#FFFFFF" Width="18" Height="18" Stretch="Uniform"/>
-                            </Border>
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="SyncOps" FontSize="18" FontWeight="ExtraBold" Foreground="#FFFFFF"/>
-                                <TextBlock Text="LAUNDRY &amp; SUITE" FontSize="9.5" FontWeight="Bold" Foreground="#93C5FD"/>
+                <!-- BRAND HEADER -->
+                <Grid Grid.Row="0" Margin="4,0,4,24">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <!-- Icon Container Soft Sapphire -->
+                        <Border Width="38" Height="38" CornerRadius="10" Background="{StaticResource BlueSubtleBrush}" BorderBrush="{StaticResource BlueBorderBrush}" BorderThickness="1" Margin="0,0,10,0">
+                            <Path Data="{StaticResource IconWasher}" Fill="{StaticResource BlueVibrantBrush}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Sync" FontSize="18" FontWeight="ExtraBold" Foreground="{StaticResource BlueDeepBrush}"/>
+                                <TextBlock Text="Ops" FontSize="18" FontWeight="ExtraBold" Foreground="{StaticResource BlueVibrantBrush}"/>
                             </StackPanel>
+                            <TextBlock Text="LAUNDRY &amp; SUITE" FontSize="9" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+                <!-- NAVEGACIÓN -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
+                        <TextBlock Text="MÓDULOS PRINCIPALES" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextDimBrush}" Margin="8,4,0,8"/>
+
+                        <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="Dashboard" IsChecked="True">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="{StaticResource IconDashboard}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="15" Height="15" Stretch="Uniform" Margin="0,0,10,0"/>
+                                <TextBlock Text="Panel &amp; Métricas"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="POS">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="{StaticResource IconPos}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="15" Height="15" Stretch="Uniform" Margin="0,0,10,0"/>
+                                <TextBlock Text="Punto de Venta / POS"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="Kanban">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="{StaticResource IconKanban}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="15" Height="15" Stretch="Uniform" Margin="0,0,10,0"/>
+                                <TextBlock Text="Tablero de Taller"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="Autoservicio">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="{StaticResource IconWasher}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="15" Height="15" Stretch="Uniform" Margin="0,0,10,0"/>
+                                <TextBlock Text="Autoservicio &amp; Torres"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <TextBlock Text="ADMINISTRACIÓN" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextDimBrush}" Margin="8,20,0,8"/>
+
+                        <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="Inventario">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="{StaticResource IconInventory}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="15" Height="15" Stretch="Uniform" Margin="0,0,10,0"/>
+                                <TextBlock Text="Inventario Insumos"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="Clientes">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="{StaticResource IconClients}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="15" Height="15" Stretch="Uniform" Margin="0,0,10,0"/>
+                                <TextBlock Text="Clientes &amp; Hoteles"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="Caja">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="{StaticResource IconCash}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="15" Height="15" Stretch="Uniform" Margin="0,0,10,0"/>
+                                <TextBlock Text="Control de Caja"/>
+                            </StackPanel>
+                        </RadioButton>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- FOOTER DE USUARIO -->
+                <Border Grid.Row="2" Background="{StaticResource BgHoverBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="10,8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- Avatar circle -->
+                        <Border Grid.Column="0" Width="30" Height="30" CornerRadius="15" Background="{StaticResource BlueVibrantBrush}" Margin="0,0,8,0">
+                            <TextBlock Text="LB" FontWeight="Bold" FontSize="11" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding UsuarioActual}" FontWeight="Bold" FontSize="11.5" Foreground="{StaticResource TextMainBrush}" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Text="Administrador • POS 01" FontSize="10" Foreground="{StaticResource TextMutedBrush}"/>
                         </StackPanel>
                     </Grid>
-                    <TextBlock Text="Lavandería • Sastrería • Autoservicio" FontSize="11" Foreground="#BFDBFE" Margin="4,0,0,0"/>
-                </StackPanel>
-
-                <!-- BOTONES DE NAVEGACIÓN DE MÓDULOS -->
-                <StackPanel Grid.Row="1">
-                    <TextBlock Text="MÓDULOS PRINCIPALES" FontSize="10" FontWeight="Bold" Foreground="#93C5FD" Margin="8,0,0,8"/>
-
-                    <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="Dashboard" IsChecked="True">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Data="{StaticResource IconDashboard}" Fill="#FFFFFF" Width="16" Height="16" Stretch="Uniform" Margin="0,0,12,0"/>
-                            <TextBlock Text="Panel &amp; Métricas"/>
-                        </StackPanel>
-                    </RadioButton>
-
-                    <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="POS">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Data="{StaticResource IconPos}" Fill="#FFFFFF" Width="16" Height="16" Stretch="Uniform" Margin="0,0,12,0"/>
-                            <TextBlock Text="Punto de Venta / POS"/>
-                        </StackPanel>
-                    </RadioButton>
-
-                    <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="Kanban">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Data="{StaticResource IconKanban}" Fill="#FFFFFF" Width="16" Height="16" Stretch="Uniform" Margin="0,0,12,0"/>
-                            <TextBlock Text="Tablero de Taller"/>
-                        </StackPanel>
-                    </RadioButton>
-
-                    <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="Autoservicio">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Data="{StaticResource IconWasher}" Fill="#FFFFFF" Width="16" Height="16" Stretch="Uniform" Margin="0,0,12,0"/>
-                            <TextBlock Text="Autoservicio &amp; Torres"/>
-                        </StackPanel>
-                    </RadioButton>
-
-                    <TextBlock Text="ADMINISTRACIÓN &amp; CONTROL" FontSize="10" FontWeight="Bold" Foreground="#93C5FD" Margin="8,20,0,8"/>
-
-                    <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="Inventario">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Data="{StaticResource IconInventory}" Fill="#FFFFFF" Width="16" Height="16" Stretch="Uniform" Margin="0,0,12,0"/>
-                            <TextBlock Text="Inventario Insumos"/>
-                        </StackPanel>
-                    </RadioButton>
-
-                    <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="Clientes">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Data="{StaticResource IconClients}" Fill="#FFFFFF" Width="16" Height="16" Stretch="Uniform" Margin="0,0,12,0"/>
-                            <TextBlock Text="Clientes &amp; Hoteles"/>
-                        </StackPanel>
-                    </RadioButton>
-
-                    <RadioButton Style="{StaticResource NavButton}" Command="{Binding NavegarCommand}" CommandParameter="Caja">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Data="{StaticResource IconCash}" Fill="#FFFFFF" Width="16" Height="16" Stretch="Uniform" Margin="0,0,12,0"/>
-                            <TextBlock Text="Control de Caja"/>
-                        </StackPanel>
-                    </RadioButton>
-                </StackPanel>
-
-                <!-- USUARIO Y VERSIÓN -->
-                <Border Grid.Row="2" Background="#082A66" CornerRadius="8" Padding="12,10">
-                    <StackPanel>
-                        <TextBlock Text="{Binding UsuarioActual}" FontWeight="Bold" FontSize="12" Foreground="#FFFFFF"/>
-                        <TextBlock Text="Terminal Principal POS • v1.0.0" FontSize="10" Foreground="#93C5FD" Margin="0,2,0,0"/>
-                    </StackPanel>
                 </Border>
             </Grid>
         </Border>
@@ -145,31 +157,34 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- BARRA SUPERIOR (HEADER) -->
-            <Border Grid.Row="0" Background="{StaticResource BgWhiteBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="24,0">
+            <!-- TOPBAR BLANCA ELEGANTE -->
+            <Border Grid.Row="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="28,0">
                 <Grid VerticalAlignment="Center">
-                    <TextBlock Text="{Binding PaginaActualTitulo}" FontSize="18" FontWeight="ExtraBold" Foreground="{StaticResource TextMainBrush}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding PaginaActualTitulo}" FontSize="17" FontWeight="Bold" Foreground="{StaticResource TextMainBrush}" VerticalAlignment="Center"/>
 
-                    <!-- Estado de Caja & Conectividad -->
+                    <!-- Badges de Estado -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <Border Background="{StaticResource StatusDoneBg}" BorderBrush="{StaticResource StatusDoneBorder}" BorderThickness="1" CornerRadius="6" Padding="10,5" Margin="0,0,12,0">
+                        <!-- Caja Status -->
+                        <Border Background="{StaticResource StatusDoneBg}" BorderBrush="{StaticResource StatusDoneBorder}" BorderThickness="1" CornerRadius="20" Padding="10,4" Margin="0,0,10,0">
                             <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="8" Height="8" Fill="{StaticResource StatusDoneDot}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <Ellipse Width="6" Height="6" Fill="{StaticResource StatusDoneDot}" Margin="0,0,6,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding EstadoCajaBadge}" FontWeight="Bold" FontSize="11" Foreground="{StaticResource StatusDoneText}"/>
                             </StackPanel>
                         </Border>
 
-                        <Border Background="{StaticResource BlueSubtleBrush}" BorderBrush="{StaticResource BlueBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="10,5">
+                        <!-- Cloud / DB Status -->
+                        <Border Background="{StaticResource BlueSubtleBrush}" BorderBrush="{StaticResource BlueBorderBrush}" BorderThickness="1" CornerRadius="20" Padding="10,4">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="BD Local / Cloud Sync" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource BluePrimaryBrush}"/>
+                                <Ellipse Width="6" Height="6" Fill="{StaticResource BlueVibrantBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="BD Local SQLite (WAL Mode)" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource BluePrimaryBrush}"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>
                 </Grid>
             </Border>
 
-            <!-- HOSPEDAJE DINÁMICO DE LA VISTA SELECCIONADA -->
-            <Border Grid.Row="1" Padding="24,20" Background="{StaticResource BgSubtleBrush}">
+            <!-- CONTENEDOR DE PÁGINA ACTIVA -->
+            <Border Grid.Row="1" Padding="28,24" Background="{StaticResource BgBaseBrush}">
                 <ContentControl Content="{Binding CurrentViewModel}"/>
             </Border>
         </Grid>
