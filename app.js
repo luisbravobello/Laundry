@@ -169,8 +169,59 @@ function renderDashboard() {
 
   if (document.getElementById('kpiVentasHoy')) document.getElementById('kpiVentasHoy').innerText = `RD$${ventasCobros.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
   if (document.getElementById('kpiPrendasTaller')) document.getElementById('kpiPrendasTaller').innerText = prendasTotal;
+  if (document.getElementById('kpiPrendasProgress')) document.getElementById('kpiPrendasProgress').style.width = `${Math.min(100, prendasTotal * 10)}%`;
   if (document.getElementById('kpiFacturasPendientesCount')) document.getElementById('kpiFacturasPendientesCount').innerText = facturasPendientes;
   if (document.getElementById('kpiClientesCount')) document.getElementById('kpiClientesCount').innerHTML = `${clientesCount} <span class="kpi-number-sub">activas</span>`;
+
+  // Renderizar Gráfica de Burndown Dinámica
+  const chartBox = document.getElementById('dashboardChartContainer');
+  if (chartBox) {
+    if (state.orders.length === 0) {
+      chartBox.innerHTML = `
+        <div style="height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94A3B8; text-align: center; padding: 1.5rem;">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="1.6" style="margin-bottom: .65rem;">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+          <strong style="color: #475569; font-size: .95rem; margin-bottom: .25rem;">Sin transacciones suficientes aún para graficar</strong>
+          <span style="font-size: .78rem; color: #94A3B8; max-width: 450px;">
+            El flujo operativo y gráfico de Burndown se generará en tiempo real automáticamente conforme registres tus primeras facturas en el Punto de Venta (POS).
+          </span>
+        </div>
+      `;
+    } else {
+      // Gráfica con datos reales de órdenes
+      const totalSum = state.orders.reduce((s, o) => s + o.total, 0);
+      chartBox.innerHTML = `
+        <svg width="100%" height="100%" viewBox="0 0 900 200" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.02"/>
+            </linearGradient>
+          </defs>
+          <line x1="40" y1="40" x2="880" y2="40" stroke="#F1F5F9" stroke-width="1"/>
+          <line x1="40" y1="90" x2="880" y2="90" stroke="#F1F5F9" stroke-width="1"/>
+          <line x1="40" y1="140" x2="880" y2="140" stroke="#F1F5F9" stroke-width="1"/>
+          <line x1="40" y1="180" x2="880" y2="180" stroke="#E2E8F0" stroke-width="1"/>
+
+          <path d="M 60 170 L 250 140 L 450 100 L 650 70 L 840 40 L 840 180 L 60 180 Z" fill="url(#areaGradient)"/>
+          <path d="M 60 170 L 250 140 L 450 100 L 650 70 L 840 40" stroke="#0284C7" stroke-width="3" fill="none"/>
+          
+          <circle cx="60" cy="170" r="5" fill="#0284C7"/>
+          <circle cx="250" cy="140" r="5" fill="#0284C7"/>
+          <circle cx="450" cy="100" r="5" fill="#0284C7"/>
+          <circle cx="650" cy="70" r="5" fill="#0284C7"/>
+          <circle cx="840" cy="40" r="5" fill="#0284C7"/>
+
+          <text x="60" y="196" font-size="10" fill="#64748B" text-anchor="middle">Inicio</text>
+          <text x="450" y="196" font-size="10" fill="#64748B" text-anchor="middle">En Proceso</text>
+          <text x="840" y="196" font-size="10" fill="#64748B" text-anchor="middle">Actual (RD$${totalSum.toLocaleString('es-DO')})</text>
+        </svg>
+      `;
+    }
+  }
 
   const tbody = document.querySelector('#tableRecentOrders tbody');
   if (tbody) {
@@ -191,7 +242,7 @@ function renderDashboard() {
           </div>
         </td>
       </tr>
-    `).join('');
+    `).join('') || '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">Aún no se han emitido facturas. Crea tu primera factura en el Punto de Venta (POS).</td></tr>';
   }
 
   const alertsBox = document.getElementById('dashboardAlertsList');
@@ -211,6 +262,7 @@ function renderDashboard() {
     `).join('') || '<div class="text-muted" style="padding: 1rem 0;">Todos los insumos tienen stock suficiente.</div>';
   }
 }
+
 
 // =====================================================================
 // 4. MÓDULO 2: PUNTO DE VENTA (POS CON PRECIOS PERSONALIZABLES)
