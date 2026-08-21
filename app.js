@@ -206,6 +206,49 @@ function renderDashboard() {
   if (document.getElementById('kpiVentasHoy')) document.getElementById('kpiVentasHoy').innerText = `RD$${totalFacturado.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
 
 
+  // Renderizar Tablas y Alertas del Dashboard
+  const tbody = document.querySelector('#tableRecentOrders tbody');
+  if (tbody) {
+    tbody.innerHTML = state.orders.slice(0, 5).map(o => `
+      <tr>
+        <td><strong class="font-mono text-blue">${o.ticket}</strong><div style="font-size: .72rem; color: var(--text-muted);">${o.date}</div></td>
+        <td><strong>${o.clientName}</strong></td>
+        <td>
+          <span class="status-badge ${o.balance > 0 ? 'status-todo' : 'status-done'}">
+            <span class="status-dot"></span> ${o.balance > 0 ? 'Saldo Pendiente' : 'Pagada Total'}
+          </span>
+        </td>
+        <td style="text-align: right;"><strong class="font-mono">RD$${o.total.toLocaleString('es-DO')}</strong><div style="font-size: .72rem; color: ${o.balance > 0 ? '#DC2626' : '#059669'}; font-weight: 700;">${o.balance > 0 ? 'Pend: RD$' + o.balance : 'Pagado'}</div></td>
+        <td>
+          <div style="display: flex; gap: .35rem;">
+            <button class="btn btn-outline btn-sm" onclick="openEditInvoiceModal('${o.id}')" title="Editar Factura">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            </button>
+            ${o.balance > 0 ? `<button class="btn btn-outline btn-sm" onclick="openPayOrderModal('${o.id}')">Cobrar $</button>` : ''}
+            <button class="btn btn-outline btn-sm" onclick="displayThermalTicket(getState().orders.find(x=>x.id==='${o.id}'))">Ticket</button>
+          </div>
+        </td>
+      </tr>
+    `).join('') || '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">Aún no se han emitido facturas. Crea tu primera factura en el Punto de Venta (POS).</td></tr>';
+  }
+
+  const alertsBox = document.getElementById('dashboardAlertsList');
+  const insumosBajoStock = state.inventory.filter(i => i.stock <= i.minStock);
+  if (alertsBox) {
+    alertsBox.innerHTML = insumosBajoStock.map(i => `
+      <div style="background: var(--status-danger-bg); border: 1px solid var(--status-danger-border); border-radius: var(--r-md); padding: .75rem 1rem; margin-bottom: .5rem; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <strong style="color: var(--status-danger-text); font-size: .84rem;">${i.name}</strong>
+          <div style="font-size: .72rem; color: var(--text-muted);">Proveedor: ${i.provider}</div>
+        </div>
+        <div style="text-align: right;">
+          <strong class="font-mono text-rose font-bold" style="font-size: .95rem;">${i.stock} ${i.unit}</strong>
+          <div style="font-size: .7rem; color: var(--text-muted);">Mínimo: ${i.minStock}</div>
+        </div>
+      </div>
+    `).join('') || '<div class="text-muted" style="padding: 1rem 0;">Todos los insumos tienen stock suficiente.</div>';
+  }
+
   // Renderizar Gráficos Fortexa ERP
   renderMonthlySalesChart('12M');
   renderCategoryDonutChart('12M');
@@ -237,12 +280,11 @@ function renderMonthlySalesChart(period = '12M') {
   if (period === '6M') months = ['Mar 26', 'Abr 26', 'May 26', 'Jun 26', 'Jul 26', 'Ago 26'];
   if (period === 'Año') months = ['2023', '2024', '2025', '2026'];
 
-  // Asignar ventas al mes activo (Ago 26 o Ene 26)
+  // Asignar ventas al mes activo (Ago 26)
   const currentMonthIdx = months.length - 1;
-  const values = months.map((m, idx) => (idx === currentMonthIdx || idx === Math.floor(months.length / 2)) ? totalReal : 0);
+  const values = months.map((m, idx) => (idx === currentMonthIdx || (totalReal > 0 && idx === Math.floor(months.length / 2))) ? totalReal : 0);
 
   const maxVal = Math.max(...values, 5000);
-  const chartHeight = 160;
   const svgWidth = 850;
   const colWidth = svgWidth / months.length;
 
@@ -265,10 +307,9 @@ function renderMonthlySalesChart(period = '12M') {
       <!-- Barras Mensuales -->
       ${months.map((m, i) => {
         const val = values[i];
-        const barHeight = val > 0 ? Math.max(12, (val / maxVal) * 140) : 0;
+        const barHeight = val > 0 ? Math.max(16, (val / maxVal) * 140) : 0;
         const x = 50 + (i * colWidth) + (colWidth / 2) - 14;
         const y = 160 - barHeight;
-        const isCurrent = val > 0;
 
         return `
           <g class="bar-group" style="cursor: pointer;">
@@ -281,7 +322,7 @@ function renderMonthlySalesChart(period = '12M') {
               </text>
             ` : `
               <!-- Barra vacía tenue -->
-              <rect x="${x}" y="156" width="28" height="4" rx="2" ry="2" fill="#F1F5F9" />
+              <rect x="${x}" y="156" width="28" height="4" rx="2" ry="2" fill="#E2E8F0" />
             `}
             <text x="${x + 14}" y="185" font-size="10.5" font-weight="600" fill="#64748B" text-anchor="middle">${m}</text>
           </g>
@@ -331,7 +372,7 @@ function renderCategoryDonutChart(period = '12M') {
     });
   });
 
-  const totalSum = Object.values(catTotals).reduce((a, b) => a + b, 0) || 1;
+  const totalSum = Object.values(catTotals).reduce((a, b) => a + b, 0);
 
   const categories = [
     { name: 'Lavandería & Secado', color: '#1D4ED8', amount: catTotals['Lavandería & Secado'] },
@@ -340,13 +381,6 @@ function renderCategoryDonutChart(period = '12M') {
     { name: 'Hotelería & Gran Volumen', color: '#9333EA', amount: catTotals['Hotelería & Gran Volumen'] }
   ];
 
-  // Si no hay transacciones aún, mostrar distribución demostrativa con datos base
-  if (totalSum === 1 && state.orders.length === 0) {
-    categories[0].amount = 0;
-  }
-
-  // Generar Donut SVG
-  let cumulativeAngle = 0;
   const radius = 70;
   const strokeWidth = 24;
   const circumference = 2 * Math.PI * radius;
@@ -356,7 +390,7 @@ function renderCategoryDonutChart(period = '12M') {
 
   const activeCategories = categories.filter(c => c.amount > 0);
 
-  if (activeCategories.length === 0) {
+  if (activeCategories.length === 0 || totalSum === 0) {
     // Donut vacío limpio
     donutBox.innerHTML = `
       <svg width="180" height="180" viewBox="0 0 200 200">
@@ -386,7 +420,7 @@ function renderCategoryDonutChart(period = '12M') {
         ${slicesHtml}
         <text x="100" y="96" font-size="10" font-weight="800" fill="#64748B" text-anchor="middle">TOTAL INGRESOS</text>
         <text x="100" y="114" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" fill="#0F172A" text-anchor="middle">
-          RD$${(totalSum === 1 ? 0 : totalSum).toLocaleString('es-DO')}
+          RD$${totalSum.toLocaleString('es-DO')}
         </text>
       </svg>
     `;
@@ -394,7 +428,7 @@ function renderCategoryDonutChart(period = '12M') {
 
   // Generar Lista Desglosada a la Derecha (Estilo Fortexa ERP Exacto)
   listBox.innerHTML = categories.map(cat => {
-    const pct = totalSum > 1 ? Math.round((cat.amount / totalSum) * 100) : 0;
+    const pct = totalSum > 0 ? Math.round((cat.amount / totalSum) * 100) : 0;
     return `
       <div class="fortexa-category-item">
         <div class="category-legend-label">
@@ -409,49 +443,6 @@ function renderCategoryDonutChart(period = '12M') {
     `;
   }).join('');
 }
-
-
-  const tbody = document.querySelector('#tableRecentOrders tbody');
-  if (tbody) {
-    tbody.innerHTML = state.orders.slice(0, 5).map(o => `
-      <tr>
-        <td><strong class="font-mono text-blue">${o.ticket}</strong><div style="font-size: .72rem; color: var(--text-muted);">${o.date}</div></td>
-        <td><strong>${o.clientName}</strong></td>
-        <td>
-          <span class="status-badge ${o.balance > 0 ? 'status-todo' : 'status-done'}">
-            <span class="status-dot"></span> ${o.balance > 0 ? 'Saldo Pendiente' : 'Pagada Total'}
-          </span>
-        </td>
-        <td style="text-align: right;"><strong class="font-mono">RD$${o.total.toLocaleString('es-DO')}</strong><div style="font-size: .72rem; color: ${o.balance > 0 ? '#DC2626' : '#059669'}; font-weight: 700;">${o.balance > 0 ? 'Pend: RD$' + o.balance : 'Pagado'}</div></td>
-        <td>
-          <div style="display: flex; gap: .35rem;">
-            <button class="btn btn-outline btn-sm" onclick="openEditInvoiceModal('${o.id}')" title="Editar Factura">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-            </button>
-            ${o.balance > 0 ? `<button class="btn btn-outline btn-sm" onclick="openPayOrderModal('${o.id}')">Cobrar $</button>` : ''}
-            <button class="btn btn-outline btn-sm" onclick="displayThermalTicket(getState().orders.find(x=>x.id==='${o.id}'))">Ticket</button>
-          </div>
-        </td>
-      </tr>
-    `).join('') || '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">Aún no se han emitido facturas. Crea tu primera factura en el Punto de Venta (POS).</td></tr>';
-  }
-
-  const alertsBox = document.getElementById('dashboardAlertsList');
-  const insumosBajoStock = state.inventory.filter(i => i.stock <= i.minStock);
-  if (alertsBox) {
-    alertsBox.innerHTML = insumosBajoStock.map(i => `
-      <div style="background: var(--status-danger-bg); border: 1px solid var(--status-danger-border); border-radius: var(--r-md); padding: .75rem 1rem; margin-bottom: .5rem; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <strong style="color: var(--status-danger-text); font-size: .84rem;">${i.name}</strong>
-          <div style="font-size: .72rem; color: var(--text-muted);">Proveedor: ${i.provider}</div>
-        </div>
-        <div style="text-align: right;">
-          <strong class="font-mono text-rose font-bold" style="font-size: .95rem;">${i.stock} ${i.unit}</strong>
-          <div style="font-size: .7rem; color: var(--text-muted);">Mínimo: ${i.minStock}</div>
-        </div>
-      </div>
-    `).join('') || '<div class="text-muted" style="padding: 1rem 0;">Todos los insumos tienen stock suficiente.</div>';
-  }
 }
 
 
