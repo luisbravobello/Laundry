@@ -333,55 +333,64 @@
               <button class="btn-link" onclick="switchSection('inventario', document.querySelectorAll('.nav-item')[4])">Inventario →</button>
             </div>
             <div class="alerts-list" id="dashboardAlertsList"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ====================================================
+               <!-- ====================================================
            2. SECCIÓN: PUNTO DE VENTA (POS)
            ==================================================== -->
-      <section id="section-pos" class="content-section">
+      <section class="content-section" id="section-pos">
         <div class="pos-layout">
           
+          <!-- LADO IZQUIERDO: CLIENTE, CATÁLOGO Y PERSONALIZACIÓN DE PRENDAS -->
           <div class="pos-left">
-            <div class="card" style="margin-bottom: 1.25rem;">
-              <div class="card-header-sm">
-                <span class="step-num">1</span>
-                <h4>Cliente &amp; Número de Factura</h4>
-                <button class="btn btn-sm btn-outline" style="margin-left: auto;" onclick="openNewClientModal()">+ Registrar Cliente</button>
+            
+            <!-- PASO 1: DATOS DE LA FACTURA & CLIENTE -->
+            <div class="card pos-step-card" style="margin-bottom: 1.25rem;">
+              <div class="pos-step-header">
+                <div class="pos-step-badge">1</div>
+                <div>
+                  <h4 class="pos-step-title">Cliente &amp; Número de Factura</h4>
+                  <p class="pos-step-sub">Define el cliente y la secuencia de la orden</p>
+                </div>
+                <button class="btn btn-sm btn-outline" style="margin-left: auto;" onclick="openNewClientModal()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                  <span>+ Registrar Cliente</span>
+                </button>
               </div>
 
-              <!-- Definir y Previsualizar Número de Factura -->
-              <div class="form-row-3" style="margin-bottom: .75rem;">
+              <!-- Fila de Entradas Paso 1 -->
+              <div class="pos-step1-grid">
                 <div class="form-group">
-                  <label>Nº de Factura Actual:</label>
-                  <input type="text" id="posInvoiceNumber" class="form-input font-mono font-bold text-blue" style="background: #EFF6FF; border-color: #93C5FD;" placeholder="FAC-001001" />
+                  <label class="field-label">Nº de Factura Actual:</label>
+                  <input type="text" id="posInvoiceNumber" class="form-input font-mono font-bold text-blue" style="background: #EFF6FF; border-color: #BFDBFE;" placeholder="FAC-001001" />
                 </div>
                 <div class="form-group">
-                  <label>Cliente:</label>
+                  <label class="field-label">Seleccionar Cliente:</label>
                   <select id="posClientSelect" class="form-input" onchange="handleClientSelect(this)"></select>
                 </div>
                 <div class="form-group">
-                  <label>Fecha de Entrega:</label>
+                  <label class="field-label">Fecha / Hora de Entrega:</label>
                   <input type="datetime-local" id="posDeliveryDate" class="form-input" />
                 </div>
               </div>
 
-              <div class="form-row-between" style="margin-top: .25rem;">
-                <label class="checkbox-label text-rose">
+              <div class="pos-urgent-row">
+                <label class="checkbox-label" style="color: #DC2626; font-weight: 700;">
                   <input type="checkbox" id="posIsUrgent" onchange="calculatePosTotal()" />
-                  <strong>Servicio Urgente / Prioritario (+15% Entrega Inmediata)</strong>
+                  <span>Servicio Urgente / Prioritario (+15% Recargo por Entrega Inmediata)</span>
                 </label>
               </div>
             </div>
 
-            <div class="card">
-              <div class="card-header-sm">
-                <span class="step-num">2</span>
-                <h4>Catálogo de Servicios &amp; Máquinas por Ítem</h4>
+            <!-- PASO 2: CATÁLOGO Y PERSONALIZACIÓN DE PRECIOS -->
+            <div class="card pos-step-card">
+              <div class="pos-step-header">
+                <div class="pos-step-badge">2</div>
+                <div>
+                  <h4 class="pos-step-title">Catálogo de Servicios &amp; Máquinas</h4>
+                  <p class="pos-step-sub">Haz clic en cualquier ítem para cargarlo y personalizar su precio</p>
+                </div>
               </div>
 
-              <!-- Pestañas por Categoría Limpias y Profesionales -->
+              <!-- Pestañas de Categoría Limpias -->
               <div class="catalog-tabs">
                 <button class="catalog-tab active" onclick="filterCatalog('Todos', this)">Todos</button>
                 <button class="catalog-tab" onclick="filterCatalog('Lavandería', this)">Lavandería</button>
@@ -390,127 +399,145 @@
                 <button class="catalog-tab" onclick="filterCatalog('Hotelería', this)">Hotelería (x Kg)</button>
               </div>
 
-              <!-- Grid de Ítems Clickeables -->
+              <!-- Cuadrícula de Ítems Clickeables -->
               <div class="catalog-grid" id="posCatalogGrid"></div>
 
-              <!-- Constructor de Ítem con Precio Totalmente Personalizable -->
+              <!-- Formulario de Configuración del Ítem con Precio Personalizado -->
               <div class="item-builder-box">
                 <div class="item-builder-header">
-                  <span id="builderItemName">Configuración del Artículo / Ropa por Pieza:</span>
-                  <span class="badge-pill bg-blue" style="font-size: .72rem;">Precio Editable</span>
+                  <div style="display: flex; align-items: center; gap: .5rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    <span id="builderItemName" style="font-weight: 800; color: #1E293B;">Configuración del Artículo / Servicio</span>
+                  </div>
+                  <span class="badge-pill bg-blue" style="font-size: .74rem; font-weight: 700;">Precio Editable al Instante</span>
                 </div>
 
-                <div class="form-row-3">
+                <div class="form-row-3" style="display: grid; grid-template-columns: 1.5fr 1fr 0.8fr; gap: .75rem; margin-bottom: .75rem;">
                   <div class="form-group">
-                    <label>Descripción / Prenda:</label>
+                    <label class="field-label">Descripción / Prenda:</label>
                     <input type="text" id="builderDesc" class="form-input" placeholder="Ej. Camisa de Lino / Vestido" />
                   </div>
                   <div class="form-group">
-                    <label>Categoría / Servicio:</label>
+                    <label class="field-label">Categoría / Servicio:</label>
                     <select id="builderService" class="form-input" onchange="toggleTailoringDrawer(this.value)">
                       <option value="Lavandería">Lavandería (Lavado &amp; Planchado)</option>
                       <option value="Sastrería">Sastrería / Arreglo</option>
-                      <option value="Autoservicio">Autoservicio / Máquina &amp; Ficha</option>
+                      <option value="Autoservicio">Autoservicio / Máquina</option>
                       <option value="HotelVolumen">Hotelería / Gran Volumen (x Kg)</option>
                     </select>
                   </div>
                   <div class="form-group">
-                    <label>Cantidad / Peso (Kg):</label>
-                    <input type="number" id="builderQty" class="form-input" value="1" min="1" step="1" />
+                    <label class="field-label">Cantidad / Peso:</label>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                      <input type="number" id="builderQty" class="form-input font-mono font-bold" value="1" min="1" step="1" style="text-align: center;" />
+                    </div>
                   </div>
                 </div>
 
-                <div class="form-row-3">
+                <div class="form-row-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .75rem; margin-bottom: .85rem;">
                   <!-- PRECIO PERSONALIZABLE POR EL USUARIO -->
                   <div class="form-group">
-                    <label style="color: #2563EB; font-weight: 800;">Precio Unitario Personalizado (RD$) *</label>
-                    <input type="number" id="builderPrice" class="form-input font-mono font-bold" value="180" style="border: 2px solid #3B82F6; background: #F8FAFC;" />
+                    <label class="field-label" style="color: #2563EB; font-weight: 800;">Precio Unitario Personalizado (RD$) *</label>
+                    <input type="number" id="builderPrice" class="form-input font-mono font-bold" value="180" style="border: 2px solid #2563EB; background: #EFF6FF; color: #1D4ED8; font-size: 1.05rem;" />
                   </div>
                   <div class="form-group">
-                    <label>Color / Tela:</label>
-                    <input type="text" id="builderColor" class="form-input" placeholder="Ej. Blanco / Algodón" />
+                    <label class="field-label">Color / Tipo de Tela:</label>
+                    <input type="text" id="builderColor" class="form-input" placeholder="Ej. Azul Marino / Lino" />
                   </div>
                   <div class="form-group">
-                    <label>Observaciones / Detalles:</label>
-                    <input type="text" id="builderDefects" class="form-input" placeholder="Ej. Mancha en cuello, botón extra" />
+                    <label class="field-label">Observaciones / Detalles:</label>
+                    <input type="text" id="builderDefects" class="form-input" placeholder="Ej. Mancha previa, botón extra" />
                   </div>
                 </div>
 
                 <div class="tailoring-drawer" id="tailoringDrawer" style="display: none;">
                   <div class="drawer-header">Especificaciones de Sastrería &amp; Taller</div>
-                  <div class="form-row-2">
+                  <div class="form-row-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: .75rem;">
                     <div class="form-group">
-                      <label>Tipo de Arreglo:</label>
+                      <label class="field-label">Tipo de Arreglo:</label>
                       <input type="text" id="tailorAlterationType" class="form-input" placeholder="Ej. Dobladillo / Ruedo a 38 pulgadas" />
                     </div>
                     <div class="form-group">
-                      <label>Medidas / Indicaciones:</label>
-                      <input type="text" id="tailorMeasurements" class="form-input" placeholder="Ej. Reducir 2cm en cintura, hilo marino" />
+                      <label class="field-label">Medidas / Indicaciones:</label>
+                      <input type="text" id="tailorMeasurements" class="form-input" placeholder="Ej. Reducir 2cm en cintura" />
                     </div>
                   </div>
                 </div>
 
-                <button class="btn btn-primary btn-add-item" onclick="addItemToOrder()">
-                  <span>+ Agregar al Carrito de Facturación</span>
+                <button type="button" class="btn btn-primary btn-add-item" onclick="addItemToOrder()" style="width: 100%; padding: .85rem; font-size: .92rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: .5rem;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span>Agregar Artículo a la Factura</span>
                 </button>
               </div>
             </div>
           </div>
 
+          <!-- LADO DERECHO: RESUMEN DE FACTURA, TOTALES & COBRO -->
           <div class="pos-right">
             <div class="card pos-summary-card">
-              <div class="card-header">
-                <h3>Resumen de Factura</h3>
+              <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: .85rem;">
+                <div>
+                  <h3 style="font-size: 1.05rem;">Resumen de Factura</h3>
+                  <span style="font-size: .75rem; color: var(--text-muted);">Comprobante en tiempo real</span>
+                </div>
                 <span class="badge-pill bg-blue" id="posItemsCount">0 artículos</span>
               </div>
 
+              <!-- Lista de Prendas Agregadas -->
               <div class="pos-items-list" id="posItemsList">
-                <div class="empty-state-pos">No hay artículos agregados.</div>
+                <div class="empty-state-pos">No hay artículos agregados a la orden.</div>
               </div>
 
+              <!-- Desglose de Totales -->
               <div class="pos-totals-box">
                 <div class="total-row">
                   <span>Subtotal:</span>
                   <strong id="posSubtotal" class="font-mono">RD$0.00</strong>
                 </div>
                 <div class="total-row">
-                  <span>Descuento (RD$):</span>
+                  <span>Descuento Especial (RD$):</span>
                   <input type="number" id="posDiscount" class="input-inline font-mono" value="0" min="0" oninput="calculatePosTotal()" />
                 </div>
-                <div class="total-row-highlight">
-                  <span>TOTAL GENERAL:</span>
-                  <strong id="posTotal" class="font-mono">RD$0.00</strong>
+                
+                <!-- TOTAL DESTACADO -->
+                <div class="total-row-highlight" style="background: #1E293B; color: #FFFFFF; border-radius: var(--r-md); padding: .85rem 1.15rem; margin: .85rem 0;">
+                  <span style="color: #94A3B8; font-size: .95rem; font-weight: 800;">TOTAL GENERAL:</span>
+                  <strong id="posTotal" class="font-mono" style="font-size: 1.45rem; font-weight: 900; color: #38BDF8;">RD$0.00</strong>
                 </div>
 
-                <div class="payment-method-selector">
-                  <label>Método de Pago:</label>
+                <!-- Método de Pago -->
+                <div style="margin-top: .75rem;">
+                  <label class="field-label" style="font-size: .78rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Método de Cobro:</label>
                   <div class="payment-tabs">
-                    <button class="payment-tab active" onclick="selectPaymentMethod('Efectivo', this)">Efectivo</button>
-                    <button class="payment-tab" onclick="selectPaymentMethod('Tarjeta', this)">Tarjeta</button>
-                    <button class="payment-tab" onclick="selectPaymentMethod('Transferencia', this)">Transferencia</button>
+                    <button type="button" class="payment-tab active" onclick="selectPaymentMethod('Efectivo', this)">Efectivo</button>
+                    <button type="button" class="payment-tab" onclick="selectPaymentMethod('Tarjeta', this)">Tarjeta POS</button>
+                    <button type="button" class="payment-tab" onclick="selectPaymentMethod('Transferencia', this)">Transferencia</button>
                   </div>
                 </div>
 
-                <div class="form-row-between" style="margin-top: .75rem;">
-                  <div class="form-group" style="flex: 1; margin-right: .5rem;">
-                    <label>Monto Abonado (RD$):</label>
-                    <input type="number" id="posAmountPaid" class="form-input font-mono font-bold value-box" value="0" oninput="calculatePosTotal()" />
+                <!-- Monto Cobrado / Abono -->
+                <div class="form-group" style="margin-top: .85rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <label class="field-label">Monto Cobrado / Abono (RD$):</label>
+                    <button type="button" class="btn-link" style="font-size: .74rem; font-weight: 800; color: #2563EB;" onclick="payFullOrder()">Pagar Total Completo</button>
                   </div>
-                  <button class="btn btn-outline" style="margin-top: 1.35rem;" onclick="payFullOrder()">Pagar Total</button>
+                  <input type="number" id="posAmountPaid" class="form-input font-mono font-bold" value="0" min="0" oninput="calculatePosTotal()" style="font-size: 1.05rem;" />
                 </div>
 
-                <div class="total-row text-rose font-bold" style="margin-top: .5rem;">
-                  <span>Saldo Pendiente:</span>
-                  <strong id="posBalanceDue" class="font-mono">RD$0.00</strong>
+                <!-- Saldo Pendiente -->
+                <div class="total-row" style="margin-top: .65rem; padding-top: .5rem; border-top: 1px dashed var(--border);">
+                  <span style="font-weight: 800; color: #DC2626;">Saldo Pendiente por Cobrar:</span>
+                  <strong id="posBalanceDue" class="font-mono text-rose font-bold" style="font-size: 1.05rem;">RD$0.00</strong>
                 </div>
 
-                <button class="btn btn-success btn-block btn-lg" onclick="saveAndPrintOrder()" style="margin-top: 1.25rem;">
-                  <span>GENERAR FACTURA &amp; IMPRIMIR TICKET</span>
+                <!-- Botón Principal: Generar Factura e Imprimir -->
+                <button type="button" class="btn btn-success" onclick="saveAndPrintOrder()" style="width: 100%; margin-top: 1.15rem; padding: .95rem; font-size: .95rem; font-weight: 900; letter-spacing: .02em; display: flex; align-items: center; justify-content: center; gap: .6rem; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                  <span>EMITIR FACTURA &amp; IMPRIMIR TICKET</span>
                 </button>
               </div>
-            </div>
-          </div>
 
+          </div>
         </div>
       </section>
 
