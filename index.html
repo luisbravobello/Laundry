@@ -15,188 +15,322 @@
 <body class="app-body">
 
   <!-- ==============================================
-       BARRA LATERAL MINIMALISTA
+       BARRA LATERAL (EXACT MATCH SCREENSHOT)
        ============================================== -->
   <aside class="sidebar">
     <!-- Brand Header -->
     <div class="sidebar-brand">
-      <div class="brand-badge-square">SO</div>
-      <div class="brand-text">
-        <span class="brand-title">Sync<span class="brand-highlight">Ops</span></span>
-        <span class="brand-sub">LAUNDRY &amp; SUITE</span>
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
       </div>
-      <span class="badge-version">v2.4</span>
+      <span class="brand-name">SyncOps</span>
+      <span class="brand-badge">PRO</span>
     </div>
 
     <!-- Navegación -->
     <nav class="sidebar-nav">
-      <div class="nav-section-title">OPERACIÓN</div>
+      <div class="nav-section-label">
+        <span>ESPACIO DE TRABAJO</span>
+      </div>
       
       <button class="nav-item active" onclick="switchSection('dashboard', this)">
-        <span class="nav-indicator"></span>
-        <span>Panel &amp; Métricas</span>
+        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Panel Principal</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('pos', this)">
-        <span class="nav-indicator"></span>
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 10H2"/></svg>
         <span>Punto de Venta / POS</span>
+        <span class="nav-badge-pill">4</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('kanban', this)">
-        <span class="nav-indicator"></span>
-        <span>Tablero de Taller</span>
-        <span class="badge-count" id="navCountTaller">2</span>
+        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="10" y="4" width="5" height="10" rx="1"/><rect x="17" y="4" width="5" height="14" rx="1"/></svg>
+        <span>Tablero Kanban</span>
+        <span class="nav-badge-pill" id="navCountTaller">9</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('autoservicio', this)">
-        <span class="nav-indicator"></span>
+        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
         <span>Autoservicio &amp; Torres</span>
       </button>
 
-      <div class="nav-section-title">ADMINISTRACIÓN</div>
+      <div class="nav-section-label">
+        <span>MÉTRICAS Y SISTEMA</span>
+        <span class="badge-live">En vivo</span>
+      </div>
 
       <button class="nav-item" onclick="switchSection('inventario', this)">
-        <span class="nav-indicator"></span>
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
         <span>Inventario Insumos</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('clientes', this)">
-        <span class="nav-indicator"></span>
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
         <span>Clientes &amp; Hoteles</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('caja', this)">
-        <span class="nav-indicator"></span>
+        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
         <span>Control de Caja</span>
       </button>
 
-      <div class="nav-section-title">SISTEMA &amp; SOPORTE</div>
+      <div class="nav-section-label">
+        <span>ADMINISTRACIÓN</span>
+      </div>
 
       <button class="nav-item" onclick="switchSection('configuracion', this)">
-        <span class="nav-indicator"></span>
-        <span>Configuración &amp; Perfil</span>
+        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Configuración</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('faq', this)">
-        <span class="nav-indicator"></span>
+        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <span>Preguntas Frecuentes</span>
       </button>
 
       <button class="nav-item" onclick="switchSection('ayuda', this)">
-        <span class="nav-indicator"></span>
-        <span>Ayuda &amp; Diagnóstico QA</span>
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <span>Ayuda &amp; QA</span>
       </button>
     </nav>
 
     <!-- Footer de Usuario -->
     <div class="sidebar-user">
-      <div class="user-avatar" id="userAvatar">LB</div>
-      <div class="user-info">
-        <span class="user-name" id="userName">Luis Bravo Bello</span>
-        <span class="user-role">Administrador • POS 01</span>
+      <div class="user-avatar-circle" id="userAvatar">AR</div>
+      <div class="user-meta">
+        <strong id="userName">Luis Bravo</strong>
+        <span>Admin • POS 01</span>
       </div>
-      <button class="btn-logout-text" onclick="logout()" title="Cerrar sesión">Salir</button>
+      <button class="btn-logout-clean" onclick="logout()" title="Cerrar sesión">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+      </button>
     </div>
   </aside>
 
   <!-- ==============================================
-       ÁREA PRINCIPAL DE CONTENIDO
+       MAIN LAYOUT & TOPBAR (EXACT MATCH SCREENSHOT)
        ============================================== -->
-  <main class="main-content">
+  <div class="main-layout">
     
-    <!-- BARRA SUPERIOR (TOPBAR) -->
     <header class="topbar">
-      <div class="topbar-title-box">
-        <h1 class="page-title" id="currentSectionTitle">Panel de Control &amp; Métricas</h1>
+      <!-- Izquierda: Hamburger & Breadcrumbs -->
+      <div class="topbar-left">
+        <button class="btn-menu-toggle" title="Menu">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="breadcrumb">
+          <span>SyncOps</span>
+          <span>&gt;</span>
+          <span class="breadcrumb-active" id="currentSectionTitle">Panel Principal</span>
+        </div>
       </div>
 
-      <div class="topbar-actions">
-        <!-- Badge de Caja -->
-        <div class="status-badge status-done">
-          <span class="status-dot"></span> Caja Abierta (Turno 01)
-        </div>
+      <!-- Centro: Barra de Búsqueda ⌘K -->
+      <div class="search-capsule">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="search-input" placeholder="Buscar tareas, proyectos, miembros..." />
+        <span class="search-shortcut">⌘K</span>
+      </div>
 
-        <!-- Badge de Base de Datos -->
-        <div class="status-badge status-progress">
-          <span class="status-dot"></span> SQLite WAL Mode
-        </div>
+      <!-- Derecha: Botón Primario + Notificación + Avatar -->
+      <div class="topbar-right">
+        <button class="btn-primary-action" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>+ Nueva Tarea</span>
+        </button>
 
-        <!-- Reloj -->
-        <div class="clock-badge" id="liveClock">12:00:00 PM</div>
+        <button class="btn-icon-topbar" title="Notificaciones">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-badge-dot"></span>
+        </button>
+
+        <div class="topbar-avatar" onclick="switchSection('configuracion')">AR</div>
       </div>
     </header>
 
-    <!-- CUERPO DINÁMICO DE PÁGINAS -->
-    <div class="content-body">
+    <div class="content-wrapper">
 
       <!-- ====================================================
-           1. SECCIÓN: DASHBOARD & MÉTRICAS
+           1. SECCIÓN: DASHBOARD (EXACT MATCH SCREENSHOT)
            ==================================================== -->
       <section id="section-dashboard" class="content-section active">
-        <div class="dashboard-banner">
+        
+        <!-- Saludo & Badges Superiores -->
+        <div class="page-header-row">
           <div>
-            <h2>Resumen Operativo del Sistema</h2>
-            <p>Métricas consolidadas de lavandería por piezas, taller de sastrería, autoservicio y cuentas hoteleras.</p>
+            <h1 class="greeting-title">Buenas tardes, Luis</h1>
+            <p class="greeting-sub">Resumen ejecutivo y métricas en tiempo real de <strong>Sprint 7</strong>.</p>
           </div>
-          <div class="banner-actions">
-            <button class="btn btn-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
-              <span>+ Nueva Recepción</span>
+
+          <div class="header-badges-row">
+            <div class="status-pill-green">
+              <span class="pill-dot"></span>
+              <span>Sprint 7 • Ola de Innovación Q3</span>
+            </div>
+            <button class="btn-link-action" onclick="switchSection('kanban', document.querySelectorAll('.nav-item')[2])">
+              <span>Ver Sprint Activo →</span>
             </button>
           </div>
         </div>
 
-        <!-- 4 TARJETAS KPI -->
-        <div class="kpi-grid">
-          <!-- KPI 1: Ventas Hoy -->
-          <div class="kpi-card">
-            <div class="kpi-header">
-              <span class="kpi-label">VENTAS DEL DÍA</span>
-              <span class="kpi-tag">HOY</span>
+        <!-- 4 TARJETAS KPI MODERNAS -->
+        <div class="kpi-row">
+          
+          <!-- Card 1: Velocidad del Equipo -->
+          <div class="kpi-card-modern">
+            <div>
+              <div class="kpi-top-box">
+                <div class="kpi-icon-container bg-icon-purple">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <span class="kpi-label-text">Velocidad del Equipo</span>
+              </div>
+              <div class="kpi-main-number">
+                42 <span class="kpi-number-sub">pts</span>
+              </div>
             </div>
-            <div class="kpi-value" id="kpiVentasHoy">RD$1,555.00</div>
-            <div class="kpi-footer">
-              <span class="badge-pill bg-emerald">Al Día</span>
-              <span class="kpi-subtext">Ingresos por órdenes y fichas</span>
-            </div>
-          </div>
-
-          <!-- KPI 2: Prendas en Taller -->
-          <div class="kpi-card">
-            <div class="kpi-header">
-              <span class="kpi-label">PRENDAS EN TALLER</span>
-              <span class="kpi-tag">FLUJO</span>
-            </div>
-            <div class="kpi-value" id="kpiPrendasTaller">2</div>
-            <div class="kpi-footer">
-              <span class="badge-pill bg-indigo">En Proceso</span>
-              <span class="kpi-subtext">Lavado, planchado y sastrería</span>
+            <div class="kpi-footer-row">
+              <span class="trend-positive">▲ +18% vs sprint anterior</span>
+              <!-- Mini Sparkline SVG -->
+              <svg class="sparkline-svg" viewBox="0 0 75 26">
+                <path d="M2,20 Q15,5 30,18 T55,8 T73,4" />
+              </svg>
             </div>
           </div>
 
-          <!-- KPI 3: Autoservicio -->
-          <div class="kpi-card">
-            <div class="kpi-header">
-              <span class="kpi-label">AUTOSERVICIO (TORRES)</span>
-              <span class="kpi-tag">MONEDAS</span>
+          <!-- Card 2: Puntos Completados -->
+          <div class="kpi-card-modern">
+            <div>
+              <div class="kpi-top-box">
+                <div class="kpi-icon-container bg-icon-cyan">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <span class="kpi-label-text">Puntos Completados</span>
+              </div>
+              <div class="kpi-main-number">
+                68 <span class="kpi-number-sub">/ 112</span>
+              </div>
             </div>
-            <div class="kpi-value" id="kpiAutoservicio"><span class="text-blue" id="kpiMaquinasUso">2</span> <span class="kpi-dim">en uso / 3 libres</span></div>
-            <div class="kpi-footer">
-              <span class="badge-pill bg-emerald">Torres Activas</span>
-              <span class="kpi-subtext">Operación continua</span>
+            <div>
+              <div class="kpi-progress-bar">
+                <div class="kpi-progress-fill" style="width: 60%;"></div>
+              </div>
             </div>
           </div>
 
-          <!-- KPI 4: Hoteles & Crédito -->
-          <div class="kpi-card">
-            <div class="kpi-header">
-              <span class="kpi-label">CRÉDITO HOTELES</span>
-              <span class="kpi-tag">CUENTAS</span>
+          <!-- Card 3: Bugs Abiertos -->
+          <div class="kpi-card-modern">
+            <div>
+              <div class="kpi-top-box">
+                <div class="kpi-icon-container bg-icon-rose">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M12 6v4"/><path d="M4 10h16"/><path d="M19 13a7 7 0 0 1-14 0"/><path d="M5 18l-2 2"/><path d="M19 18l2 2"/></svg>
+                </div>
+                <span class="kpi-label-text">Bugs Abiertos</span>
+              </div>
+              <div class="kpi-main-number" style="color: #0F172A;">
+                7
+              </div>
             </div>
-            <div class="kpi-value text-amber" id="kpiHotelesCredito">RD$18,500.00</div>
-            <div class="kpi-footer">
-              <span class="badge-pill bg-amber">Por Cobrar</span>
-              <span class="kpi-subtext">Cuentas corporativas</span>
+            <div class="kpi-footer-row">
+              <span class="trend-alert">▼ 2 reportados hoy</span>
             </div>
+          </div>
+
+          <!-- Card 4: Latencia API Gateway -->
+          <div class="kpi-card-modern">
+            <div>
+              <div class="kpi-top-box">
+                <div class="kpi-icon-container bg-icon-emerald">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <span class="kpi-label-text">Latencia API Gateway (p95)</span>
+              </div>
+              <div class="kpi-main-number">
+                48 <span class="kpi-number-sub">ms</span>
+              </div>
+            </div>
+            <div class="kpi-footer-row">
+              <span class="trend-positive">▲ 84% más rápido con Redis</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- GRÁFICA DE BURNDOWN — SPRINT 7 (EXACT MATCH SCREENSHOT) -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <span class="chart-title">Gráfica de Burndown — Sprint 7</span>
+            <div class="chart-legends">
+              <div class="legend-item">
+                <span class="legend-dot-plan"></span>
+                <span>Planificado</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot-real"></span>
+                <span>Real</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SVG Chart Interactivo -->
+          <div class="chart-svg-container">
+            <svg width="100%" height="100%" viewBox="0 0 900 200" preserveAspectRatio="none">
+              <defs>
+                <!-- Gradiente de Área Real -->
+                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.25"/>
+                  <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Ejes Y Guías -->
+              <line x1="40" y1="20" x2="880" y2="20" stroke="#F1F5F9" stroke-width="1"/>
+              <line x1="40" y1="60" x2="880" y2="60" stroke="#F1F5F9" stroke-width="1"/>
+              <line x1="40" y1="100" x2="880" y2="100" stroke="#F1F5F9" stroke-width="1"/>
+              <line x1="40" y1="140" x2="880" y2="140" stroke="#F1F5F9" stroke-width="1"/>
+              <line x1="40" y1="180" x2="880" y2="180" stroke="#E2E8F0" stroke-width="1"/>
+
+              <!-- Etiquetas Eje Y -->
+              <text x="30" y="24" font-size="10" fill="#94A3B8" text-anchor="end" font-family="JetBrains Mono">120</text>
+              <text x="30" y="64" font-size="10" fill="#94A3B8" text-anchor="end" font-family="JetBrains Mono">90</text>
+              <text x="30" y="104" font-size="10" fill="#94A3B8" text-anchor="end" font-family="JetBrains Mono">60</text>
+              <text x="30" y="144" font-size="10" fill="#94A3B8" text-anchor="end" font-family="JetBrains Mono">30</text>
+              <text x="30" y="184" font-size="10" fill="#94A3B8" text-anchor="end" font-family="JetBrains Mono">0</text>
+
+              <!-- Área bajo la curva Real -->
+              <path d="M 50 30 L 250 45 L 450 65 L 550 85 L 650 100 L 730 115 L 730 180 L 50 180 Z" fill="url(#areaGradient)"/>
+
+              <!-- Línea Planificada (Dashed Purple con Puntos) -->
+              <line x1="50" y1="30" x2="850" y2="180" stroke="#6366F1" stroke-width="1.8" stroke-dasharray="4,4"/>
+              <circle cx="50" cy="30" r="3" fill="#6366F1"/>
+              <circle cx="250" cy="58" r="3" fill="#6366F1"/>
+              <circle cx="450" cy="85" r="3" fill="#6366F1"/>
+              <circle cx="550" cy="112" r="3" fill="#6366F1"/>
+              <circle cx="650" cy="138" r="3" fill="#6366F1"/>
+              <circle cx="750" cy="155" r="3" fill="#6366F1"/>
+              <circle cx="850" cy="180" r="3" fill="#6366F1"/>
+
+              <!-- Línea Real (Solid Cyan con Puntos) -->
+              <path d="M 50 30 L 250 45 L 450 65 L 550 85 L 650 100 L 730 115" stroke="#0284C7" stroke-width="2.5" fill="none"/>
+              <circle cx="50" cy="30" r="4.5" fill="#0284C7"/>
+              <circle cx="250" cy="45" r="4.5" fill="#0284C7"/>
+              <circle cx="450" cy="65" r="4.5" fill="#0284C7"/>
+              <circle cx="550" cy="85" r="4.5" fill="#0284C7"/>
+              <circle cx="650" cy="100" r="4.5" fill="#0284C7"/>
+              <circle cx="730" cy="115" r="4.5" fill="#0284C7"/>
+
+              <!-- Etiquetas Eje X -->
+              <text x="50" y="196" font-size="10" fill="#64748B" text-anchor="middle">11 Ago</text>
+              <text x="250" y="196" font-size="10" fill="#64748B" text-anchor="middle">13 Ago</text>
+              <text x="450" y="196" font-size="10" fill="#64748B" text-anchor="middle">15 Ago</text>
+              <text x="550" y="196" font-size="10" fill="#64748B" text-anchor="middle">17 Ago</text>
+              <text x="650" y="196" font-size="10" fill="#64748B" text-anchor="middle">19 Ago</text>
+              <text x="730" y="196" font-size="10" fill="#64748B" text-anchor="middle">21 Ago</text>
+              <text x="850" y="196" font-size="10" fill="#64748B" text-anchor="middle">25 Ago</text>
+            </svg>
           </div>
         </div>
 
@@ -239,7 +373,6 @@
         <div class="pos-layout">
           
           <div class="pos-left">
-            <!-- 1. Cliente & Fecha -->
             <div class="card" style="margin-bottom: 1.25rem;">
               <div class="card-header-sm">
                 <span class="step-num">1</span>
@@ -266,7 +399,6 @@
               </div>
             </div>
 
-            <!-- 2. Catálogo de Prendas & Sastrería -->
             <div class="card">
               <div class="card-header-sm">
                 <span class="step-num">2</span>
@@ -284,7 +416,6 @@
 
               <div class="catalog-grid" id="posCatalogGrid"></div>
 
-              <!-- Formulario de Personalización -->
               <div class="item-builder-box">
                 <div class="item-builder-header">
                   <span id="builderItemName">Configuración de la Prenda:</span>
@@ -326,7 +457,6 @@
                   </div>
                 </div>
 
-                <!-- ESPECIFICACIONES DE SASTRERÍA -->
                 <div class="tailoring-drawer" id="tailoringDrawer" style="display: none;">
                   <div class="drawer-header">Especificaciones de Sastrería &amp; Taller</div>
                   <div class="form-row-2">
@@ -348,7 +478,6 @@
             </div>
           </div>
 
-          <!-- LADO DERECHO: RESUMEN DE ORDEN -->
           <div class="pos-right">
             <div class="card pos-summary-card">
               <div class="card-header">
@@ -410,14 +539,12 @@
            3. SECCIÓN: TABLERO KANBAN DE TALLER
            ==================================================== -->
       <section id="section-kanban" class="content-section">
-        <div class="kanban-header-bar">
+        <div class="card-header" style="margin-bottom: 1.5rem;">
           <div>
-            <h2>Tablero de Taller &amp; Flujo de Lavandería</h2>
-            <p>Seguimiento de etapas de lavado, secado, planchado y sastrería.</p>
+            <h2 class="greeting-title" style="font-size: 1.35rem;">Tablero de Taller &amp; Flujo de Lavandería</h2>
+            <p class="greeting-sub">Seguimiento de etapas de lavado, secado, planchado y sastrería.</p>
           </div>
-          <div class="kanban-search-box">
-            <input type="text" id="kanbanSearchInput" class="form-input" placeholder="Buscar por Ticket o Cliente..." oninput="filterKanban(this.value)" />
-          </div>
+          <input type="text" id="kanbanSearchInput" class="form-input" style="width: 320px;" placeholder="Buscar por Ticket o Cliente..." oninput="filterKanban(this.value)" />
         </div>
 
         <div class="kanban-board">
@@ -464,9 +591,8 @@
            ==================================================== -->
       <section id="section-autoservicio" class="content-section">
         <div class="grid-2col-wide">
-          
           <div>
-            <div class="card" style="margin-bottom: 1.5rem;">
+            <div class="card" style="margin-bottom: 1.25rem;">
               <div class="card-header">
                 <div>
                   <h3>Torres Combo Lavadora / Secadora (Monedas)</h3>
@@ -480,7 +606,7 @@
               <div class="card-header">
                 <div>
                   <h3>Lavadoras &amp; Secadoras Industriales (Gran Volumen)</h3>
-                  <p class="card-subtitle">Capacidad: 75-80 Lbs • Cargas pesadas de lencería hotelera y edredones</p>
+                  <p class="card-subtitle">Capacidad: 75-80 Lbs • Cargas pesadas de lencería hotelera</p>
                 </div>
               </div>
               <div class="machines-grid" id="industrialGrid"></div>
@@ -519,7 +645,6 @@
               </button>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -684,12 +809,10 @@
       </section>
 
       <!-- ====================================================
-           8. SECCIÓN NUEVA: CONFIGURACIÓN & PERFIL
+           8. SECCIÓN: CONFIGURACIÓN & PERFIL
            ==================================================== -->
       <section id="section-configuracion" class="content-section">
         <div class="grid-2col">
-          
-          <!-- Perfil de Usuario -->
           <div class="card">
             <div class="card-header">
               <h3>Perfil del Operador</h3>
@@ -718,7 +841,6 @@
             <button class="btn btn-primary" onclick="saveUserProfile()">Guardar Datos de Perfil</button>
           </div>
 
-          <!-- Configuración del Negocio & Impresora POS -->
           <div class="card">
             <div class="card-header">
               <h3>Datos de la Empresa &amp; Ticket Térmico</h3>
@@ -766,12 +888,11 @@
 
             <button class="btn btn-primary" onclick="saveBusinessConfig()">Guardar Configuración General</button>
           </div>
-
         </div>
       </section>
 
       <!-- ====================================================
-           9. SECCIÓN NUEVA: PREGUNTAS FRECUENTES (FAQ)
+           9. SECCIÓN: PREGUNTAS FRECUENTES (FAQ)
            ==================================================== -->
       <section id="section-faq" class="content-section">
         <div class="card" style="max-width: 900px; margin: 0 auto;">
@@ -784,7 +905,6 @@
           </div>
 
           <div class="faq-list" id="faqListContainer">
-            
             <div class="faq-item">
               <button class="faq-question" onclick="toggleFaq(this)">
                 <span>¿Cómo se opera y recauda el cajetín de las torres de monedas?</span>
@@ -824,28 +944,15 @@
                 En el módulo "Control de Caja", el sistema desglosa los ingresos acumulados por Efectivo, Monedas de autoservicio y Tarjetas. El cajero ingresa el conteo físico en el formulario de arqueo y presiona "Cerrar Turno" para sellar el balance y archivar la jornada.
               </div>
             </div>
-
-            <div class="faq-item">
-              <button class="faq-question" onclick="toggleFaq(this)">
-                <span>¿Qué hacer si un insumo llega al nivel mínimo de stock?</span>
-                <span class="faq-toggle">+</span>
-              </button>
-              <div class="faq-answer">
-                El sistema genera una alerta visual automática en el panel principal cuando el inventario cae por debajo del umbral mínimo. Desde la sección de Inventario se puede registrar una entrada rápida de mercancía una vez recibido el pedido del proveedor.
-              </div>
-            </div>
-
           </div>
         </div>
       </section>
 
       <!-- ====================================================
-           10. SECCIÓN NUEVA: AYUDA & DIAGNÓSTICO QA
+           10. SECCIÓN: AYUDA & DIAGNÓSTICO QA
            ==================================================== -->
       <section id="section-ayuda" class="content-section">
         <div class="grid-2col">
-          
-          <!-- Panel de Diagnóstico QA del Sistema -->
           <div class="card">
             <div class="card-header">
               <h3>Diagnóstico del Sistema &amp; QA</h3>
@@ -881,7 +988,6 @@
             </div>
           </div>
 
-          <!-- Formulario de Soporte Técnico -->
           <div class="card">
             <div class="card-header">
               <h3>Mesa de Ayuda &amp; Soporte Técnico</h3>
@@ -913,16 +1019,13 @@
               </button>
             </form>
           </div>
-
         </div>
       </section>
 
     </div>
-  </main>
+  </div>
 
-  <!-- ==============================================
-       MODAL DE TICKET TÉRMICO IMPRIMIBLE
-       ============================================== -->
+  <!-- MODAL DE TICKET TÉRMICO IMPRIMIBLE -->
   <div class="modal-overlay" id="ticketModal">
     <div class="modal-card modal-ticket">
       <div class="modal-header">
@@ -978,7 +1081,6 @@
     </div>
   </div>
 
-  <!-- Toast Container -->
   <div id="toastContainer" class="toast-container"></div>
 
   <script src="app.js"></script>
