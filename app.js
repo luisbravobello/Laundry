@@ -20,35 +20,44 @@ const DEFAULT_STATE = {
     ticketFooter: 'Prendas no retiradas tras 30 días pasan a disposición legal. ¡Gracias por su preferencia!'
   },
   catalog: [
-    // 1. Lavandería
-    { id: '1', name: 'Camisa de Vestir / Manga Larga', category: 'Lavandería', service: 'Lavandería', price: 180, icon: 'shirt' },
-    { id: '2', name: 'Pantalón de Vestir / Gabardina', category: 'Lavandería', service: 'Lavandería', price: 200, icon: 'shirt' },
-    { id: '3', name: 'Traje Completo (2 Piezas)', category: 'Lavandería', service: 'Lavandería', price: 450, icon: 'shirt' },
-    { id: '4', name: 'Vestido Casual / Fiesta', category: 'Lavandería', service: 'Lavandería', price: 350, icon: 'shirt' },
-    { id: '5', name: 'Edredón / Acolchado King Size', category: 'Lavandería', service: 'Lavandería', price: 600, icon: 'package' },
-    { id: '6', name: 'Juego de Sábanas Completo', category: 'Lavandería', service: 'Lavandería', price: 350, icon: 'package' },
-    { id: '7', name: 'Polo / Camiseta Casual', category: 'Lavandería', service: 'Lavandería', price: 130, icon: 'shirt' },
-    { id: '8', name: 'Chaqueta / Blazer Casual', category: 'Lavandería', service: 'Lavandería', price: 300, icon: 'shirt' },
+    // 1. Lavandería (Prendas por Piezas - Precios Base Editables)
+    { id: '1', name: 'Camisa de Vestir / Manga Larga', category: 'Lavandería', service: 'Lavandería', price: 180 },
+    { id: '2', name: 'Pantalón de Vestir / Gabardina', category: 'Lavandería', service: 'Lavandería', price: 200 },
+    { id: '3', name: 'Traje Completo (2 Piezas)', category: 'Lavandería', service: 'Lavandería', price: 450 },
+    { id: '4', name: 'Vestido Casual / Fiesta', category: 'Lavandería', service: 'Lavandería', price: 350 },
+    { id: '5', name: 'Edredón / Acolchado King Size', category: 'Lavandería', service: 'Lavandería', price: 600 },
+    { id: '6', name: 'Juego de Sábanas Completo', category: 'Lavandería', service: 'Lavandería', price: 350 },
+    { id: '7', name: 'Polo / Camiseta Casual', category: 'Lavandería', service: 'Lavandería', price: 130 },
+    { id: '8', name: 'Chaqueta / Blazer Casual', category: 'Lavandería', service: 'Lavandería', price: 300 },
     
     // 2. Sastrería & Taller de Arreglos
-    { id: '9', name: 'Ruedo / Dobladillo de Pantalón', category: 'Sastrería', service: 'Sastrería', price: 250, icon: 'scissors' },
-    { id: '10', name: 'Ajuste de Cintura / Entalle', category: 'Sastrería', service: 'Sastrería', price: 350, icon: 'scissors' },
-    { id: '11', name: 'Cambio de Zipper / Cremallera', category: 'Sastrería', service: 'Sastrería', price: 300, icon: 'scissors' },
-    { id: '12', name: 'Ajuste de Mangas / Hombros', category: 'Sastrería', service: 'Sastrería', price: 400, icon: 'scissors' },
-    { id: '13', name: 'Cambio de Forro / Bolsillo', category: 'Sastrería', service: 'Sastrería', price: 450, icon: 'scissors' },
+    { id: '9', name: 'Ruedo / Dobladillo de Pantalón', category: 'Sastrería', service: 'Sastrería', price: 250 },
+    { id: '10', name: 'Ajuste de Cintura / Entalle', category: 'Sastrería', service: 'Sastrería', price: 350 },
+    { id: '11', name: 'Cambio de Zipper / Cremallera', category: 'Sastrería', service: 'Sastrería', price: 300 },
+    { id: '12', name: 'Ajuste de Mangas / Hombros', category: 'Sastrería', service: 'Sastrería', price: 400 },
 
-    // 3. Autoservicio & Máquinas
-    { id: '14', name: 'Torre Lavadora Autoservicio (30 Lbs)', category: 'Autoservicio', service: 'Autoservicio', price: 175, icon: 'machine' },
-    { id: '15', name: 'Torre Secadora Autoservicio (35 min)', category: 'Autoservicio', service: 'Autoservicio', price: 150, icon: 'machine' },
-    { id: '16', name: 'Lavadora Industrial (75 Lbs)', category: 'Autoservicio', service: 'Autoservicio', price: 450, icon: 'machine' },
-    { id: '17', name: 'Secadora Industrial (80 Lbs)', category: 'Autoservicio', service: 'Autoservicio', price: 400, icon: 'machine' },
-    { id: '18', name: 'Ficha / Moneda Estándar', category: 'Autoservicio', service: 'Autoservicio', price: 60, icon: 'coin' },
-    { id: '19', name: 'Dosis Detergente Bio-Clean', category: 'Autoservicio', service: 'Autoservicio', price: 60, icon: 'dose' },
-    { id: '20', name: 'Dosis Suavizante Aroma Fresh', category: 'Autoservicio', service: 'Autoservicio', price: 50, icon: 'dose' },
+    // 3. Máquinas: Servicio Personal vs Autoservicio (Cliente)
+    { id: '13', name: 'Máquina Pequeña — Servicio Completo (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1000 },
+    { id: '14', name: 'Máquina Pequeña — Solo Lavado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 500 },
+    { id: '15', name: 'Máquina Pequeña — Solo Secado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 500 },
+    { id: '16', name: 'Máquina Pequeña — Autoservicio Cliente (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 800 },
+    { id: '17', name: 'Máquina Pequeña — Autoservicio Cliente (Solo Lavado)', category: 'Autoservicio', service: 'Autoservicio', price: 400 },
+    { id: '18', name: 'Máquina Pequeña — Autoservicio Cliente (Solo Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 400 },
+
+    { id: '19', name: 'Máquina Grande — Servicio Completo (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1400 },
+    { id: '20', name: 'Máquina Grande — Solo Lavado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 700 },
+    { id: '21', name: 'Máquina Grande — Solo Secado (Servicio)', category: 'Autoservicio', service: 'Autoservicio', price: 700 },
+    { id: '22', name: 'Máquina Grande — Autoservicio Cliente (Lavado + Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 1200 },
+    { id: '23', name: 'Máquina Grande — Autoservicio Cliente (Solo Lavado)', category: 'Autoservicio', service: 'Autoservicio', price: 600 },
+    { id: '24', name: 'Máquina Grande — Autoservicio Cliente (Solo Secado)', category: 'Autoservicio', service: 'Autoservicio', price: 600 },
+
+    { id: '25', name: 'Ficha / Moneda Estándar', category: 'Autoservicio', service: 'Autoservicio', price: 100 },
+    { id: '26', name: 'Dosis Detergente Industrial', category: 'Autoservicio', service: 'Autoservicio', price: 60 },
+    { id: '27', name: 'Dosis Suavizante Textil', category: 'Autoservicio', service: 'Autoservicio', price: 50 },
 
     // 4. Hotelería & Volumen
-    { id: '21', name: 'Lote Toallas Hotel (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 75, icon: 'package' },
-    { id: '22', name: 'Lencería & Mantelería (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 85, icon: 'package' }
+    { id: '28', name: 'Lote Toallas Hotel (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 75 },
+    { id: '29', name: 'Lencería & Mantelería (x Kilo)', category: 'Hotelería', service: 'HotelVolumen', price: 85 }
   ],
   clients: [],
   orders: [],
@@ -299,27 +308,6 @@ function renderPos() {
 }
 
 
-function getItemSvgIcon(item) {
-  if (item.category === 'Lavandería') {
-    return `<div class="catalog-item-icon-box icon-box-blue">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"/></svg>
-    </div>`;
-  }
-  if (item.category === 'Sastrería') {
-    return `<div class="catalog-item-icon-box icon-box-purple">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
-    </div>`;
-  }
-  if (item.category === 'Autoservicio') {
-    return `<div class="catalog-item-icon-box icon-box-amber">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="12" r="5"/><line x1="12" y1="12" x2="14" y2="10"/></svg>
-    </div>`;
-  }
-  return `<div class="catalog-item-icon-box icon-box-emerald">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-  </div>`;
-}
-
 function filterCatalog(category, btnElement) {
   const state = getState();
   if (btnElement) {
@@ -336,11 +324,8 @@ function filterCatalog(category, btnElement) {
 
   grid.innerHTML = items.map(item => `
     <div class="catalog-item-card" onclick="selectCatalogItem('${item.id}')" title="Clic para cargar y ajustar precio">
-      ${getItemSvgIcon(item)}
-      <div class="catalog-item-content">
-        <div class="catalog-item-name">${item.name}</div>
-        <div class="catalog-item-price">RD$${item.price.toLocaleString('es-DO')}</div>
-      </div>
+      <div class="catalog-item-name">${item.name}</div>
+      <div class="catalog-item-price">RD$${item.price.toLocaleString('es-DO')}</div>
     </div>
   `).join('');
 }

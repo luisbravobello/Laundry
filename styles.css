@@ -515,10 +515,14 @@ body {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem;
   max-height: 220px; overflow-y: auto; margin-bottom: 1.25rem;
 }
+.catalog-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem;
+  max-height: 240px; overflow-y: auto; margin-bottom: 1.25rem;
+}
 .catalog-item-card {
   background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--r-md);
-  padding: .75rem; cursor: pointer; transition: all var(--ease);
-  display: flex; align-items: center; gap: .75rem;
+  padding: .75rem .85rem; cursor: pointer; transition: all var(--ease);
+  display: flex; flex-direction: column; justify-content: space-between;
 }
 .catalog-item-card:hover {
   border-color: #2563EB;
@@ -526,19 +530,11 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
 }
-.catalog-item-icon-box {
-  width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
+.catalog-item-name {
+  font-size: .82rem; font-weight: 700; color: var(--text-main); line-height: 1.35; margin-bottom: .45rem;
 }
-.icon-box-blue { background: #EFF6FF; color: #2563EB; }
-.icon-box-purple { background: #FAF5FF; color: #9333EA; }
-.icon-box-amber { background: #FFFBEB; color: #D97706; }
-.icon-box-emerald { background: #ECFDF5; color: #059669; }
-
-.catalog-item-content { flex: 1; min-width: 0; }
-.catalog-item-name { font-size: .82rem; font-weight: 700; color: var(--text-main); line-height: 1.25; margin-bottom: 2px; }
 .catalog-item-price {
-  font-size: .84rem; font-weight: 900; color: #2563EB;
+  font-size: .88rem; font-weight: 900; color: #2563EB;
   font-family: 'JetBrains Mono', monospace;
 }
 
