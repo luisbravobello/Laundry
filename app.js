@@ -101,11 +101,29 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function checkAuth() {
-  const user = JSON.parse(localStorage.getItem('syncops_user') || sessionStorage.getItem('syncops_user') || 'null');
+  let user = null;
+  try {
+    user = JSON.parse(localStorage.getItem('syncops_user') || sessionStorage.getItem('syncops_user') || 'null');
+  } catch(e) {}
+
   if (!user) {
-    window.location.href = 'login.html';
-    return;
+    // Si ya está en login.html, no redirigir
+    if (window.location.pathname.toLowerCase().endsWith('login.html')) {
+      return;
+    }
+    // Si no hay usuario activo, inicializar sesión por defecto de administrador
+    const registeredAdmin = JSON.parse(localStorage.getItem('syncops_registered_admin') || 'null');
+    user = {
+      name: registeredAdmin?.name || 'Luis Bravo',
+      email: registeredAdmin?.email || 'admin@syncopslaundry.do',
+      role: registeredAdmin?.role || 'Administrador General',
+      avatar: registeredAdmin?.avatar || 'LB'
+    };
+    try {
+      localStorage.setItem('syncops_user', JSON.stringify(user));
+    } catch(e) {}
   }
+
   const nameEl = document.getElementById('userName');
   const avatarEl = document.getElementById('userAvatar');
   const greetingEl = document.getElementById('dashboardGreeting');
@@ -113,6 +131,7 @@ function checkAuth() {
   if (avatarEl) avatarEl.innerText = user.avatar || 'LB';
   if (greetingEl) greetingEl.innerText = `Buenas tardes, ${user.name ? user.name.split(' ')[0] : 'Luis'}`;
 }
+
 
 function logout() {
   localStorage.removeItem('syncops_user');
