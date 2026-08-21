@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SyncOps — Laundry, Tailoring &amp; Coin-op Suite</title>
+
+  <!-- Google Fonts: Inter + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="app-body">
+
+  <!-- ==============================================
+       BARRA LATERAL DE NAVEGACIÓN (SIDEBAR MODERNO)
+       ============================================== -->
+  <aside class="sidebar">
+    <!-- Brand Header -->
+    <div class="sidebar-brand">
+      <div class="brand-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="4"></rect>
+          <circle cx="12" cy="12" r="5"></circle>
+          <path d="M12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">Sync<span class="brand-highlight">Ops</span></span>
+        <span class="brand-sub">LAUNDRY &amp; SUITE</span>
+      </div>
+      <span class="badge-version">v2.4</span>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">MÓDULOS PRINCIPALES</div>
+      
+      <button class="nav-item active" onclick="switchSection('dashboard', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z"/></svg>
+        <span>Panel &amp; Métricas</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('pos', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h12a2 2 0 0 1 2 2v16l-3-2-3 2-3-2-3 2-3-2-3 2V4a2 2 0 0 1 2-2zm2 5h8v2H8V7zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/></svg>
+        <span>Punto de Venta / POS</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('kanban', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4zm7 0a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4zm7 0a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4z"/></svg>
+        <span>Tablero de Taller</span>
+        <span class="badge-count" id="navCountTaller">2</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('autoservicio', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zm14 2v2H5V5h14zM5 9h14v10H5V9zm7 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
+        <span>Autoservicio &amp; Torres</span>
+      </button>
+
+      <div class="nav-section-title" style="margin-top: 1.5rem;">ADMINISTRACIÓN &amp; CONTROL</div>
+
+      <button class="nav-item" onclick="switchSection('inventario', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16.5V7.5L12 2.5 3 7.5v9l9 5 9-5zM12 4.7l6.8 3.8-2.8 1.6-6.8-3.8L12 4.7zm-1 5.9v6.7L5 13.5v-5.6l6 3.7zm2 6.7v-6.7l6-3.7v5.6l-6 3.8z"/></svg>
+        <span>Inventario Insumos</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('clientes', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0zm-4-2a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm-8 11c0-2.67 5.33-4 8-4s8 1.33 8 4v1H4v-1z"/></svg>
+        <span>Clientes &amp; Hoteles</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('caja', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6zm2 0v12h16V6H4zm8 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
+        <span>Control de Caja</span>
+      </button>
+    </nav>
+
+    <!-- Footer de Usuario -->
+    <div class="sidebar-user">
+      <div class="user-avatar" id="userAvatar">LB</div>
+      <div class="user-info">
+        <span class="user-name" id="userName">Luis Bravo Bello</span>
+        <span class="user-role">Administrador • POS 01</span>
+      </div>
+      <button class="btn-logout" onclick="logout()" title="Cerrar sesión">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ==============================================
+       ÁREA PRINCIPAL DE CONTENIDO
+       ============================================== -->
+  <main class="main-content">
+    
+    <!-- BARRA SUPERIOR (HEADER) -->
+    <header class="topbar">
+      <div class="topbar-title-box">
+        <h1 class="page-title" id="currentSectionTitle">Panel de Control &amp; Métricas</h1>
+      </div>
+
+      <div class="topbar-actions">
+        <!-- Badge de Caja -->
+        <div class="status-badge status-done">
+          <span class="status-dot"></span> Caja Abierta (Turno 01)
+        </div>
+
+        <!-- Badge de Conectividad -->
+        <div class="status-badge status-progress">
+          <span class="status-dot"></span> Modo Híbrido / LocalDB
+        </div>
+
+        <!-- Reloj en vivo -->
+        <div class="clock-badge" id="liveClock">12:00:00 PM</div>
+      </div>
+    </header>
+
+    <!-- CUERPO DINÁMICO DE PÁGINAS -->
+    <div class="content-body">
+
+      <!-- ====================================================
+           1. SECCIÓN: DASHBOARD & MÉTRICAS
+           ==================================================== -->
+      <section id="section-dashboard" class="content-section active">
+        <!-- Banner de bienvenida -->
+        <div class="dashboard-banner">
+          <div>
+            <h2>¡Hola de nuevo! Resumen Operativo</h2>
+            <p>Métricas consolidadas en tiempo real de lavandería por piezas, taller de sastrería, autoservicio y cuentas hoteleras.</p>
+          </div>
+          <div class="banner-actions">
+            <button class="btn btn-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+              <span>Nueva Orden / Recepción</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 TARJETAS KPI -->
+        <div class="kpi-grid">
+          <!-- KPI 1: Ventas Hoy -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">VENTAS DEL DÍA</span>
+              <div class="kpi-icon-box bg-blue-subtle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiVentasHoy">RD$1,555.00</div>
+            <div class="kpi-footer">
+              <span class="badge-pill bg-emerald">✓ Al Día</span>
+              <span class="kpi-subtext">Ingresos por órdenes y fichas</span>
+            </div>
+          </div>
+
+          <!-- KPI 2: Prendas en Taller -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">PRENDAS EN TALLER</span>
+              <div class="kpi-icon-box bg-indigo-subtle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiPrendasTaller">2</div>
+            <div class="kpi-footer">
+              <span class="badge-pill bg-indigo">En Proceso</span>
+              <span class="kpi-subtext">Lavado, planchado y sastrería</span>
+            </div>
+          </div>
+
+          <!-- KPI 3: Autoservicio -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">AUTOSERVICIO (TORRES)</span>
+              <div class="kpi-icon-box bg-emerald-subtle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="4"></rect><circle cx="12" cy="12" r="5"></circle></svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiAutoservicio"><span class="text-blue" id="kpiMaquinasUso">2</span> <span class="kpi-dim">en uso / 3 libres</span></div>
+            <div class="kpi-footer">
+              <span class="badge-pill bg-emerald">Torres Monedas</span>
+              <span class="kpi-subtext">Operación continua en vivo</span>
+            </div>
+          </div>
+
+          <!-- KPI 4: Hoteles & Crédito -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">CRÉDITO HOTELES</span>
+              <div class="kpi-icon-box bg-amber-subtle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+            </div>
+            <div class="kpi-value text-amber" id="kpiHotelesCredito">RD$18,500.00</div>
+            <div class="kpi-footer">
+              <span class="badge-pill bg-amber">Por Cobrar</span>
+              <span class="kpi-subtext">Cuentas corporativas</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLAS DEL DASHBOARD (Órdenes Recientes & Alertas de Insumos) -->
+        <div class="grid-2col">
+          <!-- Órdenes Recientes -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Órdenes de Servicio Recientes</h3>
+              <button class="btn-link" onclick="switchSection('kanban', document.querySelectorAll('.nav-item')[2])">Ver Flujo en Taller →</button>
+            </div>
+            <div class="table-responsive">
+              <table class="table" id="tableRecentOrders">
+                <thead>
+                  <tr>
+                    <th>TICKET</th>
+                    <th>CLIENTE</th>
+                    <th>ESTADO</th>
+                    <th style="text-align: right;">TOTAL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Inyectado por JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Alertas de Insumos -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Alertas de Insumos Críticos</h3>
+              <button class="btn-link" onclick="switchSection('inventario', document.querySelectorAll('.nav-item')[4])">Inventario →</button>
+            </div>
+            <div class="alerts-list" id="dashboardAlertsList">
+              <!-- Inyectado por JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           2. SECCIÓN: PUNTO DE VENTA (POS) & RECEPCIÓN
+           ==================================================== -->
+      <section id="section-pos" class="content-section">
+        <div class="pos-layout">
+          
+          <!-- LADO IZQUIERDO: SELECCIÓN DE CLIENTE & CATÁLOGO DE PRENDAS -->
+          <div class="pos-left">
+            <!-- 1. Cliente & Fecha -->
+            <div class="card" style="margin-bottom: 1.25rem;">
+              <div class="card-header-sm">
+                <span class="step-num">1</span>
+                <h4>Cliente &amp; Compromiso de Entrega</h4>
+                <button class="btn btn-sm btn-outline" style="margin-left: auto;" onclick="openNewClientModal()">+ Nuevo Cliente</button>
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label>Cliente:</label>
+                  <select id="posClientSelect" class="form-input" onchange="handleClientSelect(this)">
+                    <!-- Inyectado por JS -->
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Fecha de Entrega Estimada:</label>
+                  <input type="datetime-local" id="posDeliveryDate" class="form-input" />
+                </div>
+              </div>
+
+              <div class="form-row-between" style="margin-top: .5rem;">
+                <label class="checkbox-label text-rose">
+                  <input type="checkbox" id="posIsUrgent" onchange="calculatePosTotal()" />
+                  <strong>⚡ Servicio Urgente / Prioritario (+15% Entrega Inmediata)</strong>
+                </label>
+              </div>
+            </div>
+
+            <!-- 2. Catálogo Visual de Prendas & Sastrería -->
+            <div class="card">
+              <div class="card-header-sm">
+                <span class="step-num">2</span>
+                <h4>Catálogo de Prendas &amp; Servicios</h4>
+              </div>
+
+              <!-- Pestañas de Categoría -->
+              <div class="catalog-tabs">
+                <button class="catalog-tab active" onclick="filterCatalog('Todos', this)">Todos</button>
+                <button class="catalog-tab" onclick="filterCatalog('Ropa Formal', this)">Ropa Formal</button>
+                <button class="catalog-tab" onclick="filterCatalog('Ropa Casual', this)">Ropa Casual</button>
+                <button class="catalog-tab" onclick="filterCatalog('Ropa de Cama', this)">Ropa de Cama</button>
+                <button class="catalog-tab" onclick="filterCatalog('Sastrería', this)">Sastrería &amp; Arreglos</button>
+                <button class="catalog-tab" onclick="filterCatalog('Hotelería', this)">Hotelería (x Kg)</button>
+              </div>
+
+              <!-- Grid de Tarjetas de Catálogo -->
+              <div class="catalog-grid" id="posCatalogGrid">
+                <!-- Inyectado por JS -->
+              </div>
+
+              <!-- Formulario de Personalización de Prenda Seleccionada -->
+              <div class="item-builder-box">
+                <div class="item-builder-header">
+                  <span id="builderItemName">Selecciona una prenda arriba o personaliza:</span>
+                </div>
+
+                <div class="form-row-3">
+                  <div class="form-group">
+                    <label>Descripción / Prenda:</label>
+                    <input type="text" id="builderDesc" class="form-input" placeholder="Ej. Pantalón de Lino" />
+                  </div>
+                  <div class="form-group">
+                    <label>Tipo de Servicio:</label>
+                    <select id="builderService" class="form-input" onchange="toggleTailoringDrawer(this.value)">
+                      <option value="LavadoYPlanchado">Lavado &amp; Planchado</option>
+                      <option value="LavadoPieza">Sólo Lavado</option>
+                      <option value="Planchado">Sólo Planchado</option>
+                      <option value="Sastreria">Sastrería / Arreglo</option>
+                      <option value="HotelVolumen">Hotel / Gran Volumen (x Kg)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Cantidad / Peso (Kg):</label>
+                    <input type="number" id="builderQty" class="form-input" value="1" min="1" step="1" />
+                  </div>
+                </div>
+
+                <div class="form-row-3">
+                  <div class="form-group">
+                    <label>Color / Tela:</label>
+                    <input type="text" id="builderColor" class="form-input" placeholder="Ej. Azul Marino / Algodón" />
+                  </div>
+                  <div class="form-group">
+                    <label>Defectos / Manchas Previas:</label>
+                    <input type="text" id="builderDefects" class="form-input" placeholder="Ej. Botón faltante, roce en cuello" />
+                  </div>
+                  <div class="form-group">
+                    <label>Precio Unitario (RD$):</label>
+                    <input type="number" id="builderPrice" class="form-input font-mono" value="180" />
+                  </div>
+                </div>
+
+                <!-- SECCIÓN ESPECIAL: ESPECIFICACIONES DE SASTRERÍA -->
+                <div class="tailoring-drawer" id="tailoringDrawer" style="display: none;">
+                  <div class="drawer-header">✂️ Especificaciones de Sastrería &amp; Taller</div>
+                  <div class="form-row-2">
+                    <div class="form-group">
+                      <label>Tipo de Arreglo:</label>
+                      <input type="text" id="tailorAlterationType" class="form-input" placeholder="Ej. Dobladillo / Ruedo a 38 pulg" />
+                    </div>
+                    <div class="form-group">
+                      <label>Medidas Exactas / Indicaciones:</label>
+                      <input type="text" id="tailorMeasurements" class="form-input" placeholder="Ej. Reducir 2cm cintura, hilo marino" />
+                    </div>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary btn-add-item" onclick="addItemToOrder()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                  <span>Agregar Prenda a la Orden</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- LADO DERECHO: RESUMEN DE LA ORDEN & COBRO / EMISIÓN -->
+          <div class="pos-right">
+            <div class="card pos-summary-card">
+              <div class="card-header">
+                <h3>Resumen de la Orden</h3>
+                <span class="badge-pill bg-blue" id="posItemsCount">0 prendas</span>
+              </div>
+
+              <!-- Lista de Prendas Agregadas -->
+              <div class="pos-items-list" id="posItemsList">
+                <div class="empty-state-pos">No hay prendas agregadas a la orden.</div>
+              </div>
+
+              <!-- Totales -->
+              <div class="pos-totals-box">
+                <div class="total-row">
+                  <span>Subtotal:</span>
+                  <strong id="posSubtotal" class="font-mono">RD$0.00</strong>
+                </div>
+                <div class="total-row">
+                  <span>Descuento (RD$):</span>
+                  <input type="number" id="posDiscount" class="input-inline font-mono" value="0" min="0" oninput="calculatePosTotal()" />
+                </div>
+                <div class="total-row-highlight">
+                  <span>TOTAL GENERAL:</span>
+                  <strong id="posTotal" class="font-mono">RD$0.00</strong>
+                </div>
+
+                <div class="payment-method-selector">
+                  <label>Método de Pago:</label>
+                  <div class="payment-tabs">
+                    <button class="payment-tab active" onclick="selectPaymentMethod('Efectivo', this)">💵 Efectivo</button>
+                    <button class="payment-tab" onclick="selectPaymentMethod('Tarjeta', this)">💳 Tarjeta</button>
+                    <button class="payment-tab" onclick="selectPaymentMethod('Transferencia', this)">📲 Transfer</button>
+                  </div>
+                </div>
+
+                <div class="form-row-between" style="margin-top: .75rem;">
+                  <div class="form-group" style="flex: 1; margin-right: .5rem;">
+                    <label>Monto a Abonar (RD$):</label>
+                    <input type="number" id="posAmountPaid" class="form-input font-mono font-bold" value="0" oninput="calculatePosTotal()" />
+                  </div>
+                  <button class="btn btn-outline" style="margin-top: 1.35rem;" onclick="payFullOrder()">Pagar Todo</button>
+                </div>
+
+                <div class="total-row text-rose font-bold" style="margin-top: .5rem;">
+                  <span>Saldo Pendiente:</span>
+                  <strong id="posBalanceDue" class="font-mono">RD$0.00</strong>
+                </div>
+
+                <!-- Botón de Emisión -->
+                <button class="btn btn-success btn-block btn-lg" onclick="saveAndPrintOrder()" style="margin-top: 1.25rem;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2h12v4H6V2zm12 6H6a4 4 0 0 0-4 4v5h4v5h12v-5h4v-5a4 4 0 0 0-4-4zm-2 12H8v-4h8v4zm2-7a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+                  <span>GUARDAR &amp; EMITIR TICKET</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ====================================================
+           3. SECCIÓN: TABLERO KANBAN DE TALLER
+           ==================================================== -->
+      <section id="section-kanban" class="content-section">
+        <div class="kanban-header-bar">
+          <div>
+            <h2>Tablero de Taller &amp; Flujo de Lavandería</h2>
+            <p>Seguimiento visual del estado de lavado, planchado, arreglos de sastrería y entregas.</p>
+          </div>
+          <div class="kanban-search-box">
+            <input type="text" id="kanbanSearchInput" class="form-input" placeholder="🔍 Escanear o buscar Ticket / Cliente..." oninput="filterKanban(this.value)" />
+          </div>
+        </div>
+
+        <div class="kanban-board">
+          <!-- Columna 1: Recibido -->
+          <div class="kanban-column">
+            <div class="kanban-column-header bg-todo">
+              <span class="status-dot dot-todo"></span>
+              <strong>1. RECIBIDO</strong>
+              <span class="kanban-counter" id="countRecibido">0</span>
+            </div>
+            <div class="kanban-cards-box" id="colRecibido"></div>
+          </div>
+
+          <!-- Columna 2: En Lavado / Taller -->
+          <div class="kanban-column">
+            <div class="kanban-column-header bg-progress">
+              <span class="status-dot dot-progress"></span>
+              <strong>2. EN LAVADO / TALLER</strong>
+              <span class="kanban-counter" id="countEnProceso">0</span>
+            </div>
+            <div class="kanban-cards-box" id="colEnProceso"></div>
+          </div>
+
+          <!-- Columna 3: En Planchado -->
+          <div class="kanban-column">
+            <div class="kanban-column-header bg-review">
+              <span class="status-dot dot-review"></span>
+              <strong>3. EN PLANCHADO</strong>
+              <span class="kanban-counter" id="countEnPlanchado">0</span>
+            </div>
+            <div class="kanban-cards-box" id="colEnPlanchado"></div>
+          </div>
+
+          <!-- Columna 4: Listo en Mostrador -->
+          <div class="kanban-column">
+            <div class="kanban-column-header bg-done">
+              <span class="status-dot dot-done"></span>
+              <strong>4. LISTO EN MOSTRADOR</strong>
+              <span class="kanban-counter" id="countListo">0</span>
+            </div>
+            <div class="kanban-cards-box" id="colListo"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           4. SECCIÓN: AUTOSERVICIO & TORRES CON MONEDAS
+           ==================================================== -->
+      <section id="section-autoservicio" class="content-section">
+        <div class="grid-2col-wide">
+          
+          <!-- Lado Izquierdo: Monitoreo de Máquinas -->
+          <div>
+            <!-- Torres Combo Monedas -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+              <div class="card-header">
+                <div>
+                  <h3>🌀 Torres Combo Lavadora / Secadora (Operadas por Monedas)</h3>
+                  <p class="card-subtitle">Estilo EE. UU. (Speed Queen) • Capacidad: 30 Lbs • 3 Monedas por ciclo</p>
+                </div>
+              </div>
+
+              <div class="machines-grid" id="towersGrid">
+                <!-- Inyectado por JS -->
+              </div>
+            </div>
+
+            <!-- Máquinas Industriales -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>🏭 Lavadoras &amp; Secadoras Industriales de Gran Volumen</h3>
+                  <p class="card-subtitle">Capacidad: 75-80 Lbs • Para hoteles, lotes pesados y edredones King</p>
+                </div>
+              </div>
+
+              <div class="machines-grid" id="industrialGrid">
+                <!-- Inyectado por JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Lado Derecho: Dispensador / Venta de Monedas y Fichas -->
+          <div>
+            <div class="card">
+              <div class="card-header">
+                <h3>🪙 Venta de Fichas / Monedas</h3>
+              </div>
+              <p class="text-muted" style="margin-bottom: 1.25rem;">Dispensación rápida de monedas para clientes de las torres de autoservicio.</p>
+
+              <div class="form-group">
+                <label>Cantidad de Fichas / Monedas:</label>
+                <input type="number" id="tokenQty" class="form-input font-mono font-bold font-lg" value="3" min="1" oninput="calculateTokenSale()" />
+              </div>
+
+              <div class="form-group">
+                <label>Precio por Ficha (RD$):</label>
+                <input type="number" id="tokenPrice" class="form-input font-mono" value="60" oninput="calculateTokenSale()" />
+              </div>
+
+              <div class="form-group">
+                <label>Cliente (Opcional):</label>
+                <input type="text" id="tokenClientName" class="form-input" placeholder="Cliente Autoservicio" />
+              </div>
+
+              <div class="total-box-token">
+                <span>TOTAL A COBRAR:</span>
+                <strong id="tokenTotalCost" class="font-mono">RD$180.00</strong>
+              </div>
+
+              <button class="btn btn-primary btn-block btn-lg" onclick="sellTokens()" style="margin-top: 1rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                <span>VENDER FICHAS &amp; REGISTRAR EN CAJA</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ====================================================
+           5. SECCIÓN: INVENTARIO & SUMINISTROS
+           ==================================================== -->
+      <section id="section-inventario" class="content-section">
+        <div class="grid-2col-wide">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Inventario de Insumos &amp; Suministros</h3>
+                <p class="card-subtitle">Detergentes industriales, suavizantes, fundas plásticas, ganchos e hilos de costura.</p>
+              </div>
+              <button class="btn btn-primary" onclick="openNewInsumoModal()">+ Nuevo Insumo</button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>CÓDIGO</th>
+                    <th>NOMBRE DEL INSUMO</th>
+                    <th>CATEGORÍA</th>
+                    <th>STOCK ACTUAL</th>
+                    <th>STOCK MÍNIMO</th>
+                    <th>COSTO UNIT.</th>
+                    <th>ACCIONES</th>
+                  </tr>
+                </thead>
+                <tbody id="inventoryTableBody">
+                  <!-- Inyectado por JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Card de Entrada Rápida de Stock -->
+          <div>
+            <div class="card">
+              <div class="card-header">
+                <h3>📦 Entrada Rápida de Stock</h3>
+              </div>
+              <div class="form-group">
+                <label>Seleccionar Insumo:</label>
+                <select id="quickRestockSelect" class="form-input">
+                  <!-- Inyectado por JS -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Cantidad a Agregar:</label>
+                <input type="number" id="quickRestockQty" class="form-input font-mono" value="5" min="1" />
+              </div>
+              <button class="btn btn-success btn-block" onclick="executeQuickRestock()">
+                <span>Registrar Entrada +</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           6. SECCIÓN: CLIENTES & CUENTAS DE HOTELES
+           ==================================================== -->
+      <section id="section-clientes" class="content-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3>Directorio de Clientes &amp; Cuentas Corporativas</h3>
+              <p class="card-subtitle">Clientes individuales y hoteles con facturación a crédito y lotes por volumen.</p>
+            </div>
+            <button class="btn btn-primary" onclick="openNewClientModal()">+ Registrar Cliente</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>NOMBRE / EMPRESA</th>
+                  <th>TELÉFONO</th>
+                  <th>TIPO DE CUENTA</th>
+                  <th>SALDO PENDIENTE</th>
+                  <th>LÍMITE CRÉDITO</th>
+                  <th>ÓRDENES TOTALES</th>
+                </tr>
+              </thead>
+              <tbody id="clientsTableBody">
+                <!-- Inyectado por JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           7. SECCIÓN: CONTROL DE CAJA & ARQUEO
+           ==================================================== -->
+      <section id="section-caja" class="content-section">
+        <div class="grid-2col">
+          <!-- Movimientos del Turno -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Movimientos y Cobros del Turno</h3>
+              <span class="badge-pill bg-emerald">Turno Abierto</span>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>HORA</th>
+                    <th>TIPO</th>
+                    <th>CONCEPTO</th>
+                    <th>MÉTODO</th>
+                    <th style="text-align: right;">MONTO</th>
+                  </tr>
+                </thead>
+                <tbody id="cashMovementsTableBody">
+                  <!-- Inyectado por JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Resumen de Ingresos y Cierre -->
+          <div>
+            <div class="card" style="margin-bottom: 1.25rem;">
+              <div class="card-header">
+                <h3>Resumen de Ingresos</h3>
+              </div>
+              <div class="summary-breakdown">
+                <div class="summary-row">
+                  <span>Fondo Inicial:</span>
+                  <strong class="font-mono">RD$3,000.00</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Efectivo en Caja:</span>
+                  <strong class="font-mono" id="cashTotalCash">RD$825.00</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Monedas / Fichas Autoservicio:</span>
+                  <strong class="font-mono" id="cashTotalTokens">RD$525.00</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Tarjetas POS:</span>
+                  <strong class="font-mono" id="cashTotalCards">RD$730.00</strong>
+                </div>
+                <div class="summary-row-total">
+                  <span>TOTAL INGRESOS TURNO:</span>
+                  <strong class="font-mono" id="cashGrandTotal">RD$2,080.00</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Arqueo -->
+            <div class="card">
+              <div class="card-header">
+                <h3>Arqueo y Cierre de Turno</h3>
+              </div>
+              <div class="form-group">
+                <label>Efectivo Físico Contado (RD$):</label>
+                <input type="number" id="cashDeclared" class="form-input font-mono" placeholder="3825.00" />
+              </div>
+              <div class="form-group">
+                <label>Monedas Físicas Contadas (RD$):</label>
+                <input type="number" id="tokensDeclared" class="form-input font-mono" placeholder="525.00" />
+              </div>
+              <button class="btn btn-danger btn-block btn-lg" onclick="closeCashShift()">
+                <span>CERRAR TURNO &amp; ARQUEO</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ==============================================
+       MODAL DE TICKET TÉRMICO IMPRIMIBLE (CON CÓDIGO DE BARRAS)
+       ============================================== -->
+  <div class="modal-overlay" id="ticketModal">
+    <div class="modal-card modal-ticket">
+      <div class="modal-header">
+        <h3>🧾 Comprobante / Ticket Térmico POS</h3>
+        <button class="btn-close" onclick="closeTicketModal()">✕</button>
+      </div>
+      <div class="modal-body" id="ticketPrintArea">
+        <div class="thermal-ticket">
+          <div class="ticket-header">
+            <h4>SYNCOPS LAUNDRY &amp; SUITE</h4>
+            <p>Lavandería • Sastrería • Autoservicio</p>
+            <p>Av. Winston Churchill #102, Santo Domingo</p>
+            <p>Tel: (809) 555-7962 • RNC: 131-89745-1</p>
+          </div>
+          <div class="ticket-divider">================================</div>
+          <div class="ticket-meta">
+            <div><strong>TICKET:</strong> <span id="tktNum">LAV-2026-001</span></div>
+            <div><strong>FECHA:</strong> <span id="tktDate">21/08/2026 04:30 PM</span></div>
+            <div><strong>ENTREGA:</strong> <span id="tktDelivery">22/08/2026 04:30 PM</span></div>
+            <div><strong>CLIENTE:</strong> <span id="tktClient">Carlos Manuel Fernández</span></div>
+            <div><strong>TEL:</strong> <span id="tktPhone">809-555-1234</span></div>
+          </div>
+          <div class="ticket-divider">--------------------------------</div>
+          <div class="ticket-items-header">
+            <span>CANT  DESCRIPCIÓN</span>
+            <span>TOTAL</span>
+          </div>
+          <div class="ticket-divider">--------------------------------</div>
+          <div class="ticket-items-body" id="tktItemsBody"></div>
+          <div class="ticket-divider">--------------------------------</div>
+          <div class="ticket-totals">
+            <div class="tkt-row"><span>SUBTOTAL:</span> <span id="tktSubtotal">RD$0.00</span></div>
+            <div class="tkt-row"><span>DESCUENTO:</span> <span id="tktDiscount">RD$0.00</span></div>
+            <div class="tkt-row tkt-bold"><span>TOTAL GENERAL:</span> <span id="tktTotal">RD$0.00</span></div>
+            <div class="tkt-row"><span>ABONO PAGADO:</span> <span id="tktPaid">RD$0.00</span></div>
+            <div class="tkt-row tkt-pending"><span>SALDO PENDIENTE:</span> <span id="tktBalance">RD$0.00</span></div>
+          </div>
+          <div class="ticket-divider">================================</div>
+          <div class="ticket-barcode-box">
+            <div class="barcode-lines">||| | |||| || ||| | ||| |||| |</div>
+            <div class="barcode-text" id="tktBarcode">*202608210001*</div>
+          </div>
+          <div class="ticket-footer">
+            <p>* Conserve este ticket para retirar sus prendas.</p>
+            <p>* Prendas no retiradas tras 30 días pasan a disposición.</p>
+            <p>¡Gracias por su preferencia!</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeTicketModal()">Cerrar</button>
+        <button class="btn btn-primary" onclick="printThermalTicket()">🖨️ Imprimir Ticket</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
