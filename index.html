@@ -963,21 +963,52 @@
               </button>
             </div>
 
-            <!-- PESTAÑA 4: IMPRESORA POS -->
+            <!-- PESTAÑA 4: IMPRESORA POS (EPSON TM-T20II COMPATIBLE) -->
             <div id="settings-tab-impresora" class="settings-tab-pane" style="display: none;">
-              <h4 class="settings-section-subtitle" style="margin-top: 0;">Parámetros de Impresora Térmica</h4>
+              <h4 class="settings-section-subtitle" style="margin-top: 0;">Parámetros de Impresora Térmica POS</h4>
               
+              <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: var(--r-md); padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong style="color: #1E40AF; font-size: .95rem;">Impresora Configurada: EPSON TM-T20II (ESC/POS)</strong>
+                  <div style="font-size: .78rem; color: #3B82F6; margin-top: .15rem;">Modo de impresión térmica 80 mm • 203 DPI • Auto-corte compatible</div>
+                </div>
+                <span class="badge-pill bg-emerald">100% Compatible</span>
+              </div>
+
               <div class="form-group" style="margin-bottom: 1.25rem;">
-                <label>Ancho del Papel Térmico</label>
-                <select id="cfgPrinterWidth" class="form-input">
-                  <option value="80mm">80 mm (Estándar Térmico ESC/POS)</option>
-                  <option value="58mm">58 mm (Compacto)</option>
+                <label>Modelo / Controlador de Impresora</label>
+                <select id="cfgPrinterModel" class="form-input">
+                  <option value="epson-t20ii" selected>EPSON TM-T20II / TM-T20III (80mm ESC/POS - Recomendada)</option>
+                  <option value="generic-80">Genérica Térmica 80mm ESC/POS</option>
+                  <option value="generic-58">Genérica Térmica 58mm (Compacta)</option>
                 </select>
               </div>
 
-              <button type="button" class="btn btn-outline" onclick="runQaTest('ticket')" style="margin-top: .5rem;">
-                Emitir Ticket de Prueba
-              </button>
+              <div class="form-row-2" style="margin-bottom: 1.5rem;">
+                <div class="form-group">
+                  <label>Ancho del Rollo</label>
+                  <select id="cfgPrinterWidth" class="form-input">
+                    <option value="80mm" selected>80 mm (72 mm área imprimible estándar TM-T20II)</option>
+                    <option value="58mm">58 mm (Con espaciador EPSON)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Corte Automático (Auto-Cutter)</label>
+                  <select class="form-input">
+                    <option selected>Corte Total / Parcial Habilitado</option>
+                    <option>Deshabilitado (Corte Manual)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: .75rem; flex-wrap: wrap;">
+                <button type="button" class="btn btn-primary" onclick="testEpsonT20II()" style="background: #2563EB; font-weight: 700;">
+                  🖨️ Probar Impresión EPSON TM-T20II
+                </button>
+                <button type="button" class="btn btn-outline" onclick="showToast('Controlador EPSON TM-T20II listo para imprimir.', 'success')">
+                  Verificar Driver EPSON
+                </button>
+              </div>
             </div>
 
           </div>

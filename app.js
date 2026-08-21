@@ -1207,6 +1207,32 @@ function printThermalTicket() {
   window.print();
 }
 
+function testEpsonT20II() {
+  const testOrder = {
+    id: 'test_epson',
+    ticket: 'EPSON-TEST-80MM',
+    barcode: '202608219999',
+    clientId: 'c1',
+    clientName: 'PRUEBA EPSON TM-T20II',
+    phone: '809-555-0000',
+    date: new Date().toLocaleString('es-DO'),
+    delivery: new Date().toLocaleString('es-DO'),
+    subtotal: 750,
+    discount: 50,
+    total: 700,
+    paid: 700,
+    balance: 0,
+    items: [
+      { name: 'Prueba de Impresión 80mm', qty: 1, subtotal: 350, alteration: 'ESC/POS Font A 48 cols OK' },
+      { name: 'Prueba Código de Barras', qty: 1, subtotal: 400, alteration: 'Code128 / AutoCutter OK' }
+    ]
+  };
+
+  displayThermalTicket(testOrder);
+  showToast('Comprobante preparado para impresora EPSON TM-T20II. Pulsa "Imprimir Ticket".', 'success');
+}
+
+
 // =====================================================================
 // 14. SISTEMA DE TOASTS
 // =====================================================================

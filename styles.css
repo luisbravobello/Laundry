@@ -1064,91 +1064,117 @@ body {
 }
 
 /* ================================================================
-   BOTÓN LOGIN MODERNO
+   BOTÓN LOGIN SIMPLE & TOGGLE PASSWORD
    ================================================================ */
-.exact-btn-signin-modern {
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
   width: 100%;
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #1D4ED8 100%);
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: .9rem 1.25rem;
-  border-radius: 12px;
-  font-size: .92rem; font-weight: 800;
-  letter-spacing: 0.5px;
+}
+
+.btn-toggle-eye {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
   cursor: pointer;
-  box-shadow: 0 8px 20px -4px rgba(29, 78, 216, 0.45);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex; align-items: center; justify-content: center;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748B;
+  transition: opacity 0.2s ease;
 }
-.exact-btn-signin-modern:hover {
-  background: linear-gradient(135deg, #60A5FA 0%, #3B82F6 50%, #2563EB 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 25px -4px rgba(29, 78, 216, 0.55);
+
+.btn-toggle-eye:hover {
+  opacity: 0.75;
 }
-.exact-btn-signin-modern:active {
+
+.exact-btn-simple {
+  width: 100%;
+  background: #2563EB;
+  color: #FFFFFF;
+  border: none;
+  padding: 0.85rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  margin-top: 0.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.exact-btn-simple:hover {
+  background: #1D4ED8;
+  transform: translateY(-1px);
+}
+
+.exact-btn-simple:active {
+  background: #1E40AF;
   transform: translateY(0);
 }
 
 /* ================================================================
-   REPORTE FINANCIERO PDF / IMPRIMIBLE
+   SOPORTE DE IMPRESIÓN EPSON TM-T20II (80MM ROLL) & REPORTES
    ================================================================ */
-.pdf-report-sheet {
-  background: #FFFFFF;
-  color: #0F172A;
-  font-family: 'Inter', sans-serif;
-  line-height: 1.5;
-}
-.pdf-report-header {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  border-bottom: 2px solid #0F172A; padding-bottom: 1.25rem; margin-bottom: 1.5rem;
-}
-.pdf-summary-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
-  margin-bottom: 1.75rem;
-}
-.pdf-summary-box {
-  background: #F8FAFC; border: 1px solid #E2E8F0;
-  border-radius: var(--r-md); padding: .85rem 1rem;
-  display: flex; flex-direction: column; gap: .25rem;
-}
-.pdf-summary-box span {
-  font-size: .68rem; font-weight: 700; color: #64748B; letter-spacing: 0.5px;
-}
-.pdf-summary-box strong {
-  font-size: 1.15rem; font-weight: 800; color: #0F172A;
-}
-
-.pdf-table {
-  width: 100%; border-collapse: collapse; font-size: .82rem; margin-bottom: 2.5rem;
-}
-.pdf-table th {
-  background: #F1F5F9; border-bottom: 2px solid #CBD5E1;
-  padding: .65rem .75rem; text-align: left; font-weight: 700; color: #334155;
-}
-.pdf-table td {
-  padding: .65rem .75rem; border-bottom: 1px solid #E2E8F0; color: #1E293B;
-}
-.pdf-table tr:nth-child(even) td {
-  background: #FAFAFA;
-}
-
-.pdf-footer-signatures {
-  display: flex; justify-content: space-between; margin-top: 3.5rem; padding-top: 1rem;
-}
-.pdf-sig-line {
-  width: 240px; text-align: center; font-size: .78rem; color: #475569;
-}
-.sig-border {
-  border-top: 1px solid #94A3B8; margin-bottom: .5rem; width: 100%;
-}
-
 @media print {
-  body * { visibility: hidden; }
-  #reportPdfPrintArea, #reportPdfPrintArea * { visibility: visible; }
+  @page {
+    margin: 0mm;
+    size: 80mm auto;
+  }
+
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  /* Modo 1: Impresión de Ticket Térmico (Epson TM-T20II) */
+  #ticketPrintArea, #ticketPrintArea * {
+    visibility: visible;
+  }
+
+  #ticketPrintArea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 74mm !important;
+    margin: 0 auto !important;
+    padding: 2mm 1mm 12mm 1mm !important; /* Margen inferior para corte automático TM-T20II */
+  }
+
+  .thermal-ticket {
+    width: 100% !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+    font-size: 11px !important;
+    line-height: 1.25 !important;
+  }
+
+  /* Modo 2: Impresión de Reporte PDF */
+  #reportPdfPrintArea, #reportPdfPrintArea * {
+    visibility: visible;
+  }
+
   #reportPdfPrintArea {
-    position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 1.5cm;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 1.2cm;
   }
 }
+
 
 
 
