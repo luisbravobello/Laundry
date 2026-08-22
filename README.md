@@ -15,20 +15,14 @@
 
 ---
 
-## 🌟 Características Principales
+## 🌟 Módulos del Sistema
 
-- **⚡ Punto de Venta Reactivo (POS):** Catálogo rápido por categorías, ingreso personalizado de prendas, precios editables al instante (iniciando limpios en `0.00`), soporte para recargo express (25%), descuentos e ITBIS desglosado.
-- **✂️ Módulo Especializado de Sastrería:** Especificaciones de arreglos (ruedos, entalles, zippers) y medidas exactas impresas en el ticket y en la orden de taller.
-- **📋 Tablero Kanban de Operaciones (4 Fases):** Control visual del flujo de producción en taller (*Recepción ➔ Lavado & Proceso ➔ Listo ➔ Entregado*) con cambio de estado en 1 clic.
-- **🧾 Facturación & Control de Saldos:** Números de comprobante correlativos (`FAC-XXXXXX`), registro de pagos completos y abonos parciales, cálculo de balance deudor en tiempo real.
-- **🖨️ Impresión Térmica Directa ESC/POS:** Salida monocromática pura optimizada para **EPSON TM-T20II** (80mm y 58mm) con código de barras **Code128** de alta densidad para lectores láser.
-- **🔐 Control de Acceso Basado en Roles (RBAC):**
-  - **Administrador:** Control total, Dashboard gerencial, Reportes financieros, Inventario de insumos/costos, Configuración de tienda, Gestión de usuarios y Descarga de copias de seguridad.
-  - **Cajero / Ventas:** Acceso restringido exclusivamente a funciones operativas (POS por defecto, Operaciones, Facturas, Clientes, FAQ y Ayuda).
-- **🔍 Paleta de Comandos Global (`Ctrl + K`):** Búsqueda universal instantánea de facturas, clientes y catálogo adaptada al rol activo.
-- **📊 Reportes Financieros & Exportación a Excel:** Gráficas de rendimiento y descarga de hojas `.csv` con codificación UTF-8 con BOM compatible con Microsoft Excel.
-- **💾 Copias de Seguridad en Caliente:** Descarga del archivo SQLite `.db` con 1 clic mediante SQLite Online Backup API sin interrumpir la operación.
-- **🎨 Sistema Visual Fortexa ERP:** Diseño 100% libre de emojis, con iconografía vectorial SVG uniforme, tipografía moderna (*Inter* y *JetBrains Mono*) y barra lateral colapsable (70px / 240px).
+- **Punto de Venta (POS):** Catálogo por categorías, precios editables, cálculo de ITBIS y entrega express.
+- **Sastrería & Taller:** Control de medidas, arreglos textiles y tablero Kanban de 4 fases.
+- **Facturación & Cobros:** Comprobantes correlativos, abonos parciales y control de saldos.
+- **Impresión Térmica ESC/POS:** Tickets de 58mm/80mm con código de barras Code128 para EPSON TM-T20II.
+- **Roles & Seguridad (RBAC):** Accesos diferenciados para Administrador y Cajero con JWT y cookies seguras.
+- **Búsqueda Rápida (Ctrl + K):** Paleta de comandos universal adaptada al rol activo.
 
 ---
 
