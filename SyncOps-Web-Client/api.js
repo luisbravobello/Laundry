@@ -100,8 +100,11 @@ const api = {
   resetPassword: (email, token, nuevaPassword) =>
     apiFetch('/auth/reset-password', { method: 'POST', body: JSON.stringify({ email, token, nuevaPassword }) }),
 
-  // --- Catálogo (solo lectura) ---
+  // --- Catálogo y Servicios ---
   getCatalogo: () => apiFetch('/catalogo'),
+  crearCatalogoItem: (data) => apiFetch('/catalogo', { method: 'POST', body: JSON.stringify(data) }),
+  actualizarCatalogoItem: (id, data) => apiFetch(`/catalogo/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  eliminarCatalogoItem: (id) => apiFetch(`/catalogo/${id}`, { method: 'DELETE' }),
 
   // --- Clientes ---
   getClientes: () => apiFetch('/clientes'),
@@ -120,12 +123,37 @@ const api = {
   getOrdenes: () => apiFetch('/ordenes'),
   crearOrden: (data) => apiFetch('/ordenes', { method: 'POST', body: JSON.stringify(data) }),
   registrarPago: (id, data) => apiFetch(`/ordenes/${id}/pagos`, { method: 'POST', body: JSON.stringify(data) }),
+  actualizarEstadoProceso: (id, estadoProceso) =>
+    apiFetch(`/ordenes/${id}/estado-proceso`, { method: 'PATCH', body: JSON.stringify({ estadoProceso }) }),
 
   // --- Caja ---
   getMovimientosCaja: () => apiFetch('/caja/movimientos'),
   getResumenCajaHoy: () => apiFetch('/caja/resumen-hoy'),
 
-  // --- Configuración ---
+  // --- Configuración & Backups ---
   getConfiguracion: () => apiFetch('/configuracion'),
-  actualizarConfiguracion: (data) => apiFetch('/configuracion', { method: 'PUT', body: JSON.stringify(data) })
+  actualizarConfiguracion: (data) => apiFetch('/configuracion', { method: 'PUT', body: JSON.stringify(data) }),
+  getBackupInfo: () => apiFetch('/backup/info'),
+  descargarBackup: async () => {
+    const token = getAccessToken();
+    const headers = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const res = await fetch(`${API_BASE_URL}/backup/download`, {
+      method: 'GET',
+      credentials: 'include',
+      headers
+    });
+    if (!res.ok) {
+      throw new Error('Error al descargar la copia de seguridad.');
+    }
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `SyncOps_Backup_${new Date().toISOString().slice(0, 10)}.db`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+  }
 };

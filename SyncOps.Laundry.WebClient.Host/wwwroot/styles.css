@@ -74,6 +74,71 @@ body {
   display: flex; flex-direction: column;
   position: fixed; top: 0; bottom: 0; left: 0;
   z-index: 100;
+  transition: width 0.22s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* ================================================================
+   SIDEBAR COLLAPSED STATE (TOGGLED VIA TOPBAR HAMBURGER BUTTON)
+   ================================================================ */
+body.sidebar-collapsed .sidebar {
+  width: 70px;
+}
+body.sidebar-collapsed .main-layout {
+  margin-left: 70px;
+}
+
+body.sidebar-collapsed .sidebar-brand {
+  justify-content: center;
+  padding: 1.25rem 0.5rem 1rem;
+}
+body.sidebar-collapsed .brand-name,
+body.sidebar-collapsed .brand-badge {
+  display: none !important;
+}
+
+body.sidebar-collapsed .nav-section-label {
+  display: none !important;
+}
+
+body.sidebar-collapsed .nav-item {
+  justify-content: center;
+  padding: 0.65rem 0.5rem;
+  position: relative;
+}
+body.sidebar-collapsed .nav-item span {
+  display: none !important;
+}
+body.sidebar-collapsed .nav-item .nav-badge-pill {
+  display: none !important;
+}
+body.sidebar-collapsed .nav-item .nav-icon {
+  width: 19px;
+  height: 19px;
+  margin: 0;
+}
+
+body.sidebar-collapsed .sidebar-user-card {
+  padding: 0.75rem 0.5rem;
+}
+body.sidebar-collapsed .sidebar-user-profile {
+  justify-content: center;
+  margin-bottom: 0;
+}
+body.sidebar-collapsed .sidebar-user-profile .user-meta {
+  display: none !important;
+}
+body.sidebar-collapsed .sidebar-user-links span {
+  display: none !important;
+}
+body.sidebar-collapsed .sidebar-user-action-btn {
+  justify-content: center;
+  padding: 0.45rem 0;
+}
+
+body.sidebar-collapsed .btn-sidebar-toggle {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-color: var(--primary-border);
 }
 
 .sidebar-brand {
@@ -168,10 +233,22 @@ body {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   line-height: 1.2;
 }
-.user-meta span {
+.user-role-text {
+  font-size: .67rem;
+  font-weight: 700;
+  color: #FBBF24;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-top: 2px;
+  line-height: 1.2;
+}
+.user-role-text.role-admin { color: #FBBF24; }
+.user-role-text.role-cajero { color: #60A5FA; }
+.user-role-text.role-empleado { color: #34D399; }
+.user-meta .user-email-text {
   font-size: .7rem; color: #94A3B8;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .sidebar-user-links {
@@ -206,6 +283,7 @@ body {
   margin-left: var(--sidebar-w);
   flex: 1; display: flex; flex-direction: column;
   min-height: 100vh;
+  transition: margin-left 0.22s cubic-bezier(.4, 0, .2, 1);
 }
 
 .topbar {
@@ -320,6 +398,14 @@ body {
    ================================================================ */
 .content-wrapper {
   padding: 1.75rem 2rem 3rem; flex: 1;
+}
+
+.content-section {
+  display: none !important;
+}
+
+.content-section.active {
+  display: block !important;
 }
 
 /* Header de Página Fortexa */
@@ -475,6 +561,18 @@ body {
 .kpi-bg-purple { background: #FAF5FF; color: #9333EA; border: 1px solid #E9D5FF; }
 .kpi-bg-amber { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
 .kpi-bg-slate { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
+
+/* Insignia de ícono pequeña para usar junto a texto en línea (checkboxes,
+   filas de totales) — mismo lenguaje visual que .fortexa-kpi-icon, solo
+   más chica. Reemplaza los emojis sueltos por íconos SVG consistentes. */
+.inline-icon-badge {
+  width: 22px; height: 22px; border-radius: 6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.inline-icon-badge.rose    { background: #FFF1F2; color: #E11D48; }
+.inline-icon-badge.blue    { background: #EFF6FF; color: #2563EB; }
+.inline-icon-badge.emerald { background: #ECFDF5; color: #059669; }
 
 .fortexa-kpi-info { flex: 1; min-width: 0; }
 .fortexa-kpi-number {
@@ -855,10 +953,24 @@ body {
 .pos-urgent-row {
   background: #FFF1F2;
   border: 1px solid #FFE4E6;
-  padding: .65rem 1rem;
+  padding: .5rem .85rem;
   border-radius: var(--r-md);
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.pos-itbis-row {
+  background: #EFF6FF;
+  border: 1px solid #DBEAFE;
+  padding: .5rem .85rem;
+  border-radius: var(--r-md);
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: .5rem;
 }
 
 .catalog-tabs {
@@ -1054,7 +1166,7 @@ body {
 
 /* Card Total General Destacada Fortexa ERP */
 .total-row-highlight {
-  background: #0F172A;
+  background: #2563EB;
   color: #FFFFFF;
   border-radius: 12px;
   padding: .9rem 1.25rem;
@@ -1062,10 +1174,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 .total-row-highlight span {
-  color: #94A3B8;
+  color: rgba(255,255,255,0.85);
   font-size: .85rem;
   font-weight: 800;
   letter-spacing: .04em;
@@ -1073,7 +1185,7 @@ body {
 .total-row-highlight strong {
   font-size: 1.55rem;
   font-weight: 900;
-  color: #38BDF8;
+  color: #FFFFFF;
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -1090,24 +1202,30 @@ body {
   gap: .45rem;
   padding: .55rem .4rem;
   border-radius: 8px;
-  border: 1px solid #CBD5E1;
-  background: #FFFFFF;
-  color: #334155;
+  border: 1px solid #CBD5E1 !important;
+  background: #FFFFFF !important;
+  color: #334155 !important;
   font-size: .78rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all var(--ease);
+  transition: background .2s, border-color .2s, color .2s, box-shadow .2s;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow: none !important;
 }
 .btn-pay-method:hover {
-  background: #F8FAFC;
-  border-color: #94A3B8;
-  color: #0F172A;
+  background: #F8FAFC !important;
+  border-color: #94A3B8 !important;
+  color: #0F172A !important;
 }
-.btn-pay-method.active {
-  background: #1D4ED8;
-  border-color: #1D4ED8;
-  color: #FFFFFF;
-  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
+.btn-pay-method.active,
+.btn-pay-method.selected {
+  background: #1D4ED8 !important;
+  border-color: #1D4ED8 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25) !important;
 }
 .btn-pay-method svg {
   flex-shrink: 0;
@@ -2376,6 +2494,226 @@ body {
     break-inside: avoid !important;
   }
 }
+
+/* Tracking Operativo de Órdenes */
+.btn-step-tracker {
+  padding: .55rem .35rem;
+  border-radius: 8px;
+  border: 1px solid #CBD5E1;
+  background: #FFFFFF;
+  color: #475569;
+  font-size: .74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.btn-step-tracker:hover {
+  border-color: #2563EB;
+  color: #2563EB;
+  background: #EFF6FF;
+}
+.btn-step-tracker.active {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+  border-color: #2563EB !important;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+}
+
+.badge-process-recibido { background: #EFF6FF; color: #1D4ED8; border: 1px solid #DBEAFE; }
+.badge-process-enproceso { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; }
+.badge-process-listo { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; font-weight: 800; }
+.badge-process-entregado { background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1; }
+
+/* ================================================================
+   FLUJO DE PROCESOS INDUSTRIAL (ENTRADA ➔ ACTIVIDADES ➔ TRANSFORMACIÓN ➔ RESULTADO)
+   ================================================================ */
+.process-flow-banner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: .5rem;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+@media (max-width: 1024px) {
+  .process-flow-banner {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .process-flow-connector {
+    display: none;
+  }
+}
+
+.process-flow-step {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 1rem .9rem;
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+.process-flow-step:hover {
+  background: #FFFFFF;
+  border-color: #3B82F6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.12);
+  transform: translateY(-2px);
+}
+
+.process-flow-icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.process-flow-icon-circle.blue { background: #EFF6FF; border: 1px solid #DBEAFE; }
+.process-flow-icon-circle.amber { background: #FEF3C7; border: 1px solid #FDE68A; }
+.process-flow-icon-circle.purple { background: #F5F3FF; border: 1px solid #DDD6FE; }
+.process-flow-icon-circle.emerald { background: #ECFDF5; border: 1px solid #A7F3D0; }
+
+.process-flow-info {
+  display: flex;
+  flex-direction: column;
+}
+.process-flow-tag {
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: #64748B;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.process-flow-info strong {
+  font-size: .88rem;
+  color: #0F172A;
+  margin-bottom: 3px;
+}
+.process-flow-info p {
+  font-size: .73rem;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.process-flow-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tablero Kanban de Producción */
+.kanban-board-process {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.kanban-column {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  min-height: 450px;
+}
+
+.kanban-col-header {
+  padding: .9rem 1rem;
+  border-bottom: 1px solid #E2E8F0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.kanban-col-title {
+  font-size: .85rem;
+  font-weight: 800;
+  color: #0F172A;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.kanban-col-badge {
+  font-size: .72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.kanban-cards-container {
+  padding: .85rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 650px;
+}
+
+.kanban-order-card {
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 10px;
+  padding: .95rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  transition: all .2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.kanban-order-card:hover {
+  border-color: #3B82F6;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+}
+.kanban-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.kanban-card-ticket {
+  font-size: .9rem;
+  font-weight: 800;
+  color: #2563EB;
+}
+.kanban-card-client {
+  font-size: .84rem;
+  font-weight: 700;
+  color: #0F172A;
+}
+.kanban-card-items {
+  font-size: .76rem;
+  color: #475569;
+  background: #F1F5F9;
+  padding: .4rem .6rem;
+  border-radius: 6px;
+  line-height: 1.35;
+}
+.kanban-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px solid #F1F5F9;
+}
+
+
 
 
 

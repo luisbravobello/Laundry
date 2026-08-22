@@ -249,3 +249,32 @@ cambia.
 - **Cambiar la contraseña cierra todas las sesiones activas**: si un
   atacante tenía un refresh token robado, deja de servirle en cuanto el
   dueño real recupera el acceso.
+
+## Checkpoint 7: ITBIS (18%) y cambio a devolver en el POS
+
+### ITBIS
+
+- Nuevo checkbox "Aplicar ITBIS (18%)" en el POS, junto al de "Urgente".
+- **Se calcula solo en el servidor**, igual que el resto de los montos:
+  `ITBIS = (subtotal + recargo urgente - descuento) * 0.18`, y el total
+  final incluye ese monto. `CrearOrdenRequest` ahora trae `AplicaItbis`
+  (bool); `OrdenServicio` guarda el monto calculado en `ImpuestoItbis`.
+- Aparece como línea propia en el desglose del POS y en el ticket
+  térmico impreso (solo si aplica; si no, la fila ni se muestra).
+
+**Hace falta otra migración** antes de correr:
+```powershell
+dotnet ef migrations add AgregarItbisAOrdenes
+dotnet ef database update
+```
+
+### Cambio a devolver
+
+Cuando el monto cobrado es mayor al total, el POS ya no muestra "Saldo
+Pendiente: RD$0.00" — muestra "Cambio a Devolver al Cliente" con el
+monto exacto, tanto en pantalla como en el ticket impreso.
+
+Esto es **puramente de la pantalla del cajero** — no toca el backend.
+El servidor sigue capando `Pagado` en `Total` (`Math.Min(total,
+montoPagado)`), como ya hacía desde el checkpoint 2: el excedente nunca
+se registra como abono, es efectivo físico que se devuelve.

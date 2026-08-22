@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SyncOps.Laundry.WebApi.Data;
 
@@ -10,9 +11,11 @@ using SyncOps.Laundry.WebApi.Data;
 namespace SyncOps.Laundry.WebApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260822014936_AgregarItbisAOrdenes")]
+    partial class AgregarItbisAOrdenes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
@@ -543,9 +546,6 @@ namespace SyncOps.Laundry.WebApi.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Estado")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("EstadoProceso")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("FechaCreacion")

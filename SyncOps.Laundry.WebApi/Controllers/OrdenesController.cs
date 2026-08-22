@@ -17,16 +17,17 @@ public class OrdenesController : ControllerBase
 
     private static OrdenResponse Map(OrdenServicio o) => new(
         o.Id, o.Ticket, o.CodigoBarras, o.ClienteId, o.Cliente?.Nombre ?? string.Empty, o.Cliente?.Telefono ?? string.Empty,
-        o.Estado, o.FechaRecepcion, o.FechaPromesaEntrega, o.Subtotal, o.Descuento, o.Total, o.Pagado, o.Saldo, o.EsUrgente,
+        o.Estado, o.EstadoProceso, o.FechaRecepcion, o.FechaPromesaEntrega, o.Subtotal, o.Descuento, o.ImpuestoItbis, o.Total, o.Pagado, o.Saldo, o.EsUrgente,
         o.Items.Select(i => new OrdenItemResponse(i.Id, i.Nombre, i.Servicio, i.Cantidad, i.Precio, i.Subtotal, i.Color, i.Defectos, i.Arreglo)).ToList()
     );
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<OrdenResponse>>> Listar([FromQuery] EstadoOrden? estado, [FromQuery] string? busqueda)
+    public async Task<ActionResult<IEnumerable<OrdenResponse>>> Listar([FromQuery] EstadoOrden? estado, [FromQuery] EstadoProceso? estadoProceso, [FromQuery] string? busqueda)
     {
         var query = _db.OrdenesServicio.AsNoTracking().Include(o => o.Cliente).Include(o => o.Items).AsQueryable();
 
         if (estado.HasValue) query = query.Where(o => o.Estado == estado);
+        if (estadoProceso.HasValue) query = query.Where(o => o.EstadoProceso == estadoProceso);
         if (!string.IsNullOrWhiteSpace(busqueda))
         {
             query = query.Where(o => o.Ticket.Contains(busqueda) || (o.Cliente != null && o.Cliente.Nombre.Contains(busqueda)));
@@ -69,7 +70,11 @@ public class OrdenesController : ControllerBase
 
         var subtotal = items.Sum(i => i.Subtotal);
         var recargoUrgente = request.EsUrgente ? subtotal * 0.15m : 0;
-        var total = Math.Max(0, subtotal + recargoUrgente - request.Descuento);
+        // ITBIS (18%) se calcula sobre la base ya con recargo de urgencia y
+        // descuento aplicados — nunca sobre el subtotal bruto.
+        var baseImponible = Math.Max(0, subtotal + recargoUrgente - request.Descuento);
+        var itbis = request.AplicaItbis ? baseImponible * 0.18m : 0;
+        var total = baseImponible + itbis;
         var pagado = Math.Min(total, request.MontoPagado);
 
         // Numeración atómica: se lee y se incrementa el consecutivo dentro
@@ -102,6 +107,7 @@ public class OrdenesController : ControllerBase
                     EsUrgente = request.EsUrgente,
                     Subtotal = subtotal,
                     Descuento = request.Descuento,
+                    ImpuestoItbis = itbis,
                     Total = total,
                     Pagado = pagado,
                     Estado = pagado >= total ? EstadoOrden.Pagada : EstadoOrden.Pendiente,
@@ -181,5 +187,20 @@ public class OrdenesController : ControllerBase
 
         await _db.SaveChangesAsync();
         return Map(orden);
+    }
+
+    [HttpPatch("{id:guid}/estado-proceso")]
+    [HttpPut("{id:guid}/estado-proceso")]
+    public async Task<ActionResult<OrdenResponse>> ActualizarEstadoProceso(Guid id, ActualizarEstadoProcesoRequest request)
+    {
+        var orden = await _db.OrdenesServicio.Include(o => o.Cliente).Include(o => o.Items)
+            .FirstOrDefaultAsync(o => o.Id == id);
+        if (orden == null) return NotFound(new { message = "Orden no encontrada." });
+
+        orden.EstadoProceso = request.EstadoProceso;
+        orden.FechaModificacion = DateTime.UtcNow;
+        await _db.SaveChangesAsync();
+
+        return Ok(Map(orden));
     }
 }

@@ -249,9 +249,9 @@ public class AuthController : ControllerBase
     [Authorize(Roles = "Administrador")]
     public async Task<ActionResult<UsuarioActualResponse>> CrearUsuario(CrearUsuarioRequest request)
     {
-        if (request.Rol is not ("Administrador" or "Empleado"))
+        if (request.Rol is not ("Administrador" or "Empleado" or "Cajero"))
         {
-            return BadRequest(new { message = "El rol debe ser 'Administrador' o 'Empleado'." });
+            return BadRequest(new { message = "El rol debe ser 'Administrador', 'Cajero' o 'Empleado'." });
         }
 
         var usuario = new ApplicationUser

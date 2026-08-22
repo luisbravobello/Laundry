@@ -123,6 +123,29 @@ builder.Services.AddControllers()
 
 var app = builder.Build();
 
+// Manejo Global de Excepciones: garantiza que cualquier error no controlado
+// devuelva una respuesta JSON estructurada y segura, en lugar de HTML o stacktraces crudos.
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        context.Response.ContentType = "application/json";
+
+        var exceptionHandlerPathFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+        var ex = exceptionHandlerPathFeature?.Error;
+
+        var response = new
+        {
+            status = 500,
+            message = "Ocurrió un error inesperado en el servidor. Intenta de nuevo más tarde.",
+            detail = app.Environment.IsDevelopment() ? ex?.Message : null
+        };
+
+        await context.Response.WriteAsJsonAsync(response);
+    });
+});
+
 // HSTS: le dice al navegador "solo hables conmigo por HTTPS, nunca por
 // HTTP" incluso si alguien escribe la URL sin https:// a propósito.
 app.UseHsts();

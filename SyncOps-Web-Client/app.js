@@ -73,9 +73,10 @@ function mapOrden(o) {
     id: o.id, ticket: o.ticket, barcode: o.codigoBarras, clientId: o.clienteId,
     clientName: o.clienteNombre, phone: o.clienteTelefono,
     status: o.estado === 'Pagada' ? 'Pagada' : 'Pendiente',
+    processStatus: o.estadoProceso || 'Recibido',
     date: new Date(o.fechaRecepcion).toLocaleString('es-DO'),
     delivery: new Date(o.fechaPromesaEntrega).toLocaleString('es-DO'),
-    subtotal: o.subtotal, discount: o.descuento, total: o.total, paid: o.pagado,
+    subtotal: o.subtotal, discount: o.descuento, itbis: o.impuestoItbis, total: o.total, paid: o.pagado,
     balance: o.saldo, isUrgent: o.esUrgente, items: (o.items || []).map(mapOrdenItem)
   };
 }
@@ -154,6 +155,7 @@ function pintarUsuario(usuario) {
   const emailEl = document.getElementById('userEmailText');
   const avatarEl = document.getElementById('userAvatar');
   const greetingEl = document.getElementById('dashboardGreeting');
+  const roleBadgeEl = document.getElementById('sidebarUserRoleBadge');
 
   const initialLetter = usuario.nombreCompleto ? usuario.nombreCompleto.trim().charAt(0).toUpperCase() : 'U';
   if (nameEl) nameEl.innerText = usuario.nombreCompleto || '';
@@ -161,12 +163,57 @@ function pintarUsuario(usuario) {
   if (avatarEl) avatarEl.innerText = initialLetter;
   if (greetingEl) greetingEl.innerText = `Buenas tardes, ${usuario.nombreCompleto ? usuario.nombreCompleto.split(' ')[0] : ''}`;
 
-  // "Gestión de Usuarios" solo es visible para Administrador — el backend
-  // también lo exige en cada endpoint ([Authorize(Roles = "Administrador")]),
-  // así que esto es solo para no mostrar un botón que llevaría a un 403.
-  const esAdmin = (usuario.roles || []).includes('Administrador');
+  const roles = usuario.roles || [];
+  const esAdmin = roles.includes('Administrador');
+  const esCajero = roles.includes('Cajero');
+
+  // Actualizar Texto de Rol Integrado
+  if (roleBadgeEl) {
+    if (esAdmin) {
+      roleBadgeEl.innerText = 'Administrador General';
+      roleBadgeEl.className = 'user-role-text role-admin';
+    } else if (esCajero) {
+      roleBadgeEl.innerText = 'Cajero / Ventas';
+      roleBadgeEl.className = 'user-role-text role-cajero';
+    } else {
+      roleBadgeEl.innerText = roles[0] || 'Operario / Taller';
+      roleBadgeEl.className = 'user-role-text role-empleado';
+    }
+  }
+
+  // Control de visibilidad en barra lateral y accesos directos
+  const navDashboard = document.getElementById('navDashboardBtn');
+  const navFinanzasGroup = document.getElementById('navFinanzasGroup');
+  const navReportes = document.getElementById('navReportesBtn');
+  const navInventario = document.getElementById('navInventarioBtn');
+  const navConfiguracion = document.getElementById('navConfiguracionBtn');
   const navUsuarios = document.getElementById('navUsuariosBtn');
+  const sidebarUserActionConfig = document.getElementById('sidebarUserActionConfig');
+  const topbarOrgSelector = document.getElementById('topbarOrgSelector');
+  const topbarConfigBtn = document.getElementById('topbarConfigBtn');
+  const btnPosNuevoServicio = document.getElementById('btnPosNuevoServicio');
+
+  // Si no es Administrador, ocultar funciones directivas/financieras y edición de catálogo
+  if (navDashboard) navDashboard.style.display = esAdmin ? '' : 'none';
+  if (navFinanzasGroup) navFinanzasGroup.style.display = esAdmin ? '' : 'none';
+  if (navReportes) navReportes.style.display = esAdmin ? '' : 'none';
+  if (navInventario) navInventario.style.display = esAdmin ? '' : 'none';
+  if (navConfiguracion) navConfiguracion.style.display = esAdmin ? '' : 'none';
   if (navUsuarios) navUsuarios.style.display = esAdmin ? '' : 'none';
+  if (sidebarUserActionConfig) sidebarUserActionConfig.style.display = esAdmin ? '' : 'none';
+  if (topbarOrgSelector) topbarOrgSelector.style.display = esAdmin ? '' : 'none';
+  if (topbarConfigBtn) topbarConfigBtn.style.display = esAdmin ? '' : 'none';
+  if (btnPosNuevoServicio) btnPosNuevoServicio.style.display = esAdmin ? 'inline-flex' : 'none';
+
+  // Si el usuario no es Admin y está en una pantalla restringida, enviarlo a POS
+  if (!esAdmin) {
+    const currentActiveSection = document.querySelector('.content-section.active');
+    const curId = currentActiveSection ? currentActiveSection.id.replace('section-', '') : 'dashboard';
+    const seccionesRestringidas = ['dashboard', 'reportes', 'inventario', 'configuracion', 'usuarios'];
+    if (seccionesRestringidas.includes(curId)) {
+      switchSection('pos', document.getElementById('navPosBtn'));
+    }
+  }
 }
 
 async function logout() {
@@ -175,18 +222,39 @@ async function logout() {
 }
 
 function switchSection(sectionId, btnElement) {
-  document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+  const roles = usuarioActual?.roles || [];
+  const esAdmin = roles.includes('Administrador');
+  const seccionesRestringidas = ['dashboard', 'reportes', 'inventario', 'configuracion', 'usuarios'];
+
+  // Validación de seguridad de interfaz para Cajero / Empleado
+  if (!esAdmin && seccionesRestringidas.includes(sectionId)) {
+    showToast('Acceso restringido: Esta sección requiere rol de Administrador.', 'warning');
+    const posBtn = document.getElementById('navPosBtn');
+    switchSection('pos', posBtn);
+    return;
+  }
+
+  document.querySelectorAll('.content-section').forEach(s => {
+    s.classList.remove('active');
+    s.style.display = 'none';
+  });
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
 
   const sec = document.getElementById('section-' + sectionId);
-  if (sec) sec.classList.add('active');
-  if (btnElement) btnElement.classList.add('active');
+  if (sec) {
+    sec.classList.add('active');
+    sec.style.display = 'block';
+  }
+
+  const targetBtn = btnElement || document.getElementById('nav' + sectionId.charAt(0).toUpperCase() + sectionId.slice(1) + 'Btn');
+  if (targetBtn) targetBtn.classList.add('active');
 
   registrarSeccionReciente(sectionId);
 
   const titles = {
     'dashboard': 'Panel Principal',
     'pos': 'Punto de Venta / POS',
+    'operaciones': 'Operaciones & Taller',
     'facturacion': 'Facturas & Cobros',
     'reportes': 'Reportes Financieros',
     'inventario': 'Inventario Insumos',
@@ -200,24 +268,59 @@ function switchSection(sectionId, btnElement) {
   const titleEl = document.getElementById('currentSectionTitle');
   if (titleEl) titleEl.innerText = titles[sectionId] || 'SyncOps Suite';
 
-  if (sectionId === 'dashboard') renderDashboard();
+  if (sectionId === 'dashboard' && esAdmin) renderDashboard();
   if (sectionId === 'pos') renderPos();
+  if (sectionId === 'operaciones') renderOperaciones();
   if (sectionId === 'facturacion') renderFacturacion();
-  if (sectionId === 'reportes') renderReportes();
-  if (sectionId === 'inventario') renderInventory();
+  if (sectionId === 'reportes' && esAdmin) renderReportes();
+  if (sectionId === 'inventario' && esAdmin) renderInventory();
   if (sectionId === 'clientes') renderClients();
-  if (sectionId === 'configuracion') loadConfigInputs();
-  if (sectionId === 'usuarios') renderUsuarios();
+  if (sectionId === 'configuracion' && esAdmin) loadConfigInputs();
+  if (sectionId === 'usuarios' && esAdmin) renderUsuarios();
+}
+
+function toggleSidebar() {
+  const isCollapsed = document.body.classList.toggle('sidebar-collapsed');
+  try {
+    localStorage.setItem('syncops_sidebar_collapsed', isCollapsed ? 'true' : 'false');
+  } catch (e) { /* ignorar */ }
+}
+
+function initSidebarState() {
+  try {
+    const isCollapsed = localStorage.getItem('syncops_sidebar_collapsed') === 'true';
+    if (isCollapsed) {
+      document.body.classList.add('sidebar-collapsed');
+    } else {
+      document.body.classList.remove('sidebar-collapsed');
+    }
+  } catch (e) { /* ignorar */ }
 }
 
 function initApp() {
-  renderDashboard();
+  initSidebarState();
+  const roles = usuarioActual?.roles || [];
+  const esAdmin = roles.includes('Administrador');
+
+  if (esAdmin) {
+    renderDashboard();
+  }
   renderPos();
+  renderOperaciones();
   renderFacturacion();
-  renderReportes();
-  renderInventory();
+  if (esAdmin) {
+    renderInventory();
+    renderReportes();
+  }
   renderClients();
+  renderCatalogoAdmin();
   loadConfigInputs();
+  setupEvents();
+
+  // Si el usuario es Cajero, iniciar directamente en Punto de Venta / POS
+  if (!esAdmin) {
+    switchSection('pos', document.getElementById('navPosBtn'));
+  }
 }
 
 // =====================================================================
@@ -510,25 +613,106 @@ function renderPos() {
     dateInput.value = tomorrow.toISOString().slice(0, 16);
   }
 
+  renderPosCategoryTabs('Todos');
   filterCatalog('Todos');
 }
 
+function renderPosCategoryTabs(activeCategory = 'Todos') {
+  const state = getState();
+  const tabsContainer = document.getElementById('posCatalogTabs');
+  if (!tabsContainer) return;
 
-function getCategoryIconSvg(category) {
-  if (category === 'Sastrería') {
-    return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>`;
-  } else if (category === 'Autoservicio') {
-    return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><rect width="18" height="20" x="3" y="2" rx="2"/><circle cx="12" cy="13" r="5"/><path d="M12 18a5 5 0 0 0 5-5"/></svg>`;
-  } else if (category === 'Hotelería') {
-    return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9333EA" stroke-width="2"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>`;
+  const defaultOrder = ['Lavandería', 'Sastrería', 'Autoservicio', 'Hotelería'];
+  const presentCats = Array.from(new Set(state.catalog.map(i => i.category))).filter(Boolean);
+  const orderedCats = [
+    ...defaultOrder.filter(c => presentCats.includes(c)),
+    ...presentCats.filter(c => !defaultOrder.includes(c))
+  ];
+
+  let html = `<button class="catalog-tab ${activeCategory === 'Todos' ? 'active' : ''}" onclick="filterCatalog('Todos', this)">Todos</button>`;
+  orderedCats.forEach(cat => {
+    let label = cat;
+    if (cat === 'Lavandería') label = 'Lavandería &amp; Secado';
+    else if (cat === 'Sastrería') label = 'Sastrería &amp; Taller';
+    else if (cat === 'Autoservicio') label = 'Autoservicio &amp; Máquinas';
+    else if (cat === 'Hotelería') label = 'Hotelería &amp; Corporativo';
+    html += `<button class="catalog-tab ${activeCategory === cat ? 'active' : ''}" onclick="filterCatalog('${cat}', this)">${label}</button>`;
+  });
+
+  tabsContainer.innerHTML = html;
+}
+
+function getCategoryIconSvg(category, name = '') {
+  const cat = (category || '').toLowerCase();
+  const nom = (name || '').toLowerCase();
+
+  // 1. Suavizante Downy / Suavizantes (Botella de suavizante con gota y aroma suave)
+  if (nom.includes('downy') || nom.includes('suavizante') || cat.includes('suavizante')) {
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EC4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" title="Suavizante / Downy"><path d="M7 2h10M9 2v4h6V2M6 6h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M12 11c-1.5 2-2.5 3-2.5 4.5a2.5 2.5 0 0 0 5 0c0-1.5-1-2.5-2.5-4.5z"/></svg>`;
   }
-  return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>`;
+
+  // 2. Pelvorato / Perborato de Sodio (Blanqueador quitamanchas en polvo con oxígeno activo & destellos de blancura ✨)
+  if (nom.includes('pelvorato') || nom.includes('perborato') || nom.includes('blanqueador') || nom.includes('desmanch') || nom.includes('quitamancha')) {
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" title="Pelvorato / Blanqueador Quitamanchas"><path d="M10 2v4M14 2v4M8 6h8M6 20h12a2 2 0 0 0 2-2l-3-9H7l-3 9a2 2 0 0 0 2 2z"/><path d="m13 11 1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/><circle cx="17" cy="7" r="1"/></svg>`;
+  }
+
+  // 3. Detergentes / Jabones
+  if (nom.includes('detergente') || nom.includes('jabon') || nom.includes('jabón') || cat.includes('quimic') || cat.includes('químic')) {
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M9 8h6M5 21h14a2 2 0 0 0 2-2l-2-11H5L3 19a2 2 0 0 0 2 2z"/></svg>`;
+  }
+
+  // 4. Sastrería / Arreglos y Modificaciones (Tijeras / cinta de sastre)
+  if (cat.includes('sastrer') || cat.includes('taller') || nom.includes('ruedo') || nom.includes('zipper') || nom.includes('entalle') || nom.includes('cintura') || nom.includes('manga') || nom.includes('ajuste')) {
+    return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>`;
+  }
+
+  // 5. Autoservicio / Torres y Lavadoras Industriales
+  if (nom.includes('torre') || nom.includes('industrial') || nom.includes('lavadora') || nom.includes('secadora') || cat.includes('auto') || cat.includes('m\u00e1quina') || cat.includes('maquina')) {
+    return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="20" x="3" y="2" rx="2"/><circle cx="12" cy="13" r="5"/><path d="M12 18a5 5 0 0 0 5-5"/></svg>`;
+  }
+
+  // 6. Hotelería / Lencería / Corporativo (Edificio / cama)
+  if (cat.includes('hotel') || cat.includes('corp') || nom.includes('sabana') || nom.includes('sábana') || nom.includes('edredon') || nom.includes('edredón')) {
+    return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9333EA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>`;
+  }
+
+  // 7. Calzado
+  if (cat.includes('calzado') || nom.includes('zapato') || nom.includes('tenis') || nom.includes('bota')) {
+    return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18h20v-4l-4-4H8l-6 5v3z"/></svg>`;
+  }
+
+  // 8. Tintorería
+  if (cat.includes('tinte') || cat.includes('tintorer')) {
+    return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 12-8.5 8.5a2.12 2.12 0 1 1-3-3L11 9"/><path d="M12 2v7l5 5"/></svg>`;
+  }
+
+  // 9. Por defecto: Camisa / Ropa de Lavandería
+  return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>`;
+}
+
+function getItemIconBg(category, name = '') {
+  const cat = (category || '').toLowerCase();
+  const nom = (name || '').toLowerCase();
+  if (nom.includes('downy') || nom.includes('suavizante') || cat.includes('suavizante')) return { bg: '#FDF2F8', border: '#FBCFE8' };
+  if (nom.includes('pelvorato') || nom.includes('perborato') || nom.includes('blanqueador') || nom.includes('desmanch')) return { bg: '#F0F9FF', border: '#BAE6FD' };
+  if (cat.includes('sastrer') || cat.includes('taller')) return { bg: '#FFFBEB', border: '#FDE68A' };
+  if (nom.includes('torre') || nom.includes('industrial') || cat.includes('auto')) return { bg: '#F0FDF4', border: '#BBF7D0' };
+  if (cat.includes('hotel') || cat.includes('corp')) return { bg: '#FAF5FF', border: '#E9D5FF' };
+  return { bg: '#EFF6FF', border: '#DBEAFE' };
+}
+
+function getCategoryBadgeClass(category) {
+  const cat = (category || '').toLowerCase();
+  if (cat.includes('sastrer') || cat.includes('taller')) return 'bg-amber';
+  if (cat.includes('auto')) return 'bg-emerald';
+  if (cat.includes('hotel') || cat.includes('corp')) return 'bg-purple';
+  return 'bg-blue';
 }
 
 function filterCatalog(category, btnElement) {
   const state = getState();
   if (btnElement) {
-    document.querySelectorAll('.catalog-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('#posCatalogTabs .catalog-tab').forEach(t => t.classList.remove('active'));
     btnElement.classList.add('active');
   }
 
@@ -539,13 +723,26 @@ function filterCatalog(category, btnElement) {
     ? state.catalog 
     : state.catalog.filter(i => i.category === category);
 
+  if (items.length === 0) {
+    const roles = usuarioActual?.roles || [];
+    const esAdmin = roles.includes('Administrador');
+    grid.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); background: #F8FAFC; border-radius: 10px; border: 1px dashed #CBD5E1;">
+        <p style="font-size: .88rem; font-weight: 700; margin-bottom: .5rem; color: #475569;">No hay servicios en esta categoría</p>
+        ${esAdmin ? '<button type="button" class="btn btn-primary btn-sm" onclick="openNewCatalogoModal()" style="display:inline-flex; align-items:center; gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Agregar Primer Servicio</span></button>' : ''}
+      </div>
+    `;
+    return;
+  }
+
   grid.innerHTML = items.map(item => {
     const cleanName = item.name.replace(/^[^\w\s\u00C0-\u017F]+/i, '').trim();
-    const iconSvg = getCategoryIconSvg(item.category);
+    const iconSvg = getCategoryIconSvg(item.category, item.name);
+    const iconTheme = getItemIconBg(item.category, item.name);
     return `
       <div class="catalog-item-card" onclick="selectCatalogItem('${item.id}')" title="Clic para cargar y personalizar">
         <div style="display: flex; align-items: flex-start; gap: .5rem;">
-          <div style="width: 24px; height: 24px; border-radius: 6px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;">
+          <div style="width: 26px; height: 26px; border-radius: 6px; background: ${iconTheme.bg}; border: 1px solid ${iconTheme.border}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;">
             ${iconSvg}
           </div>
           <div class="catalog-item-name">${cleanName}</div>
@@ -579,6 +776,7 @@ function resetPosOrder() {
   const paidInput = document.getElementById('posAmountPaid');
   const urgentCheck = document.getElementById('posIsUrgent');
   const descInput = document.getElementById('builderDesc');
+  const priceInput = document.getElementById('builderPrice');
   const colorInput = document.getElementById('builderColor');
   const defectsInput = document.getElementById('builderDefects');
   const qtyInput = document.getElementById('builderQty');
@@ -588,6 +786,7 @@ function resetPosOrder() {
   if (paidInput) paidInput.value = 0;
   if (urgentCheck) urgentCheck.checked = false;
   if (descInput) descInput.value = '';
+  if (priceInput) priceInput.value = '';
   if (colorInput) colorInput.value = '';
   if (defectsInput) defectsInput.value = '';
   if (qtyInput) qtyInput.value = 1;
@@ -595,26 +794,17 @@ function resetPosOrder() {
 
   renderPosItems();
   calculatePosTotal();
+
+  // Resetear método de pago a Efectivo
+  currentPaymentMethod = 'Efectivo';
+  document.querySelectorAll('.btn-pay-method').forEach(b => {
+    b.classList.remove('active', 'selected');
+    b.blur();
+  });
+  const efectivoBtn = document.querySelector('.btn-pay-method[data-method="Efectivo"]') || document.querySelector('.btn-pay-method');
+  if (efectivoBtn) efectivoBtn.classList.add('selected');
+
   showToast('Orden de Punto de Venta reiniciada limpiamente.', 'info');
-}
-
-function switchPosSubTab(tabName, btnEl) {
-  if (btnEl) {
-    btnEl.parentElement.querySelectorAll('.fortexa-subnav-btn').forEach(b => b.classList.remove('active'));
-    btnEl.classList.add('active');
-  }
-
-  if (tabName === 'emision') {
-    filterCatalog('Todos');
-  } else if (tabName === 'autoservicio') {
-    filterCatalog('Autoservicio');
-  } else if (tabName === 'sastreria') {
-    filterCatalog('Sastrería');
-    toggleTailoringDrawer('Sastrería');
-  } else if (tabName === 'entrega') {
-    switchSection('facturacion', document.querySelectorAll('.nav-item')[2]);
-    showToast('Búsqueda rápida de comprobante para entrega de prendas.', 'info');
-  }
 }
 
 function switchReportSubTab(tabName, btnEl) {
@@ -679,10 +869,14 @@ function addItemToOrder() {
   });
 
   document.getElementById('builderDesc').value = '';
+  document.getElementById('builderPrice').value = '';
   document.getElementById('builderColor').value = '';
   document.getElementById('builderDefects').value = '';
   document.getElementById('tailorAlterationType').value = '';
   document.getElementById('tailorMeasurements').value = '';
+  document.getElementById('builderQty').value = 1;
+  const itemNameEl = document.getElementById('builderItemName');
+  if (itemNameEl) itemNameEl.innerText = 'Personalización del Artículo / Servicio';
 
   renderPosItems();
   calculatePosTotal();
@@ -698,9 +892,19 @@ function removeItem(index) {
 function renderPosItems() {
   const box = document.getElementById('posItemsList');
   const countBadge = document.getElementById('posItemsCount');
+  const navBadgePos = document.getElementById('navBadgePos');
   if (!box) return;
 
   countBadge.innerText = `${currentOrderItems.length} artículos`;
+
+  if (navBadgePos) {
+    if (currentOrderItems.length > 0) {
+      navBadgePos.innerText = currentOrderItems.length;
+      navBadgePos.style.display = 'inline-block';
+    } else {
+      navBadgePos.style.display = 'none';
+    }
+  }
 
   if (currentOrderItems.length === 0) {
     box.innerHTML = '<div class="empty-state-pos">No hay artículos agregados a la orden.</div>';
@@ -726,22 +930,44 @@ function calculatePosTotal() {
   const subtotal = currentOrderItems.reduce((sum, i) => sum + i.subtotal, 0);
   const discount = parseFloat(document.getElementById('posDiscount').value) || 0;
   const isUrgent = document.getElementById('posIsUrgent').checked;
-  
+  const aplicaItbis = document.getElementById('posAplicaItbis').checked;
+
   const urgentFee = isUrgent ? (subtotal * 0.15) : 0;
-  const total = Math.max(0, subtotal + urgentFee - discount);
+  // El ITBIS se calcula sobre la base ya con recargo de urgencia y
+  // descuento aplicados — igual que lo hace el servidor al crear la orden.
+  const baseImponible = Math.max(0, subtotal + urgentFee - discount);
+  const itbis = aplicaItbis ? (baseImponible * 0.18) : 0;
+  const total = baseImponible + itbis;
+
   const paid = parseFloat(document.getElementById('posAmountPaid').value) || 0;
   const balance = Math.max(0, total - paid);
+  const cambio = Math.max(0, paid - total);
 
   document.getElementById('posSubtotal').innerText = `RD$${subtotal.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
   document.getElementById('posTotal').innerText = `RD$${total.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+
+  const itbisRow = document.getElementById('posItbisRow');
+  if (itbisRow) itbisRow.style.display = aplicaItbis ? 'flex' : 'none';
+  document.getElementById('posItbis').innerText = `RD$${itbis.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+
+  // Se muestra UNA de las dos filas: saldo pendiente (si falta cobrar) o
+  // cambio a devolver (si pagaron de más) — nunca las dos a la vez.
+  document.getElementById('posBalanceRow').style.display = cambio > 0 ? 'none' : 'flex';
+  document.getElementById('posCambioRow').style.display = cambio > 0 ? 'flex' : 'none';
   document.getElementById('posBalanceDue').innerText = `RD$${balance.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+  document.getElementById('posCambio').innerText = `RD$${cambio.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
 }
 
 function payFullOrder() {
   const subtotal = currentOrderItems.reduce((sum, i) => sum + i.subtotal, 0);
   const discount = parseFloat(document.getElementById('posDiscount').value) || 0;
   const isUrgent = document.getElementById('posIsUrgent').checked;
-  const total = Math.max(0, subtotal + (isUrgent ? subtotal * 0.15 : 0) - discount);
+  const aplicaItbis = document.getElementById('posAplicaItbis').checked;
+
+  const urgentFee = isUrgent ? subtotal * 0.15 : 0;
+  const baseImponible = Math.max(0, subtotal + urgentFee - discount);
+  const itbis = aplicaItbis ? baseImponible * 0.18 : 0;
+  const total = baseImponible + itbis;
 
   document.getElementById('posAmountPaid').value = total;
   calculatePosTotal();
@@ -749,8 +975,14 @@ function payFullOrder() {
 
 function selectPaymentMethod(method, btn) {
   currentPaymentMethod = method;
-  document.querySelectorAll('.payment-tab').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.btn-pay-method').forEach(b => {
+    b.classList.remove('active', 'selected');
+    b.blur();
+  });
+  if (btn) {
+    btn.classList.add('selected');
+    btn.blur();
+  }
 }
 
 async function saveAndPrintOrder() {
@@ -770,6 +1002,7 @@ async function saveAndPrintOrder() {
   const discount = parseFloat(document.getElementById('posDiscount').value) || 0;
   const paid = parseFloat(document.getElementById('posAmountPaid').value) || 0;
   const isUrgent = document.getElementById('posIsUrgent').checked;
+  const aplicaItbis = document.getElementById('posAplicaItbis').checked;
 
   // Subtotal/total/ticket ya NO se calculan ni se numeran aquí: el
   // servidor los recalcula desde cero (cantidad × precio de cada item) y
@@ -780,6 +1013,7 @@ async function saveAndPrintOrder() {
     clienteId: client.id,
     fechaPromesaEntrega: new Date(delivery).toISOString(),
     esUrgente: isUrgent,
+    aplicaItbis: aplicaItbis,
     descuento: discount,
     montoPagado: paid,
     metodoPago: currentPaymentMethod,
@@ -793,6 +1027,11 @@ async function saveAndPrintOrder() {
     const creada = await api.crearOrden(payload);
     const newOrder = mapOrden(creada);
 
+    // El backend nunca registra un "pagado" mayor al total (el excedente
+    // no es un abono, es efectivo físico que hay que devolver) — por eso
+    // el cambio se calcula aquí, contra lo que el cajero tecleó realmente.
+    const cambioEntregado = Math.max(0, paid - newOrder.total);
+
     state.orders.unshift(newOrder);
 
     // Recargar caja y configuración (el consecutivo de factura y el
@@ -804,31 +1043,303 @@ async function saveAndPrintOrder() {
     const idxCliente = state.clients.findIndex(c => c.id === client.id);
     if (idxCliente !== -1) state.clients[idxCliente].ordersCount += 1;
 
-    displayThermalTicket(newOrder);
+    displayThermalTicket(newOrder, cambioEntregado);
 
     currentOrderItems = [];
     document.getElementById('posDiscount').value = '0';
     document.getElementById('posAmountPaid').value = '0';
     document.getElementById('posIsUrgent').checked = false;
+    document.getElementById('posAplicaItbis').checked = false;
     document.getElementById('posInvoiceNumber').value = getFormattedNextInvoice();
 
     renderPosItems();
     calculatePosTotal();
 
-    showToast(`Factura ${newOrder.ticket} emitida exitosamente.`, 'success');
+    if (cambioEntregado > 0) {
+      showToast(`Factura ${newOrder.ticket} emitida. Cambio a devolver: RD$${cambioEntregado.toLocaleString('es-DO', {minimumFractionDigits:2})}.`, 'success');
+    } else {
+      showToast(`Factura ${newOrder.ticket} emitida exitosamente.`, 'success');
+    }
   } catch (err) {
     showToast(err.message || 'No se pudo generar la factura.', 'error');
   }
 }
 
 // =====================================================================
-// 5. MÓDULO 3: FACTURACIÓN & HISTORIAL DE FACTURAS
+// 5. MÓDULO 3: OPERACIONES & TRACKING DE LAVADO / TALLER
+// =====================================================================
+let currentOpFilter = 'todas';
+let currentOpView = 'kanban';
+
+function switchOperacionesView(viewMode) {
+  currentOpView = viewMode;
+  const kanbanEl = document.getElementById('operacionesKanbanView');
+  const tableEl = document.getElementById('operacionesTableView');
+  const btnKanban = document.getElementById('btnViewKanban');
+  const btnTable = document.getElementById('btnViewTable');
+
+  if (viewMode === 'kanban') {
+    if (kanbanEl) kanbanEl.style.display = 'grid';
+    if (tableEl) tableEl.style.display = 'none';
+    if (btnKanban) {
+      btnKanban.classList.add('active');
+      btnKanban.style.background = '#FFFFFF';
+      btnKanban.style.color = '#0F172A';
+    }
+    if (btnTable) {
+      btnTable.classList.remove('active');
+      btnTable.style.background = 'transparent';
+      btnTable.style.color = '#64748B';
+    }
+  } else {
+    if (kanbanEl) kanbanEl.style.display = 'none';
+    if (tableEl) tableEl.style.display = 'block';
+    if (btnTable) {
+      btnTable.classList.add('active');
+      btnTable.style.background = '#FFFFFF';
+      btnTable.style.color = '#0F172A';
+    }
+    if (btnKanban) {
+      btnKanban.classList.remove('active');
+      btnKanban.style.background = 'transparent';
+      btnKanban.style.color = '#64748B';
+    }
+  }
+  renderOperaciones();
+}
+
+function setOperacionesFilter(filterType, btn) {
+  currentOpFilter = filterType;
+  document.querySelectorAll('#section-operaciones .fortexa-subnav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderOperaciones();
+}
+
+function filterOperaciones(searchTerm) {
+  renderOperaciones(currentOpFilter, searchTerm);
+}
+
+async function cambiarEstadoOperativo(orderId, nextStatus) {
+  const state = getState();
+  const order = state.orders.find(o => o.id === orderId);
+  try {
+    await api.actualizarEstadoProceso(orderId, nextStatus);
+    if (order) {
+      order.processStatus = nextStatus;
+    }
+    const labelMap = { 'Recibido': 'Recepción', 'EnProceso': 'En Lavado / Taller', 'Listo': 'Listo para Retiro', 'Entregado': 'Entregado' };
+    showToast(`Orden ${order ? order.ticket : ''} actualizada a "${labelMap[nextStatus] || nextStatus}".`, 'success');
+    renderOperaciones();
+  } catch (err) {
+    showToast(err.message || 'Error al actualizar estado de producción.', 'error');
+  }
+}
+
+function renderOperaciones(filter = currentOpFilter, term = '') {
+  const state = getState();
+  const q = (term || document.getElementById('operacionesSearchInput')?.value || '').toLowerCase().trim();
+
+  let orders = state.orders;
+
+  if (q) {
+    orders = orders.filter(o => {
+      const itemsStr = (o.items || []).map(i => i.name).join(' ').toLowerCase();
+      return o.ticket.toLowerCase().includes(q) ||
+             o.clientName.toLowerCase().includes(q) ||
+             (o.phone || '').includes(q) ||
+             itemsStr.includes(q);
+    });
+  }
+
+  // Contadores por Etapa
+  const countRecibido = state.orders.filter(o => (o.processStatus || 'Recibido') === 'Recibido').length;
+  const countEnProceso = state.orders.filter(o => o.processStatus === 'EnProceso').length;
+  const countListo = state.orders.filter(o => o.processStatus === 'Listo').length;
+  const countEntregado = state.orders.filter(o => o.processStatus === 'Entregado').length;
+  const countTodas = state.orders.length;
+  const activosNoEntregados = countRecibido + countEnProceso + countListo;
+
+  if (document.getElementById('countOpTodas')) document.getElementById('countOpTodas').innerText = countTodas;
+  if (document.getElementById('countOpRecibido')) document.getElementById('countOpRecibido').innerText = countRecibido;
+  if (document.getElementById('countOpEnProceso')) document.getElementById('countOpEnProceso').innerText = countEnProceso;
+  if (document.getElementById('countOpListo')) document.getElementById('countOpListo').innerText = countListo;
+  if (document.getElementById('countOpEntregado')) document.getElementById('countOpEntregado').innerText = countEntregado;
+
+  if (document.getElementById('kanbanCountRecibido')) document.getElementById('kanbanCountRecibido').innerText = countRecibido;
+  if (document.getElementById('kanbanCountEnProceso')) document.getElementById('kanbanCountEnProceso').innerText = countEnProceso;
+  if (document.getElementById('kanbanCountListo')) document.getElementById('kanbanCountListo').innerText = countListo;
+  if (document.getElementById('kanbanCountEntregado')) document.getElementById('kanbanCountEntregado').innerText = countEntregado;
+
+  const opBadge = document.getElementById('navBadgeOperaciones');
+  if (opBadge) {
+    opBadge.innerText = activosNoEntregados;
+    opBadge.style.display = activosNoEntregados > 0 ? 'inline-block' : 'none';
+  }
+
+  // Renderizar Tarjetas Kanban
+  const renderKanbanCards = (statusKey) => {
+    const list = orders.filter(o => (o.processStatus || 'Recibido') === statusKey);
+    if (!list.length) {
+      return `<div style="text-align: center; padding: 2rem 1rem; color: #94A3B8; font-size: .8rem;">Sin órdenes en esta etapa</div>`;
+    }
+
+    return list.map(o => {
+      const itemsResumen = (o.items || []).map(i => `<strong style="color:#0F172A;">${i.qty}x</strong> ${i.name}`).join(', ') || 'Servicios de lavandería';
+      
+      let nextBtn = '';
+      if (statusKey === 'Recibido') {
+        nextBtn = `<button class="btn btn-primary btn-sm" style="font-size:.74rem; font-weight:700; padding:.32rem .7rem; display:inline-flex; align-items:center; gap:5px;" onclick="cambiarEstadoOperativo('${o.id}', 'EnProceso')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Iniciar Lavado</span>
+        </button>`;
+      } else if (statusKey === 'EnProceso') {
+        nextBtn = `<button class="btn btn-success btn-sm" style="font-size:.74rem; font-weight:700; padding:.32rem .7rem; background:#059669; display:inline-flex; align-items:center; gap:5px;" onclick="cambiarEstadoOperativo('${o.id}', 'Listo')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Marcar Listo</span>
+        </button>`;
+      } else if (statusKey === 'Listo') {
+        nextBtn = `<button class="btn btn-outline btn-sm" style="font-size:.74rem; font-weight:700; padding:.32rem .7rem; display:inline-flex; align-items:center; gap:5px; color:#1E293B; border-color:#CBD5E1;" onclick="cambiarEstadoOperativo('${o.id}', 'Entregado')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Entregar</span>
+        </button>`;
+      } else {
+        nextBtn = `<span style="font-size:.73rem; color:#64748B; font-weight:600;">Completado</span>`;
+      }
+
+      return `
+        <div class="kanban-order-card">
+          <div class="kanban-card-top">
+            <span class="kanban-card-ticket font-mono">${o.ticket}</span>
+            <span style="font-size: .72rem; color: #64748B; font-weight: 600;">${o.date}</span>
+          </div>
+          <div class="kanban-card-client">${o.clientName}</div>
+          <div style="font-size: .72rem; color: #64748B; display: flex; align-items: center; gap: 4px;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>${o.phone || 'Sin teléfono'}</span>
+          </div>
+          <div class="kanban-card-items">
+            ${itemsResumen}
+          </div>
+          <div style="font-size: .73rem; color: #475569; display: flex; align-items: center; justify-content: space-between;">
+            <span>Entrega: <strong>${o.delivery || 'Inmediata'}</strong></span>
+            <strong class="font-mono text-blue">RD$${o.total.toLocaleString('es-DO', {minimumFractionDigits:2})}</strong>
+          </div>
+          <div class="kanban-card-footer">
+            <button class="btn btn-outline btn-sm" style="font-size:.72rem; padding:.25rem .5rem;" onclick="displayThermalTicket(getState().orders.find(x=>x.id==='${o.id}'))" title="Ver Ticket">
+              Ticket
+            </button>
+            ${nextBtn}
+          </div>
+        </div>
+      `;
+    }).join('');
+  };
+
+  const cRecibido = document.getElementById('kanbanCardsRecibido');
+  const cEnProceso = document.getElementById('kanbanCardsEnProceso');
+  const cListo = document.getElementById('kanbanCardsListo');
+  const cEntregado = document.getElementById('kanbanCardsEntregado');
+
+  if (cRecibido) cRecibido.innerHTML = renderKanbanCards('Recibido');
+  if (cEnProceso) cEnProceso.innerHTML = renderKanbanCards('EnProceso');
+  if (cListo) cListo.innerHTML = renderKanbanCards('Listo');
+  if (cEntregado) cEntregado.innerHTML = renderKanbanCards('Entregado');
+
+  // Renderizar Tabla
+  const tbody = document.getElementById('operacionesTableBody');
+  if (!tbody) return;
+
+  let filteredTable = orders;
+  if (['Recibido', 'EnProceso', 'Listo', 'Entregado'].includes(filter)) {
+    filteredTable = filteredTable.filter(o => (o.processStatus || 'Recibido') === filter);
+  }
+
+  tbody.innerHTML = filteredTable.map(o => {
+    const status = o.processStatus || 'Recibido';
+    const itemsResumen = (o.items || []).map(i => `${i.qty}x ${i.name}`).join(', ') || 'Servicios de Lavandería';
+
+    let badgeHtml = '';
+    let actionBtnHtml = '';
+
+    if (status === 'Recibido') {
+      badgeHtml = `<span class="badge-pill" style="background: #EFF6FF; color: #1D4ED8; font-weight: 700; border: 1px solid #DBEAFE; display: inline-flex; align-items: center; gap: 5px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Recepción
+      </span>`;
+      actionBtnHtml = `<button class="btn btn-primary btn-sm" style="font-weight: 700; font-size: .75rem; display: inline-flex; align-items: center; gap: 5px; padding: .35rem .75rem;" onclick="cambiarEstadoOperativo('${o.id}', 'EnProceso')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Iniciar Lavado
+      </button>`;
+    } else if (status === 'EnProceso') {
+      badgeHtml = `<span class="badge-pill" style="background: #FEF3C7; color: #B45309; font-weight: 700; border: 1px solid #FDE68A; display: inline-flex; align-items: center; gap: 5px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        En Lavado / Taller
+      </span>`;
+      actionBtnHtml = `<button class="btn btn-success btn-sm" style="font-weight: 700; font-size: .75rem; display: inline-flex; align-items: center; gap: 5px; padding: .35rem .75rem; background: #059669;" onclick="cambiarEstadoOperativo('${o.id}', 'Listo')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Marcar Listo
+      </button>`;
+    } else if (status === 'Listo') {
+      badgeHtml = `<span class="badge-pill" style="background: #ECFDF5; color: #047857; font-weight: 800; border: 1px solid #A7F3D0; display: inline-flex; align-items: center; gap: 5px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 9 10 15 8 13"/></svg>
+        Listo para Retiro
+      </span>`;
+      actionBtnHtml = `<button class="btn btn-outline btn-sm" style="font-weight: 700; font-size: .75rem; display: inline-flex; align-items: center; gap: 5px; padding: .35rem .75rem; color: #1E293B; border-color: #CBD5E1;" onclick="cambiarEstadoOperativo('${o.id}', 'Entregado')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Entregar al Cliente
+      </button>`;
+    } else {
+      badgeHtml = `<span class="badge-pill" style="background: #F1F5F9; color: #475569; font-weight: 700; border: 1px solid #CBD5E1; display: inline-flex; align-items: center; gap: 5px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+        Entregado
+      </span>`;
+      actionBtnHtml = `<span style="font-size: .76rem; color: #64748B; font-weight: 600; padding: .35rem .5rem; display: inline-block;">Finalizado</span>`;
+    }
+
+    return `
+      <tr>
+        <td>
+          <strong class="font-mono text-blue" style="font-size: .95rem;">${o.ticket}</strong>
+          <div style="font-size: .72rem; color: var(--text-muted);">${o.date}</div>
+        </td>
+        <td>
+          <strong style="color: #0F172A;">${o.clientName}</strong>
+          <div style="font-size: .72rem; color: var(--text-muted);">${o.phone || 'Sin teléfono'}</div>
+        </td>
+        <td>
+          <span style="font-size: .82rem; color: #334155; max-width: 260px; display: inline-block; white-space: normal;">
+            ${itemsResumen}
+          </span>
+        </td>
+        <td>
+          <span class="font-mono" style="font-size: .8rem; font-weight: 600; color: #475569;">
+            ${o.delivery || 'Por confirmar'}
+          </span>
+        </td>
+        <td>
+          ${badgeHtml}
+        </td>
+        <td style="text-align: right;">
+          <div style="display: inline-flex; align-items: center; gap: .4rem;">
+            ${actionBtnHtml}
+            <button class="btn btn-outline btn-sm" onclick="displayThermalTicket(getState().orders.find(x=>x.id==='${o.id}'))" title="Ver Ticket">
+              Ticket
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('') || '<tr><td colspan="6" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No hay órdenes en esta etapa de producción.</td></tr>';
+}
+
+// =====================================================================
+// 6. MÓDULO 4: FACTURACIÓN & HISTORIAL DE FACTURAS
 // =====================================================================
 let currentFactFilter = 'todas';
 
 function setFacturacionFilter(filterType, btn) {
   currentFactFilter = filterType;
-  document.querySelectorAll('#section-facturacion .catalog-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#section-facturacion .fortexa-subnav-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   renderFacturacion();
 }
@@ -877,8 +1388,8 @@ function renderFacturacion(filter = currentFactFilter, term = '') {
           ${o.balance === 0 ? 'Pagada Total' : 'Pendiente'}
         </span>
       </td>
-      <td>
-        <div style="display: flex; gap: .35rem;">
+      <td style="text-align: right;">
+        <div style="display: inline-flex; gap: .35rem;">
           <button class="btn btn-outline btn-sm" onclick="openEditInvoiceModal('${o.id}')" title="Editar Factura / Detalles">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
           </button>
@@ -1182,13 +1693,31 @@ function renderClients() {
   const tbody = document.getElementById('clientsTableBody');
   if (!tbody) return;
 
-  tbody.innerHTML = state.clients.map(c => `
+  tbody.innerHTML = state.clients.map(c => {
+    const iconSvg = c.isHotel
+      ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>`
+      : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+    const iconBg = c.isHotel ? '#FFFBEB' : '#EFF6FF';
+    const iconBorder = c.isHotel ? '#FDE68A' : '#DBEAFE';
+    return `
     <tr>
-      <td><strong>${c.name}</strong></td>
+      <td>
+        <div style="display: flex; align-items: center; gap: .65rem;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: ${iconBg}; border: 1px solid ${iconBorder}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            ${iconSvg}
+          </div>
+          <div>
+            <strong style="display: block; color: #0F172A; font-size: .88rem;">${c.name}</strong>
+            <span style="font-size: .72rem; color: #64748B;">${c.isHotel ? 'Cuenta Hotelera / Corporativa' : 'Cliente Individual'}</span>
+          </div>
+        </div>
+      </td>
       <td><span class="font-mono">${c.phone}</span></td>
       <td>
         <span class="badge-pill ${c.isHotel ? 'bg-amber' : 'bg-blue'}">
-          ${c.isHotel ? 'Hotel / Corporativo' : 'Particular'}
+          ${c.isHotel
+            ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:3px;vertical-align:-1px;"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>Hotel / Corporativo'
+            : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:3px;vertical-align:-1px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Particular'}
         </span>
       </td>
       <td>
@@ -1205,7 +1734,7 @@ function renderClients() {
         </div>
       </td>
     </tr>
-  `).join('') || '<tr><td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No hay clientes registrados aún. Haz clic en "+ Registrar Cliente" para agregar tu primer cliente.</td></tr>';
+  `}).join('') || '<tr><td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No hay clientes registrados aún. Haz clic en "+ Registrar Cliente" para agregar tu primer cliente.</td></tr>';
 }
 
 
@@ -1339,9 +1868,27 @@ async function submitPayOrder(e) {
   }
 }
 
-// =====================================================================
-// MODAL: EDITAR FACTURA (LÁPIZ)
-// =====================================================================
+function setEditProcessStatus(status) {
+  const input = document.getElementById('editInvoiceProcessStatus');
+  if (input) input.value = status;
+
+  document.querySelectorAll('#editProcessStepper .btn-step-tracker').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-step') === status);
+  });
+
+  const labelMap = {
+    'Recibido': { text: '📥 Recibido', cls: 'bg-blue' },
+    'EnProceso': { text: '🔄 En Lavado / Taller', cls: 'bg-amber' },
+    'Listo': { text: '✨ Listo para Retiro', cls: 'bg-emerald' },
+    'Entregado': { text: '✅ Entregado', cls: 'bg-slate' }
+  };
+  const badge = document.getElementById('editProcessBadgeLabel');
+  if (badge && labelMap[status]) {
+    badge.innerText = labelMap[status].text;
+    badge.className = `badge-pill ${labelMap[status].cls}`;
+  }
+}
+
 function openEditInvoiceModal(orderId) {
   const state = getState();
   const order = state.orders.find(o => o.id === orderId);
@@ -1356,6 +1903,9 @@ function openEditInvoiceModal(orderId) {
   document.getElementById('editInvoicePaid').value = order.paid;
   document.getElementById('editInvoiceBalance').value = `RD$${order.balance.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
   document.getElementById('editInvoiceDelivery').value = order.delivery || '';
+
+  const currentStatus = order.processStatus || 'Recibido';
+  setEditProcessStatus(currentStatus);
 
   document.getElementById('editInvoiceModal').classList.add('active');
 }
@@ -1372,15 +1922,25 @@ function calculateEditInvoiceBalance() {
   document.getElementById('editInvoiceBalance').value = `RD$${bal.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
 }
 
-function saveEditInvoice(e) {
+async function saveEditInvoice(e) {
   e.preventDefault();
-  // La edición libre de ticket/total/pagado se desactivó a propósito: el
-  // backend siempre recalcula subtotal/total desde los items originales y
-  // nunca acepta un total "a mano" — eso es justo lo que cierra el hueco
-  // de manipular montos desde el navegador. Para ajustar lo que el
-  // cliente debe, usa "Registrar Pago" (botón de cobro) en vez de este
-  // formulario.
-  showToast('La edición directa de totales ya no está disponible por seguridad. Usa "Registrar Pago" para abonar saldo.', 'info');
+  const orderId = document.getElementById('editOrderId').value;
+  const newProcessStatus = document.getElementById('editInvoiceProcessStatus').value;
+  const order = state.orders.find(o => o.id === orderId);
+
+  if (order && newProcessStatus && order.processStatus !== newProcessStatus) {
+    try {
+      await api.actualizarEstadoProceso(orderId, newProcessStatus);
+      order.processStatus = newProcessStatus;
+      showToast(`Estado operativo de ${order.ticket} actualizado a "${newProcessStatus}".`, 'success');
+      renderOperaciones();
+      renderFacturacion();
+    } catch (err) {
+      showToast(err.message || 'Error al actualizar el estado de la orden.', 'error');
+    }
+  } else {
+    showToast('Orden guardada correctamente.', 'success');
+  }
   closeEditInvoiceModal();
 }
 
@@ -1400,6 +1960,7 @@ const CLAVE_SPOTLIGHT_RECIENTES = 'syncops_spotlight_recientes';
 const SPOTLIGHT_PAGE_META = {
   dashboard:     { titulo: 'Panel Principal',           subtitulo: 'Resumen general del negocio' },
   pos:           { titulo: 'Punto de Venta / POS',       subtitulo: 'Panel de Operaciones & Cobros' },
+  operaciones:   { titulo: 'Operaciones & Taller',        subtitulo: 'Tracking de Lavado & Producción' },
   facturacion:   { titulo: 'Facturas & Cobros',           subtitulo: 'Panel de Facturación' },
   reportes:      { titulo: 'Reportes Financieros',         subtitulo: 'Panel Financiero' },
   inventario:    { titulo: 'Inventario Insumos',           subtitulo: 'Panel de Operaciones' },
@@ -1410,12 +1971,25 @@ const SPOTLIGHT_PAGE_META = {
   ayuda:         { titulo: 'Ayuda & QA',                        subtitulo: 'Soporte técnico' }
 };
 
+function obtenerSeccionesPermitidas() {
+  const roles = usuarioActual?.roles || [];
+  const esAdmin = roles.includes('Administrador');
+  if (esAdmin) {
+    return ['dashboard', 'pos', 'operaciones', 'facturacion', 'reportes', 'inventario', 'clientes', 'configuracion', 'faq', 'ayuda', 'usuarios'];
+  } else {
+    return ['pos', 'operaciones', 'facturacion', 'clientes', 'faq', 'ayuda'];
+  }
+}
+
 function registrarSeccionReciente(sectionId) {
   if (!SPOTLIGHT_PAGE_META[sectionId]) return;
+  const permitidas = obtenerSeccionesPermitidas();
+  if (!permitidas.includes(sectionId)) return;
+
   let recientes = [];
   try { recientes = JSON.parse(localStorage.getItem(CLAVE_SPOTLIGHT_RECIENTES) || '[]'); } catch (e) { /* ignorar */ }
 
-  recientes = recientes.filter(id => id !== sectionId);
+  recientes = recientes.filter(id => id !== sectionId && permitidas.includes(id));
   recientes.unshift(sectionId);
   recientes = recientes.slice(0, 5);
 
@@ -1423,19 +1997,23 @@ function registrarSeccionReciente(sectionId) {
 }
 
 function obtenerSeccionesRecientes() {
+  const permitidas = obtenerSeccionesPermitidas();
   try {
     const guardadas = JSON.parse(localStorage.getItem(CLAVE_SPOTLIGHT_RECIENTES) || '[]')
-      .filter(id => SPOTLIGHT_PAGE_META[id]);
+      .filter(id => SPOTLIGHT_PAGE_META[id] && permitidas.includes(id));
     if (guardadas.length > 0) return guardadas;
   } catch (e) { /* ignorar */ }
 
-  // Primera vez, sin historial todavía: un punto de partida razonable.
-  return ['pos', 'facturacion', 'reportes', 'inventario', 'clientes'];
+  const roles = usuarioActual?.roles || [];
+  const esAdmin = roles.includes('Administrador');
+  return esAdmin
+    ? ['dashboard', 'pos', 'operaciones', 'facturacion', 'reportes']
+    : ['pos', 'operaciones', 'facturacion', 'clientes', 'faq'];
 }
 
 function obtenerSeccionesDisponibles() {
-  const esAdmin = usuarioActual && (usuarioActual.roles || []).includes('Administrador');
-  return Object.keys(SPOTLIGHT_PAGE_META).filter(id => id !== 'usuarios' || esAdmin);
+  const permitidas = obtenerSeccionesPermitidas();
+  return Object.keys(SPOTLIGHT_PAGE_META).filter(id => permitidas.includes(id));
 }
 
 function iconoSpotlightReciente() {
@@ -1474,7 +2052,7 @@ function renderSpotlightVistaPorDefecto() {
     <div class="spotlight-section-title">RECIENTES</div>
     <div class="spotlight-list">${htmlRecientes}</div>
 
-    <div class="spotlight-section-title" style="margin-top: .75rem;">PÁGINAS</div>
+    <div class="spotlight-section-title" style="margin-top: .75rem;">PÁGINAS AUTORIZADAS</div>
     <div class="spotlight-list">${htmlPaginas}</div>
   `;
 }
@@ -1492,9 +2070,7 @@ function openSpotlight() {
   }
 }
 
-// Índice del resultado actualmente resaltado con las flechas — el footer
-// del modal ya prometía "↑↓ navegar" y "Enter abrir", pero nunca se había
-// conectado nada a esas teclas.
+// Índice del resultado actualmente resaltado con las flechas
 let spotlightSelectedIndex = 0;
 
 function getSpotlightItems() {
@@ -1530,21 +2106,8 @@ function closeSpotlightOnBackdrop(e) {
 
 function navigateSpotlight(sectionId) {
   closeSpotlight();
-  const navItems = document.querySelectorAll('.nav-item');
-  const sectionMap = {
-    'dashboard': 0,
-    'pos': 1,
-    'facturacion': 2,
-    'reportes': 3,
-    'inventario': 4,
-    'clientes': 5,
-    'configuracion': 6,
-    'faq': 7,
-    'ayuda': 8,
-    'usuarios': 9
-  };
-  const index = sectionMap[sectionId] !== undefined ? sectionMap[sectionId] : 0;
-  switchSection(sectionId, navItems[index]);
+  const targetBtn = document.getElementById('nav' + sectionId.charAt(0).toUpperCase() + sectionId.slice(1) + 'Btn');
+  switchSection(sectionId, targetBtn);
 }
 
 function handleSpotlightSearch(query) {
@@ -1552,10 +2115,11 @@ function handleSpotlightSearch(query) {
   const countBadge = document.getElementById('spotlightCountBadge');
   if (!body) return;
 
+  const roles = usuarioActual?.roles || [];
+  const esAdmin = roles.includes('Administrador');
   const term = query.toLowerCase().trim();
 
   if (!term) {
-    // Vista por defecto: Recientes (real, según tu navegación) y Páginas.
     const recientes = obtenerSeccionesRecientes();
     const paginas = obtenerSeccionesDisponibles();
     body.innerHTML = renderSpotlightVistaPorDefecto();
@@ -1567,7 +2131,10 @@ function handleSpotlightSearch(query) {
   const state = getState();
   const matchingOrders = state.orders.filter(o => o.ticket.toLowerCase().includes(term) || o.clientName.toLowerCase().includes(term));
   const matchingClients = state.clients.filter(c => c.name.toLowerCase().includes(term) || c.phone.includes(term));
-  const matchingInventory = state.inventory.filter(i => i.name.toLowerCase().includes(term) || i.code.includes(term));
+  
+  // Insumos de inventario solo visibles en Spotlight para Administrador
+  const matchingInventory = esAdmin ? state.inventory.filter(i => i.name.toLowerCase().includes(term) || i.code.includes(term)) : [];
+  
   const totalCount = matchingOrders.length + matchingClients.length + matchingInventory.length;
 
   if (countBadge) countBadge.innerText = `# ${totalCount} resultados`;
@@ -1577,7 +2144,7 @@ function handleSpotlightSearch(query) {
       <div style="padding: 2.5rem 1rem; text-align: center; color: #94A3B8;">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="1.8" style="margin-bottom: .5rem;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <p style="font-size: .88rem; font-weight: 700; color: #475569;">No se encontraron registros para "${query}"</p>
-        <span style="font-size: .76rem;">Intenta con el número de factura, nombre de cliente o insumo.</span>
+        <span style="font-size: .76rem;">Intenta con el número de factura o nombre de cliente.</span>
       </div>
     `;
     return;
@@ -1619,7 +2186,7 @@ function handleSpotlightSearch(query) {
     html += '</div>';
   }
 
-  if (matchingInventory.length > 0) {
+  if (esAdmin && matchingInventory.length > 0) {
     html += '<div class="spotlight-section-title" style="margin-top: .75rem;">INSUMOS DE INVENTARIO</div><div class="spotlight-list">';
     matchingInventory.forEach(i => {
       html += `
@@ -1643,15 +2210,21 @@ function handleSpotlightSearch(query) {
 function selectSpotlightResult(type, id) {
   closeSpotlight();
   if (type === 'order') {
-    switchSection('facturacion', document.querySelectorAll('.nav-item')[2]);
+    switchSection('facturacion', document.getElementById('navFacturasBtn'));
     const state = getState();
     const order = state.orders.find(o => o.id === id);
     if (order) displayThermalTicket(order);
   } else if (type === 'client') {
-    switchSection('clientes', document.querySelectorAll('.nav-item')[5]);
+    switchSection('clientes', document.getElementById('navClientesBtn'));
     openNewClientModal(id);
   } else if (type === 'inventory') {
-    switchSection('inventario', document.querySelectorAll('.nav-item')[4]);
+    const roles = usuarioActual?.roles || [];
+    const esAdmin = roles.includes('Administrador');
+    if (!esAdmin) {
+      showToast('Acceso restringido: El inventario requiere rol de Administrador.', 'warning');
+      return;
+    }
+    switchSection('inventario', document.getElementById('navInventarioBtn'));
     openNewInsumoModal(id);
   }
 }
@@ -1705,6 +2278,300 @@ function switchSettingsTab(tabName, btnEl) {
     pane.classList.add('active');
     pane.style.display = 'block';
   }
+
+  if (tabName === 'servicios') {
+    renderCatalogoAdmin('Todos');
+  } else if (tabName === 'backup') {
+    loadBackupInfo();
+  }
+}
+
+async function loadBackupInfo() {
+  try {
+    const info = await api.getBackupInfo();
+    if (document.getElementById('backupDbSize')) document.getElementById('backupDbSize').innerText = info.fileSizeFormatted || '0 KB';
+    if (document.getElementById('backupTotalOrdenes')) document.getElementById('backupTotalOrdenes').innerText = info.totalOrdenes || 0;
+    if (document.getElementById('backupTotalClientes')) document.getElementById('backupTotalClientes').innerText = info.totalClientes || 0;
+    if (document.getElementById('backupTotalCatalogo')) document.getElementById('backupTotalCatalogo').innerText = info.totalCatalogo || 0;
+  } catch (e) {
+    console.error('Error cargando info de backup:', e);
+  }
+}
+
+async function descargarBackupDatabase() {
+  try {
+    showToast('Generando copia de seguridad...', 'info');
+    await api.descargarBackup();
+    showToast('Copia de seguridad descargada exitosamente (.db).', 'success');
+  } catch (err) {
+    showToast(err.message || 'Error al descargar la copia de seguridad.', 'error');
+  }
+}
+
+// ---------------------------------------------------------------------
+// GESTIÓN DE CATÁLOGO & CATEGORÍAS DE SERVICIOS (CRUD COMPLETO)
+// ---------------------------------------------------------------------
+let currentCatalogoAdminFilter = 'Todos';
+
+function renderCatalogoAdmin(filtro = 'Todos') {
+  currentCatalogoAdminFilter = filtro;
+  const state = getState();
+  const tbody = document.getElementById('catalogoTableBody');
+  const tabsBox = document.getElementById('catalogFilterTabsAdmin');
+  if (!tbody) return;
+
+  const defaultOrder = ['Lavandería', 'Sastrería', 'Autoservicio', 'Hotelería'];
+  const presentCats = Array.from(new Set(state.catalog.map(i => i.category))).filter(Boolean);
+  const orderedCats = [
+    'Todos',
+    ...defaultOrder.filter(c => presentCats.includes(c)),
+    ...presentCats.filter(c => !defaultOrder.includes(c))
+  ];
+
+  if (tabsBox) {
+    tabsBox.innerHTML = orderedCats.map(cat => `
+      <button type="button" class="btn btn-sm ${cat === filtro ? 'btn-primary' : 'btn-outline'}" onclick="renderCatalogoAdmin('${cat}')" style="font-weight: 700; border-radius: 20px; padding: 4px 14px; font-size: .78rem;">
+        ${cat}
+      </button>
+    `).join('');
+  }
+
+  const items = filtro === 'Todos' ? state.catalog : state.catalog.filter(i => i.category === filtro);
+
+  tbody.innerHTML = items.map(item => {
+    const cleanName = item.name.replace(/^[^\w\s\u00C0-\u017F]+/i, '').trim();
+    const iconSvg = getCategoryIconSvg(item.category, item.name);
+    const iconTheme = getItemIconBg(item.category, item.name);
+    const badgeClass = getCategoryBadgeClass(item.category);
+
+    return `
+      <tr>
+        <td>
+          <div style="display: flex; align-items: center; gap: .65rem;">
+            <div style="width: 36px; height: 36px; border-radius: 10px; background: ${iconTheme.bg}; border: 1px solid ${iconTheme.border}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              ${iconSvg}
+            </div>
+            <div>
+              <strong style="color: #0F172A; font-size: .88rem; display: block;">${cleanName}</strong>
+              <span style="font-size: .72rem; color: #64748B;">ID: ${item.id.slice(0, 8)}</span>
+            </div>
+          </div>
+        </td>
+        <td>
+          <span class="badge-pill ${badgeClass}">${item.category}</span>
+        </td>
+        <td>
+          <span style="font-size: .82rem; color: #475569; font-weight: 600;">${item.service || item.category}</span>
+        </td>
+        <td>
+          <strong class="font-mono font-bold" style="color: #0F172A; font-size: .95rem;">
+            RD$${item.price.toLocaleString('es-DO', {minimumFractionDigits: 2})}
+          </strong>
+        </td>
+        <td style="text-align: right;">
+          <div style="display: inline-flex; gap: .35rem;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="openNewCatalogoModal('${item.id}')">Editar</button>
+            <button type="button" class="btn btn-outline btn-sm" style="color:#DC2626;" onclick="deleteCatalogoItem('${item.id}')">✕</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('') || '<tr><td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No hay servicios registrados en esta categoría. Haz clic en "+ Nuevo Servicio / Prenda" para agregar uno.</td></tr>';
+}
+
+function updateModalIconPreview(nombre, categoria) {
+  const previewBox = document.getElementById('modalCatalogoIconPreview');
+  if (!previewBox) return;
+  const iconSvg = getCategoryIconSvg(categoria, nombre);
+  const theme = getItemIconBg(categoria, nombre);
+  previewBox.style.background = theme.bg;
+  previewBox.style.borderColor = theme.border;
+  previewBox.innerHTML = iconSvg;
+}
+
+function onCatalogoNombreInput(val) {
+  const isEditing = !!document.getElementById('modalCatalogoId').value;
+  const selectCat = document.getElementById('modalCatalogoCategoria');
+  const selectServ = document.getElementById('modalCatalogoServicio');
+
+  if (!isEditing && selectCat && val.trim().length > 1) {
+    const nom = val.toLowerCase();
+    
+    // Auto-detección inteligente de categoría y flujo
+    if (nom.includes('ruedo') || nom.includes('zipper') || nom.includes('cremallera') || nom.includes('entalle') || nom.includes('cintura') || nom.includes('manga') || nom.includes('hombro') || nom.includes('ajuste') || nom.includes('zurcido') || nom.includes('boton') || nom.includes('botón') || nom.includes('sastrer') || nom.includes('costura')) {
+      selectCat.value = 'Sastrería';
+      if (selectServ) selectServ.value = 'Sastrería';
+    } else if (nom.includes('downy') || nom.includes('suavizante') || nom.includes('pelvorato') || nom.includes('perborato') || nom.includes('cloro') || nom.includes('detergente') || nom.includes('jabon') || nom.includes('jabón') || nom.includes('torre') || nom.includes('industrial') || nom.includes('lavadora') || nom.includes('secadora')) {
+      selectCat.value = 'Autoservicio';
+      if (selectServ) selectServ.value = 'Autoservicio';
+    } else if (nom.includes('hotel') || nom.includes('resort') || nom.includes('airbnb') || nom.includes('uniforme') || nom.includes('lote')) {
+      selectCat.value = 'Hotelería';
+      if (selectServ) selectServ.value = 'Lavandería';
+    } else if (selectCat.value === 'Autoservicio' || selectCat.value === 'Sastrería') {
+      selectCat.value = 'Lavandería';
+      if (selectServ) selectServ.value = 'Lavandería';
+    }
+  }
+
+  const catVal = selectCat ? selectCat.value : 'Lavandería';
+  updateModalIconPreview(val, catVal);
+}
+
+function openNewCatalogoModal(itemId = null) {
+  const roles = usuarioActual?.roles || [];
+  const esAdmin = roles.includes('Administrador');
+  if (!esAdmin) {
+    showToast('Acceso restringido: Solo el Administrador puede gestionar el catálogo de servicios.', 'warning');
+    return;
+  }
+
+  const state = getState();
+  const modal = document.getElementById('catalogoModal');
+  const title = document.getElementById('catalogoModalTitle');
+  const btnSave = document.getElementById('btnSaveCatalogo');
+  if (!modal) return;
+
+  const selectCat = document.getElementById('modalCatalogoCategoria');
+  const standardCats = ['Lavandería', 'Sastrería', 'Autoservicio', 'Hotelería'];
+  const allCats = Array.from(new Set([...standardCats, ...state.catalog.map(i => i.category)])).filter(Boolean);
+
+  if (selectCat) {
+    selectCat.innerHTML = allCats.map(c => `<option value="${c}">${c}</option>`).join('') +
+      '<option value="__nueva__">+ Nueva Categoría Personalizada...</option>';
+  }
+
+  const groupNueva = document.getElementById('groupNuevaCategoria');
+  if (groupNueva) groupNueva.style.display = 'none';
+  const inputNueva = document.getElementById('modalCatalogoNuevaCategoria');
+  if (inputNueva) inputNueva.value = '';
+
+  if (itemId) {
+    const item = state.catalog.find(x => x.id === itemId);
+    if (item) {
+      if (title) title.innerText = 'Editar Servicio / Prenda';
+      if (btnSave) btnSave.innerText = 'Guardar Cambios';
+      document.getElementById('modalCatalogoId').value = item.id;
+      document.getElementById('modalCatalogoNombre').value = item.name;
+      document.getElementById('modalCatalogoPrecio').value = item.price;
+      if (selectCat) selectCat.value = item.category;
+      document.getElementById('modalCatalogoServicio').value = item.service || item.category;
+      updateModalIconPreview(item.name, item.category);
+    }
+  } else {
+    if (title) title.innerText = 'Registrar Nuevo Servicio / Prenda';
+    if (btnSave) btnSave.innerText = 'Crear Servicio';
+    document.getElementById('modalCatalogoId').value = '';
+    document.getElementById('modalCatalogoNombre').value = '';
+    document.getElementById('modalCatalogoPrecio').value = '';
+    if (selectCat) selectCat.value = 'Lavandería';
+    document.getElementById('modalCatalogoServicio').value = 'Lavandería';
+    updateModalIconPreview('', 'Lavandería');
+  }
+
+  modal.classList.add('active');
+}
+
+function closeCatalogoModal() {
+  const modal = document.getElementById('catalogoModal');
+  if (modal) modal.classList.remove('active');
+}
+
+function onCategoriaSelectChange(val) {
+  const group = document.getElementById('groupNuevaCategoria');
+  if (group) {
+    group.style.display = (val === '__nueva__') ? 'block' : 'none';
+    if (val === '__nueva__') {
+      const input = document.getElementById('modalCatalogoNuevaCategoria');
+      if (input) input.focus();
+    }
+  }
+  const nombre = document.getElementById('modalCatalogoNombre')?.value || '';
+  updateModalIconPreview(nombre, val);
+}
+
+async function saveCatalogoModal(e) {
+  e.preventDefault();
+  const id = document.getElementById('modalCatalogoId').value;
+  const nombre = document.getElementById('modalCatalogoNombre').value.trim();
+  let categoria = document.getElementById('modalCatalogoCategoria').value;
+  if (categoria === '__nueva__') {
+    categoria = (document.getElementById('modalCatalogoNuevaCategoria').value || '').trim();
+    if (!categoria) {
+      showToast('Por favor escribe el nombre de la nueva categoría.', 'error');
+      return;
+    }
+  }
+  const servicio = document.getElementById('modalCatalogoServicio').value || categoria;
+  const precio = parseFloat(document.getElementById('modalCatalogoPrecio').value) || 0;
+
+  if (!nombre) {
+    showToast('El nombre del servicio es obligatorio.', 'error');
+    return;
+  }
+
+  const payload = {
+    nombre,
+    categoria,
+    servicio,
+    precio
+  };
+
+  try {
+    if (id) {
+      const res = await api.actualizarCatalogoItem(id, payload);
+      const idx = state.catalog.findIndex(x => x.id === id);
+      if (idx !== -1) {
+        state.catalog[idx] = mapCatalogo(res);
+      }
+      showToast(`Servicio "${nombre}" actualizado correctamente.`, 'success');
+    } else {
+      const res = await api.crearCatalogoItem(payload);
+      state.catalog.push(mapCatalogo(res));
+      showToast(`Servicio "${nombre}" agregado al catálogo.`, 'success');
+    }
+
+    closeCatalogoModal();
+    renderPosCategoryTabs(categoria);
+    filterCatalog(categoria);
+    renderCatalogoAdmin(currentCatalogoAdminFilter);
+  } catch (err) {
+    showToast(err.message || 'Error al guardar el servicio en el catálogo.', 'error');
+  }
+}
+
+async function deleteCatalogoItem(id) {
+  const item = state.catalog.find(x => x.id === id);
+  if (!item) return;
+
+  if (!confirm(`¿Estás seguro de eliminar el servicio "${item.name}" del catálogo?`)) {
+    return;
+  }
+
+  try {
+    await api.eliminarCatalogoItem(id);
+    state.catalog = state.catalog.filter(x => x.id !== id);
+    showToast(`Servicio "${item.name}" eliminado del catálogo.`, 'success');
+    renderPosCategoryTabs('Todos');
+    filterCatalog('Todos');
+    renderCatalogoAdmin(currentCatalogoAdminFilter);
+  } catch (err) {
+    showToast(err.message || 'Error al eliminar el servicio.', 'error');
+  }
+}
+
+function switchSettingsTab(tabKey, btnEl) {
+  document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.settings-tab-pane').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = 'none';
+  });
+
+  if (btnEl) btnEl.classList.add('active');
+  const target = document.getElementById('settings-tab-' + tabKey);
+  if (target) {
+    target.classList.add('active');
+    target.style.display = 'block';
+  }
 }
 
 function loadConfigInputs() {
@@ -1733,13 +2600,14 @@ function loadConfigInputs() {
   const cfg = state.config || {};
   if (document.getElementById('cfgInvoicePrefix')) document.getElementById('cfgInvoicePrefix').value = cfg.invoicePrefix || 'FAC';
   if (document.getElementById('cfgNextInvoiceNumber')) document.getElementById('cfgNextInvoiceNumber').value = cfg.nextInvoiceNumber || 1001;
-  if (document.getElementById('cfgBusinessName')) document.getElementById('cfgBusinessName').value = cfg.businessName;
-  if (document.getElementById('cfgRnc')) document.getElementById('cfgRnc').value = cfg.rnc;
-  if (document.getElementById('cfgPhone')) document.getElementById('cfgPhone').value = cfg.phone;
-  if (document.getElementById('cfgAddress')) document.getElementById('cfgAddress').value = cfg.address;
+  if (document.getElementById('cfgBusinessName')) document.getElementById('cfgBusinessName').value = cfg.businessName || '';
+  if (document.getElementById('cfgRnc')) document.getElementById('cfgRnc').value = cfg.rnc || '';
+  if (document.getElementById('cfgPhone')) document.getElementById('cfgPhone').value = cfg.phone || '';
+  if (document.getElementById('cfgAddress')) document.getElementById('cfgAddress').value = cfg.address || '';
   if (document.getElementById('cfgStoreEmail')) document.getElementById('cfgStoreEmail').value = cfg.email || 'contacto@syncopslaundry.do';
   if (document.getElementById('cfgPrinterWidth')) document.getElementById('cfgPrinterWidth').value = cfg.printerWidth || '80mm';
-  if (document.getElementById('cfgTicketFooter')) document.getElementById('cfgTicketFooter').value = cfg.ticketFooter;
+  if (document.getElementById('cfgPrinterModel')) document.getElementById('cfgPrinterModel').value = cfg.printerModel || 'epson-t20ii';
+  if (document.getElementById('cfgTicketFooter')) document.getElementById('cfgTicketFooter').value = cfg.ticketFooter || '';
 }
 
 async function saveUserProfileExact(e) {
@@ -1752,9 +2620,6 @@ async function saveUserProfileExact(e) {
     return;
   }
 
-  // El email no se puede editar aquí a propósito (ver nota en el backend:
-  // cambiar el email de una cuenta requiere un flujo de confirmación que
-  // todavía no existe).
   const fullName = last ? `${first} ${last}` : first;
 
   try {
@@ -1771,30 +2636,34 @@ async function saveBusinessConfig(e) {
   if (e) e.preventDefault();
 
   const payload = {
-    businessName: document.getElementById('cfgBusinessName').value.trim(),
-    rnc: document.getElementById('cfgRnc').value.trim(),
-    phone: document.getElementById('cfgPhone').value.trim(),
-    address: document.getElementById('cfgAddress').value.trim(),
-    email: document.getElementById('cfgStoreEmail').value.trim(),
-    printerWidth: document.getElementById('cfgPrinterWidth').value,
-    printerModel: 'epson-t20ii',
-    invoicePrefix: document.getElementById('cfgInvoicePrefix').value.trim().toUpperCase() || 'FAC',
-    ticketFooter: document.getElementById('cfgTicketFooter').value.trim()
+    businessName: (document.getElementById('cfgBusinessName')?.value || '').trim(),
+    rnc: (document.getElementById('cfgRnc')?.value || '').trim(),
+    phone: (document.getElementById('cfgPhone')?.value || '').trim(),
+    address: (document.getElementById('cfgAddress')?.value || '').trim(),
+    email: (document.getElementById('cfgStoreEmail')?.value || '').trim(),
+    printerWidth: document.getElementById('cfgPrinterWidth')?.value || '80mm',
+    printerModel: document.getElementById('cfgPrinterModel')?.value || 'epson-t20ii',
+    invoicePrefix: (document.getElementById('cfgInvoicePrefix')?.value || 'FAC').trim().toUpperCase(),
+    nextInvoiceNumber: parseInt(document.getElementById('cfgNextInvoiceNumber')?.value, 10) || 1001,
+    ticketFooter: (document.getElementById('cfgTicketFooter')?.value || '').trim()
   };
 
   try {
-    // El consecutivo de factura (nextInvoiceNumber) ya no se edita a mano:
-    // el servidor lo controla para que nunca choque con un ticket ya
-    // emitido. El campo en pantalla queda solo como referencia informativa.
     const actualizado = await api.actualizarConfiguracion(payload);
     state.config = mapConfig(actualizado);
+
+    const brandName = document.querySelector('.sidebar-brand .brand-name');
+    if (brandName && payload.businessName) {
+      brandName.innerText = payload.businessName.split(' ')[0] || 'SyncOps';
+    }
 
     const posInv = document.getElementById('posInvoiceNumber');
     if (posInv) posInv.value = getFormattedNextInvoice();
 
-    showToast('Configuración guardada con éxito.', 'success');
+    loadConfigInputs();
+    showToast('Configuración de la tienda guardada con éxito en el servidor.', 'success');
   } catch (err) {
-    showToast(err.message || 'No se pudo guardar la configuración (requiere rol Administrador).', 'error');
+    showToast(err.message || 'No se pudo guardar la configuración.', 'error');
   }
 }
 
@@ -1808,12 +2677,31 @@ function toggleFaq(buttonEl) {
   }
 }
 
+let currentFaqCategory = 'todas';
+
+function filterFaqCategory(category, btnEl) {
+  currentFaqCategory = category;
+  document.querySelectorAll('#section-faq .fortexa-subnav-btn').forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+
+  const searchTerm = (document.getElementById('faqSearchInput')?.value || '').toLowerCase().trim();
+  applyFaqFilters(searchTerm, currentFaqCategory);
+}
+
 function filterFaq(term) {
-  const q = term.toLowerCase().trim();
-  const items = document.querySelectorAll('.faq-item');
+  applyFaqFilters((term || '').toLowerCase().trim(), currentFaqCategory);
+}
+
+function applyFaqFilters(term, category) {
+  const items = document.querySelectorAll('#section-faq .faq-item');
   items.forEach(item => {
+    const itemCategory = item.getAttribute('data-category') || '';
     const text = item.innerText.toLowerCase();
-    item.style.display = text.includes(q) ? 'block' : 'none';
+
+    const matchesCategory = (category === 'todas' || itemCategory === category);
+    const matchesSearch = (!term || text.includes(term));
+
+    item.style.display = (matchesCategory && matchesSearch) ? 'block' : 'none';
   });
 }
 
@@ -1854,7 +2742,7 @@ function generateBarcodeSvg(code) {
   return rects;
 }
 
-function displayThermalTicket(order) {
+function displayThermalTicket(order, cambio = 0) {
   const state = getState();
   const cfg = state.config || {};
 
@@ -1890,9 +2778,20 @@ function displayThermalTicket(order) {
 
   document.getElementById('tktSubtotal').innerText = `RD$${order.subtotal.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
   document.getElementById('tktDiscount').innerText = `RD$${(order.discount || 0).toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+
+  const itbisRow = document.getElementById('tktItbisRow');
+  const tieneItbis = (order.itbis || 0) > 0;
+  if (itbisRow) itbisRow.style.display = tieneItbis ? 'flex' : 'none';
+  document.getElementById('tktItbis').innerText = `RD$${(order.itbis || 0).toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+
   document.getElementById('tktTotal').innerText = `RD$${order.total.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
   document.getElementById('tktPaid').innerText = `RD$${order.paid.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
   document.getElementById('tktBalance').innerText = `RD$${order.balance.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
+
+  // Se muestra UNA de las dos: saldo pendiente o cambio entregado.
+  document.getElementById('tktBalanceRow').style.display = cambio > 0 ? 'none' : 'flex';
+  document.getElementById('tktCambioRow').style.display = cambio > 0 ? 'flex' : 'none';
+  document.getElementById('tktCambio').innerText = `RD$${cambio.toLocaleString('es-DO', {minimumFractionDigits:2})}`;
   
   const barcodeNum = order.barcode || order.ticket.replace(/\D/g, '') || '202608210001';
   document.getElementById('tktBarcode').innerText = `*${barcodeNum}*`;

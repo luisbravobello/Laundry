@@ -26,9 +26,9 @@ public class ConfiguracionController : ControllerBase
         return Map(config);
     }
 
-    // Solo el administrador puede cambiar los datos fiscales/impresora del negocio.
+    // Administrador u operador autorizado puede cambiar los datos de la tienda / negocio
     [HttpPut]
-    [Authorize(Roles = "Administrador")]
+    [Authorize]
     public async Task<ActionResult<ConfiguracionResponse>> Actualizar(ConfiguracionRequest request)
     {
         var config = await _db.Configuracion.FirstOrDefaultAsync();
@@ -38,15 +38,19 @@ public class ConfiguracionController : ControllerBase
             _db.Configuracion.Add(config);
         }
 
-        config.BusinessName = request.BusinessName;
-        config.Rnc = request.Rnc;
-        config.Phone = request.Phone;
-        config.Address = request.Address;
-        config.Email = request.Email;
-        config.PrinterWidth = request.PrinterWidth;
-        config.PrinterModel = request.PrinterModel;
-        config.InvoicePrefix = request.InvoicePrefix;
-        config.TicketFooter = request.TicketFooter;
+        config.BusinessName = request.BusinessName ?? config.BusinessName;
+        config.Rnc = request.Rnc ?? config.Rnc;
+        config.Phone = request.Phone ?? config.Phone;
+        config.Address = request.Address ?? config.Address;
+        config.Email = request.Email ?? config.Email;
+        config.PrinterWidth = request.PrinterWidth ?? config.PrinterWidth;
+        config.PrinterModel = request.PrinterModel ?? config.PrinterModel;
+        config.InvoicePrefix = string.IsNullOrWhiteSpace(request.InvoicePrefix) ? config.InvoicePrefix : request.InvoicePrefix.Trim().ToUpperInvariant();
+        if (request.NextInvoiceNumber.HasValue && request.NextInvoiceNumber.Value > 0)
+        {
+            config.NextInvoiceNumber = request.NextInvoiceNumber.Value;
+        }
+        config.TicketFooter = request.TicketFooter ?? config.TicketFooter;
 
         await _db.SaveChangesAsync();
         return Map(config);

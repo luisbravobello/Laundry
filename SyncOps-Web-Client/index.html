@@ -31,11 +31,11 @@
 
     <!-- Navegación -->
     <nav class="sidebar-nav">
-      <div class="nav-section-label">
+      <div class="nav-section-label" id="navOperacionesGroup">
         <span>OPERACIONES</span>
       </div>
       
-      <button class="nav-item active" onclick="switchSection('dashboard', this)">
+      <button class="nav-item active" id="navDashboardBtn" title="Panel Principal" onclick="switchSection('dashboard', this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="7" height="7" rx="1"></rect>
           <rect x="14" y="3" width="7" height="7" rx="1"></rect>
@@ -45,15 +45,24 @@
         <span>Panel Principal</span>
       </button>
 
-      <button class="nav-item" onclick="switchSection('pos', this)">
+      <button class="nav-item" id="navPosBtn" title="Punto de Venta / POS" onclick="switchSection('pos', this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
         </svg>
         <span>Punto de Venta / POS</span>
-        <span class="nav-badge-pill">4</span>
+        <span class="nav-badge-pill" id="navBadgePos" style="display: none;">0</span>
       </button>
 
-      <button class="nav-item" onclick="switchSection('facturacion', this)">
+      <button class="nav-item" id="navOperacionesBtn" title="Operaciones & Taller" onclick="switchSection('operaciones', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span>Operaciones &amp; Taller</span>
+        <span class="nav-badge-pill" id="navBadgeOperaciones" style="display: none;">0</span>
+      </button>
+
+      <button class="nav-item" id="navFacturasBtn" title="Facturas & Cobros" onclick="switchSection('facturacion', this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
           <polyline points="14 2 14 8 20 8"></polyline>
@@ -64,12 +73,12 @@
         <span>Facturas &amp; Cobros</span>
       </button>
 
-      <div class="nav-section-label">
+      <div class="nav-section-label" id="navFinanzasGroup">
         <span>FINANZAS Y REPORTES</span>
         <span class="badge-live">En vivo</span>
       </div>
 
-      <button class="nav-item" onclick="switchSection('reportes', this)">
+      <button class="nav-item" id="navReportesBtn" title="Reportes Financieros" onclick="switchSection('reportes', this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="20" x2="18" y2="10"></line>
           <line x1="12" y1="20" x2="12" y2="4"></line>
@@ -78,14 +87,14 @@
         <span>Reportes Financieros</span>
       </button>
 
-      <button class="nav-item" onclick="switchSection('inventario', this)">
+      <button class="nav-item" id="navInventarioBtn" title="Inventario Insumos" onclick="switchSection('inventario', this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
         </svg>
         <span>Inventario Insumos</span>
       </button>
 
-      <button class="nav-item" onclick="switchSection('clientes', this)">
+      <button class="nav-item" id="navClientesBtn" title="Clientes & Hoteles" onclick="switchSection('clientes', this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
           <circle cx="9" cy="7" r="4"></circle>
@@ -95,11 +104,11 @@
         <span>Clientes &amp; Hoteles</span>
       </button>
 
-      <div class="nav-section-label">
+      <div class="nav-section-label" id="navSistemaGroup">
         <span>SISTEMA</span>
       </div>
 
-      <button class="nav-item" onclick="switchSection('configuracion', this)">
+      <button class="nav-item" id="navConfiguracionBtn" title="Configuración" onclick="switchSection('configuracion', this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="3"></circle>
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -107,7 +116,7 @@
         <span>Configuración</span>
       </button>
 
-      <button class="nav-item" onclick="switchSection('faq', this)">
+      <button class="nav-item" id="navFaqBtn" title="Preguntas Frecuentes" onclick="switchSection('faq', this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
           <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
@@ -116,14 +125,14 @@
         <span>Preguntas Frecuentes</span>
       </button>
 
-      <button class="nav-item" onclick="switchSection('ayuda', this)">
+      <button class="nav-item" id="navAyudaBtn" title="Ayuda & QA" onclick="switchSection('ayuda', this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
         </svg>
         <span>Ayuda &amp; QA</span>
       </button>
 
-      <button class="nav-item" id="navUsuariosBtn" onclick="switchSection('usuarios', this)" style="display: none;">
+      <button class="nav-item" id="navUsuariosBtn" title="Gestión de Usuarios" onclick="switchSection('usuarios', this)" style="display: none;">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
           <circle cx="12" cy="7" r="4"></circle>
@@ -139,11 +148,12 @@
         <div class="user-avatar-circle" id="userAvatar">L</div>
         <div class="user-meta">
           <strong id="userName">Luis Bravo</strong>
-          <span id="userEmailText">luisbravobello@gmail.com</span>
+          <span class="user-role-text role-admin" id="sidebarUserRoleBadge">Administrador</span>
+          <span class="user-email-text" id="userEmailText">luisbravobello@gmail.com</span>
         </div>
       </div>
       <div class="sidebar-user-links">
-        <button type="button" class="sidebar-user-action-btn" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[5])">
+        <button type="button" class="sidebar-user-action-btn" id="sidebarUserActionConfig" onclick="switchSection('configuracion', document.getElementById('navConfiguracionBtn'))">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Personalizar Menú</span>
         </button>
@@ -160,14 +170,20 @@
        ============================================== -->
   <div class="main-layout">
     
+    <!-- Topbar Corporativo Fortexa -->
     <header class="topbar">
-      <!-- Izquierda: Sidebar Toggle & Breadcrumbs -->
+      <!-- Izquierda: Toggle + Breadcrumbs -->
       <div class="topbar-left">
-        <button class="btn-sidebar-toggle" title="Contraer barra lateral" onclick="document.querySelector('.sidebar').classList.toggle('collapsed')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        <button class="btn-sidebar-toggle" title="Contraer/Expandir menú" onclick="toggleSidebar()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
         </button>
+
         <div class="breadcrumbs">
-          <a href="#" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
+          <a href="#" onclick="switchSection('dashboard', document.getElementById('navDashboardBtn'))">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             <span>Inicio</span>
           </a>
@@ -180,7 +196,7 @@
 
       <!-- Derecha: Selector de Empresa + Search + Badges + Notificaciones -->
       <div class="topbar-right">
-        <div class="org-selector-pill" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[5])">
+        <div class="org-selector-pill" id="topbarOrgSelector" onclick="switchSection('configuracion', document.getElementById('navConfiguracionBtn'))">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>
           <span id="topbarOrgName">Laundry</span>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
@@ -200,7 +216,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         </button>
 
-        <button class="topbar-action-btn" title="Configuración de la Tienda" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[5])">
+        <button class="topbar-action-btn" id="topbarConfigBtn" title="Configuración de la Tienda" onclick="switchSection('configuracion', document.getElementById('navConfiguracionBtn'))">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
         </button>
       </div>
@@ -222,7 +238,6 @@
             </button>
             <div class="fortexa-title-box">
               <h1 class="fortexa-title">Panel Principal</h1>
-              <span class="badge-live-pill"><span style="color: #2563EB;">●</span> EN VIVO</span>
             </div>
             <p class="fortexa-sub" id="dashboardGreeting">Gestiona tu catálogo de operaciones, facturación y clientes</p>
           </div>
@@ -243,7 +258,7 @@
             </button>
             <button class="btn-fortexa-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              <span>+ Nueva Factura POS</span>
+              <span>Nueva Factura POS</span>
             </button>
           </div>
         </div>
@@ -429,7 +444,6 @@
             </button>
             <div class="fortexa-title-row">
               <h2 class="fortexa-title">Punto de Venta &amp; Emisión POS</h2>
-              <span class="badge-live-pill">((•)) EN VIVO</span>
             </div>
             <p class="fortexa-subtitle">Terminal POS 01 • Facturación rápida de prendas, máquinas y autoservicio</p>
           </div>
@@ -438,39 +452,7 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
               <span>Reiniciar Orden</span>
             </button>
-            <button type="button" class="btn-fortexa-outline" onclick="openNewClientModal()" title="Registrar nuevo cliente">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-              <span>+ Registrar Cliente</span>
-            </button>
-            <button type="button" class="btn-fortexa-outline" onclick="testEpsonT20II()" title="Prueba de impresión TM-T20II">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
-              <span>Probar TM-T20II</span>
-            </button>
           </div>
-        </div>
-
-        <!-- BARRA DE MINI SECCIONES Y FLUJO DE PROCESO (POS) -->
-        <div class="fortexa-subnav-bar">
-          <button type="button" class="fortexa-subnav-btn active" onclick="switchPosSubTab('emision', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-            <span>1. Emisión Rápida &amp; POS</span>
-            <span class="fortexa-subnav-badge">Principal</span>
-          </button>
-          <button type="button" class="fortexa-subnav-btn" onclick="switchPosSubTab('autoservicio', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="20" x="3" y="2" rx="2"/><circle cx="12" cy="13" r="5"/><path d="M12 18a5 5 0 0 0 5-5"/></svg>
-            <span>2. Autoservicio &amp; Máquinas</span>
-            <span class="fortexa-subnav-badge">Fichas</span>
-          </button>
-          <button type="button" class="fortexa-subnav-btn" onclick="switchPosSubTab('sastreria', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
-            <span>3. Sastrería &amp; Taller</span>
-            <span class="fortexa-subnav-badge">Medidas</span>
-          </button>
-          <button type="button" class="fortexa-subnav-btn" onclick="switchPosSubTab('entrega', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
-            <span>4. Entrega &amp; Retiro de Prendas</span>
-            <span class="fortexa-subnav-badge">Despacho</span>
-          </button>
         </div>
 
         <div class="pos-layout">
@@ -488,7 +470,7 @@
                 </div>
                 <button class="btn-fortexa-outline" style="margin-left: auto; padding: .35rem .75rem; font-size: .76rem;" onclick="openNewClientModal()">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-                  <span>+ Registrar Cliente</span>
+                  <span>Registrar Cliente</span>
                 </button>
               </div>
 
@@ -511,23 +493,38 @@
               <div class="pos-urgent-row">
                 <label class="checkbox-label" style="color: #E11D48; font-weight: 700; font-size: .82rem; display: flex; align-items: center; gap: 8px;">
                   <input type="checkbox" id="posIsUrgent" onchange="calculatePosTotal()" />
-                  <span>⚡ Servicio Prioritario / Urgente (+15% Recargo por Entrega Inmediata)</span>
+                  <span class="inline-icon-badge rose"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+                  <span>Servicio Prioritario / Urgente (+15% Recargo por Entrega Inmediata)</span>
+                </label>
+              </div>
+
+              <div class="pos-itbis-row">
+                <label class="checkbox-label" style="color: #1D4ED8; font-weight: 700; font-size: .82rem; display: flex; align-items: center; gap: 8px;">
+                  <input type="checkbox" id="posAplicaItbis" onchange="calculatePosTotal()" />
+                  <span class="inline-icon-badge blue"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+                  <span>Aplicar ITBIS (18%)</span>
                 </label>
               </div>
             </div>
 
             <!-- PASO 2: CATÁLOGO Y PERSONALIZACIÓN DE PRECIOS -->
             <div class="pos-step-card">
-              <div class="pos-step-header">
-                <div class="pos-step-badge">02</div>
-                <div>
-                  <h4 class="pos-step-title">Catálogo de Servicios &amp; Máquinas</h4>
-                  <p class="pos-step-sub">Haz clic en cualquier servicio para cargarlo y personalizar su precio</p>
+              <div class="pos-step-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: .75rem;">
+                  <div class="pos-step-badge">02</div>
+                  <div>
+                    <h4 class="pos-step-title">Catálogo de Servicios &amp; Máquinas</h4>
+                    <p class="pos-step-sub">Haz clic en cualquier servicio para cargarlo y personalizar su precio</p>
+                  </div>
                 </div>
+                <button type="button" class="btn btn-outline btn-sm" id="btnPosNuevoServicio" onclick="openNewCatalogoModal()" style="display: flex; align-items: center; gap: 5px; font-weight: 700; font-size: .78rem; white-space: nowrap;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span>Agregar Servicio</span>
+                </button>
               </div>
 
-              <!-- Pestañas de Categoría Limpias Fortexa ERP -->
-              <div class="catalog-tabs">
+              <!-- Pestañas de Categoría Limpias Fortexa ERP (Dinámicas) -->
+              <div class="catalog-tabs" id="posCatalogTabs">
                 <button class="catalog-tab active" onclick="filterCatalog('Todos', this)">Todos</button>
                 <button class="catalog-tab" onclick="filterCatalog('Lavandería', this)">Lavandería &amp; Secado</button>
                 <button class="catalog-tab" onclick="filterCatalog('Sastrería', this)">Sastrería &amp; Taller</button>
@@ -572,7 +569,7 @@
                   <!-- PRECIO PERSONALIZABLE POR EL USUARIO -->
                   <div class="form-group">
                     <label class="field-label" style="color: #1D4ED8; font-weight: 800;">Precio Unitario Personalizado (RD$) *</label>
-                    <input type="number" id="builderPrice" class="form-input font-mono font-bold" value="180" style="border: 2px solid #2563EB; background: #EFF6FF; color: #1D4ED8; font-size: 1.05rem;" />
+                    <input type="number" id="builderPrice" class="form-input font-mono font-bold" placeholder="0.00" min="0" step="0.01" style="border: 2px solid #2563EB; background: #EFF6FF; color: #1D4ED8; font-size: 1.05rem;" />
                   </div>
                   <div class="form-group">
                     <label class="field-label">Color / Tipo de Tela:</label>
@@ -639,7 +636,12 @@
                     <input type="number" id="posDiscount" class="input-inline font-mono font-bold" value="0" min="0" oninput="calculatePosTotal()" />
                   </div>
                 </div>
-                
+
+                <div class="total-row" id="posItbisRow" style="display: none;">
+                  <span style="font-weight: 600; color: #475569;">ITBIS (18%):</span>
+                  <strong id="posItbis" class="font-mono font-bold" style="color: #0F172A; font-size: .95rem;">RD$0.00</strong>
+                </div>
+
                 <!-- TOTAL GENERAL DESTACADO FORTEXA ERP -->
                 <div class="total-row-highlight">
                   <span>TOTAL GENERAL:</span>
@@ -649,16 +651,16 @@
                 <!-- Método de Pago con Íconos SVG Limpios -->
                 <div style="margin-top: .85rem;">
                   <label class="field-label" style="font-size: .74rem; font-weight: 800; color: #64748B; text-transform: uppercase;">Método de Cobro:</label>
-                  <div class="pos-payment-methods">
-                    <button type="button" class="btn-pay-method active" onclick="selectPaymentMethod('Efectivo', this)">
+                  <div class="pos-payment-methods" id="paymentMethodGroup">
+                    <button type="button" class="btn-pay-method selected" data-method="Efectivo" onclick="selectPaymentMethod('Efectivo', this)">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
                       <span>Efectivo</span>
                     </button>
-                    <button type="button" class="btn-pay-method" onclick="selectPaymentMethod('Tarjeta', this)">
+                    <button type="button" class="btn-pay-method" data-method="Tarjeta" onclick="selectPaymentMethod('Tarjeta', this)">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
                       <span>Tarjeta POS</span>
                     </button>
-                    <button type="button" class="btn-pay-method" onclick="selectPaymentMethod('Transferencia', this)">
+                    <button type="button" class="btn-pay-method" data-method="Transferencia" onclick="selectPaymentMethod('Transferencia', this)">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3v18M17 3l4 4M17 3l-4 4M7 21V3M7 21l-4-4M7 21l4-4"/></svg>
                       <span>Transferencia</span>
                     </button>
@@ -677,10 +679,17 @@
                   </div>
                 </div>
 
-                <!-- Saldo Pendiente -->
-                <div class="total-row" style="margin-top: .65rem; padding-top: .5rem; border-top: 1px dashed #E2E8F0;">
+                <!-- Saldo Pendiente / Cambio a Devolver (se alternan según el monto pagado) -->
+                <div class="total-row" id="posBalanceRow" style="margin-top: .65rem; padding-top: .5rem; border-top: 1px dashed #E2E8F0;">
                   <span style="font-weight: 800; color: #E11D48; font-size: .84rem;">Saldo Pendiente por Cobrar:</span>
                   <strong id="posBalanceDue" class="font-mono text-rose font-bold" style="font-size: 1.05rem; color: #E11D48;">RD$0.00</strong>
+                </div>
+                <div class="total-row" id="posCambioRow" style="display: none; margin-top: .65rem; padding-top: .5rem; border-top: 1px dashed #E2E8F0;">
+                  <span style="font-weight: 800; color: #059669; font-size: .84rem; display: flex; align-items: center; gap: 6px;">
+                    <span class="inline-icon-badge emerald"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                    Cambio a Devolver al Cliente:
+                  </span>
+                  <strong id="posCambio" class="font-mono font-bold" style="font-size: 1.05rem; color: #059669;">RD$0.00</strong>
                 </div>
 
                 <!-- Botón Principal: Generar Factura e Imprimir -->
@@ -696,32 +705,216 @@
       </section>
 
       <!-- ====================================================
-           3. SECCIÓN: FACTURACIÓN & HISTORIAL DE FACTURAS (FORTEXA ERP)
+           3. SECCIÓN: OPERACIONES & TRACKING DE TALLER / LAVANDERÍA
            ==================================================== -->
-      <section id="section-facturacion" class="content-section">
-        <!-- HEADER DE PÁGINA FORTEXA -->
+      <section id="section-operaciones" class="content-section" style="display: none;">
+        
+        <!-- CABECERA DE OPERACIONES -->
         <div class="fortexa-page-header">
-          <div class="fortexa-header-left">
-            <button type="button" class="btn-fortexa-back" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
-              <span>Volver al Panel Principal</span>
-            </button>
-            <div class="fortexa-title-row">
-              <h1 class="fortexa-title">Historial de Facturas &amp; Cobros</h1>
-              <span class="badge-live-pill">((•)) EN VIVO</span>
+          <div class="fortexa-page-header-left">
+            <div class="fortexa-page-badge">
+              <span class="fortexa-badge-dot"></span>
+              <span>Cadena de Valor &amp; Producción en Vivo</span>
             </div>
-            <p class="fortexa-subtitle">Monitorea facturas emitidas, saldos pendientes y cobros registrados</p>
+            <h2 class="fortexa-page-title">Control de Flujo de Procesos &amp; Operaciones</h2>
+            <p class="fortexa-page-desc">Transformación de entradas en resultados de máxima calidad para el cliente.</p>
+          </div>
+          <div class="fortexa-page-header-actions" style="display: flex; gap: .5rem;">
+            <div class="btn-group" style="display: inline-flex; border: 1px solid #CBD5E1; border-radius: 8px; overflow: hidden; background: #FFFFFF;">
+              <button type="button" class="btn btn-sm active" id="btnViewKanban" onclick="switchOperacionesView('kanban')" style="font-weight: 700; padding: .45rem .85rem; border-radius: 0; border: none;">
+                Tablero Kanban
+              </button>
+              <button type="button" class="btn btn-sm" id="btnViewTable" onclick="switchOperacionesView('table')" style="font-weight: 700; padding: .45rem .85rem; border-radius: 0; border: none; background: transparent; color: #64748B;">
+                Vista Lista
+              </button>
+            </div>
+            <button type="button" class="btn-fortexa-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>Recibir Prendas (POS)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- DIAGRAMA VISUAL DEL FLUJO DE PROCESO (BASADO EN EL MODELO INDUSTRIAL) -->
+        <div class="process-flow-banner">
+          <div class="process-flow-step" onclick="setOperacionesFilter('Recibido', document.getElementById('tabOpRecibido'))">
+            <div class="process-flow-icon-circle blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <div class="process-flow-info">
+              <span class="process-flow-tag">1. ENTRADA</span>
+              <strong>Recepción &amp; Registro</strong>
+              <p>Recepción de prendas, inspección, registro en POS y emisión de ticket.</p>
+            </div>
           </div>
 
-          <!-- BOTONES DE ACCIÓN FORTEXA ERP -->
-          <div class="fortexa-actions-group">
-            <button type="button" class="btn-fortexa-outline" onclick="exportToExcel('facturas')" title="Exportar reporte de facturas">
+          <div class="process-flow-connector">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+
+          <div class="process-flow-step" onclick="setOperacionesFilter('EnProceso', document.getElementById('tabOpEnProceso'))">
+            <div class="process-flow-icon-circle amber">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            </div>
+            <div class="process-flow-info">
+              <span class="process-flow-tag">2. ACTIVIDADES</span>
+              <strong>Clasificación &amp; Insumos</strong>
+              <p>Separación por color/tejido, dosificación de Downy, Pelvorato o detergente.</p>
+            </div>
+          </div>
+
+          <div class="process-flow-connector">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+
+          <div class="process-flow-step" onclick="setOperacionesFilter('EnProceso', document.getElementById('tabOpEnProceso'))">
+            <div class="process-flow-icon-circle purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="process-flow-info">
+              <span class="process-flow-tag">3. TRANSFORMACIÓN</span>
+              <strong>Lavado, Secado &amp; Taller</strong>
+              <p>Ciclo en lavadoras/secadoras, desmanchado profundo o costura en taller.</p>
+            </div>
+          </div>
+
+          <div class="process-flow-connector">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+
+          <div class="process-flow-step" onclick="setOperacionesFilter('Listo', document.getElementById('tabOpListo'))">
+            <div class="process-flow-icon-circle emerald">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 9 10 15 8 13"/></svg>
+            </div>
+            <div class="process-flow-info">
+              <span class="process-flow-tag">4. RESULTADO</span>
+              <strong>Listo &amp; Entrega al Cliente</strong>
+              <p>Inspección de calidad, planchado a vapor, embolsado y entrega con valor.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- BÚSQUEDA Y FILTRADO OPERACIONES -->
+        <div class="fortexa-filter-card">
+          <div class="fortexa-filter-title">Filtrar Tablero Operativo</div>
+          <div class="fortexa-filter-row">
+            <div class="fortexa-filter-input-box">
+              <svg class="fortexa-filter-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="operacionesSearchInput" class="fortexa-filter-input" placeholder="Buscar por ticket, cliente, teléfono, camisa, pantalón..." oninput="filterOperaciones(this.value)" />
+            </div>
+            <button type="button" class="btn-fortexa-outline" onclick="renderOperaciones()" title="Actualizar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              <span>Actualizar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. VISTA TABLERO KANBAN DE PROCESOS (POR DEFECTO) -->
+        <div id="operacionesKanbanView" class="kanban-board-process">
+          
+          <!-- COLUMNA 1: ENTRADAS / RECEPCIÓN -->
+          <div class="kanban-column">
+            <div class="kanban-col-header" style="background: #EFF6FF;">
+              <div class="kanban-col-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>1. Entradas (Recepción)</span>
+              </div>
+              <span class="kanban-col-badge" id="kanbanCountRecibido" style="background: #DBEAFE; color: #1D4ED8;">0</span>
+            </div>
+            <div class="kanban-cards-container" id="kanbanCardsRecibido"></div>
+          </div>
+
+          <!-- COLUMNA 2: TRANSFORMACIÓN / EN LAVADO & TALLER -->
+          <div class="kanban-column">
+            <div class="kanban-col-header" style="background: #FEF3C7;">
+              <div class="kanban-col-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>2. Transformación (Taller/Lavado)</span>
+              </div>
+              <span class="kanban-col-badge" id="kanbanCountEnProceso" style="background: #FDE68A; color: #B45309;">0</span>
+            </div>
+            <div class="kanban-cards-container" id="kanbanCardsEnProceso"></div>
+          </div>
+
+          <!-- COLUMNA 3: RESULTADO / LISTAS PARA RETIRO -->
+          <div class="kanban-column">
+            <div class="kanban-col-header" style="background: #ECFDF5;">
+              <div class="kanban-col-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 9 10 15 8 13"/></svg>
+                <span>3. Resultado (Listo para Retiro)</span>
+              </div>
+              <span class="kanban-col-badge" id="kanbanCountListo" style="background: #A7F3D0; color: #047857;">0</span>
+            </div>
+            <div class="kanban-cards-container" id="kanbanCardsListo"></div>
+          </div>
+
+          <!-- COLUMNA 4: ENTREGADAS -->
+          <div class="kanban-column">
+            <div class="kanban-col-header" style="background: #F1F5F9;">
+              <div class="kanban-col-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>4. Entregadas al Cliente</span>
+              </div>
+              <span class="kanban-col-badge" id="kanbanCountEntregado" style="background: #E2E8F0; color: #475569;">0</span>
+            </div>
+            <div class="kanban-cards-container" id="kanbanCardsEntregado"></div>
+          </div>
+
+        </div>
+
+        <!-- 2. VISTA TABLA DETALLADA (ALTERNATIVA) -->
+        <div id="operacionesTableView" class="card" style="display: none; border-radius: var(--r-lg); border: 1px solid var(--border); margin-top: 1rem;">
+          <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: .85rem;">
+            <div>
+              <h3 style="font-size: 1.05rem; font-weight: 800; color: #0F172A;">Registro General de Operaciones</h3>
+              <p style="font-size: .76rem; color: #64748B; margin-top: 2px;">
+                Monitoreo tabular de prendas por etapas de producción hasta la entrega final.
+              </p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="tableOperaciones">
+              <thead>
+                <tr>
+                  <th>Nº TICKET / ORDEN</th>
+                  <th>CLIENTE</th>
+                  <th>PRENDAS &amp; SERVICIOS</th>
+                  <th>FECHA PROMESA ENTREGA</th>
+                  <th>ESTADO ACTUAL</th>
+                  <th style="text-align: right;">AVANZAR ETAPA</th>
+                </tr>
+              </thead>
+              <tbody id="operacionesTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ====================================================
+           4. SECCIÓN: FACTURACIÓN & HISTORIAL DE FACTURAS (FORTEXA ERP)
+           ==================================================== -->
+      <section id="section-facturacion" class="content-section" style="display: none;">
+        
+        <!-- CABECERA DE SECCIÓN FORTEXA ERP -->
+        <div class="fortexa-page-header">
+          <div class="fortexa-page-header-left">
+            <div class="fortexa-page-badge">
+              <span class="fortexa-badge-dot"></span>
+              <span>Panel de Facturación &amp; Cobros</span>
+            </div>
+            <h2 class="fortexa-page-title">Historial de Comprobantes &amp; Cuentas por Cobrar</h2>
+            <p class="fortexa-page-desc">Consulta de facturas emitidas, estados de pago y saldos pendientes.</p>
+          </div>
+          <div class="fortexa-page-header-actions">
+            <button type="button" class="btn-fortexa-outline" onclick="exportarExcelFacturas()" title="Exportar reporte de facturas a Excel">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
               <span>Exportar Excel</span>
             </button>
             <button type="button" class="btn-fortexa-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              <span>+ Nueva Factura POS</span>
+              <span>Nueva Factura POS</span>
             </button>
           </div>
         </div>
@@ -764,7 +957,9 @@
           <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: .85rem;">
             <div>
               <h3 style="font-size: 1.05rem; font-weight: 800; color: #0F172A;">Registro de Comprobantes Emitidos</h3>
-              <p style="font-size: .76rem; color: #64748B; margin-top: 2px;">Visualiza y edita facturas con el botón de lápiz ✏️</p>
+              <p style="font-size: .76rem; color: #64748B; margin-top: 2px;">
+                Visualiza facturas, cobros y comprobantes térmicos.
+              </p>
             </div>
           </div>
 
@@ -779,7 +974,7 @@
                   <th>ABONO COBRADO</th>
                   <th>SALDO PENDIENTE</th>
                   <th>ESTADO</th>
-                  <th>ACCIONES</th>
+                  <th style="text-align: right;">ACCIONES</th>
                 </tr>
               </thead>
               <tbody id="facturacionTableBody"></tbody>
@@ -802,7 +997,6 @@
             </button>
             <div class="fortexa-title-row">
               <h1 class="fortexa-title">Reportes Financieros &amp; Ingresos</h1>
-              <span class="badge-live-pill">((•)) EN VIVO</span>
             </div>
             <p class="fortexa-subtitle">Análisis de facturación, recaudación y exportación formal en PDF y Excel</p>
           </div>
@@ -1058,6 +1252,16 @@
               <span>Impresora EPSON TM-T20II</span>
             </button>
 
+            <button class="settings-tab-btn" onclick="switchSettingsTab('servicios', this)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+              <span>Catálogo &amp; Servicios</span>
+            </button>
+
+            <button class="settings-tab-btn" onclick="switchSettingsTab('backup', this)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>Copias de Seguridad (Backup)</span>
+            </button>
+
             <div style="margin-top: 2.5rem;">
               <button class="settings-tab-btn-danger" onclick="logout()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
@@ -1240,11 +1444,90 @@
 
               <div style="display: flex; gap: .75rem; flex-wrap: wrap;">
                 <button type="button" class="btn btn-primary" onclick="testEpsonT20II()" style="background: #2563EB; font-weight: 700;">
-                  🖨️ Probar Impresión EPSON TM-T20II
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                  Probar Impresión EPSON TM-T20II
                 </button>
                 <button type="button" class="btn btn-outline" onclick="showToast('Controlador EPSON TM-T20II listo para imprimir.', 'success')">
                   Verificar Driver EPSON
                 </button>
+              </div>
+            </div>
+
+            <!-- PESTAÑA: CATÁLOGO Y CATEGORÍAS DE SERVICIOS -->
+            <div id="settings-tab-servicios" class="settings-tab-pane" style="display: none;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                  <h4 class="settings-section-subtitle" style="margin-top: 0;">Catálogo de Servicios &amp; Categorías</h4>
+                  <p class="text-muted" style="margin-bottom: 0;">Administra las categorías, prendas, tarifas y arreglos que aparecen en el Punto de Venta.</p>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="openNewCatalogoModal()" style="display: flex; align-items: center; gap: 6px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  + Nuevo Servicio / Prenda
+                </button>
+              </div>
+
+              <!-- Filtros de categoría -->
+              <div style="display: flex; gap: .5rem; margin-bottom: 1.25rem; flex-wrap: wrap;" id="catalogFilterTabsAdmin"></div>
+
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>SERVICIO / PRENDA</th>
+                      <th>CATEGORÍA</th>
+                      <th>TIPO / FLUJO</th>
+                      <th>PRECIO BASE</th>
+                      <th style="text-align: right;">ACCIONES</th>
+                    </tr>
+                  </thead>
+                  <tbody id="catalogoTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PESTAÑA: COPIAS DE SEGURIDAD & BACKUP -->
+            <div id="settings-tab-backup" class="settings-tab-pane" style="display: none;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                  <h4 class="settings-section-subtitle" style="margin-top: 0;">Copias de Seguridad (Backup) &amp; Base de Datos</h4>
+                  <p class="text-muted" style="margin-bottom: 0;">Descarga una copia completa y segura de todas tus órdenes, clientes, inventario y catálogo para resguardo.</p>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="descargarBackupDatabase()" style="display: flex; align-items: center; gap: 8px; background: #2563EB; font-weight: 700; padding: .65rem 1.3rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Descargar Copia de Seguridad (.db)</span>
+                </button>
+              </div>
+
+              <!-- Métricas de la Base de Datos -->
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.75rem;">
+                <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 1.15rem;">
+                  <span style="font-size: .74rem; font-weight: 800; color: #64748B; text-transform: uppercase;">Tamaño de Base de Datos</span>
+                  <h3 id="backupDbSize" class="font-mono font-bold" style="color: #0F172A; margin: 4px 0 0; font-size: 1.25rem;">--</h3>
+                </div>
+                <div style="background: #EFF6FF; border: 1px solid #DBEAFE; border-radius: 10px; padding: 1.15rem;">
+                  <span style="font-size: .74rem; font-weight: 800; color: #2563EB; text-transform: uppercase;">Total Facturas / Órdenes</span>
+                  <h3 id="backupTotalOrdenes" class="font-mono font-bold" style="color: #1D4ED8; margin: 4px 0 0; font-size: 1.25rem;">0</h3>
+                </div>
+                <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: 1.15rem;">
+                  <span style="font-size: .74rem; font-weight: 800; color: #16A34A; text-transform: uppercase;">Clientes Registrados</span>
+                  <h3 id="backupTotalClientes" class="font-mono font-bold" style="color: #15803D; margin: 4px 0 0; font-size: 1.25rem;">0</h3>
+                </div>
+                <div style="background: #FAF5FF; border: 1px solid #E9D5FF; border-radius: 10px; padding: 1.15rem;">
+                  <span style="font-size: .74rem; font-weight: 800; color: #9333EA; text-transform: uppercase;">Servicios en Catálogo</span>
+                  <h3 id="backupTotalCatalogo" class="font-mono font-bold" style="color: #7E22CE; margin: 4px 0 0; font-size: 1.25rem;">0</h3>
+                </div>
+              </div>
+
+              <div style="background: #F1F5F9; border: 1px solid #CBD5E1; border-radius: 10px; padding: 1.25rem; display: flex; align-items: flex-start; gap: 1rem;">
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: #FFFFFF; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div>
+                  <strong style="color: #0F172A; font-size: .92rem; display: block; margin-bottom: 2px;">Copia de Seguridad Certificada SQLite</strong>
+                  <p style="color: #475569; font-size: .8rem; margin: 0; line-height: 1.45;">
+                    El archivo de backup descargado (.db) contiene la totalidad de los datos transaccionales, auditoría de usuarios, movimientos de caja e inventario. Se recomienda descargar una copia al final de cada jornada de trabajo o guardarla en una memoria externa o Google Drive.
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -1257,36 +1540,245 @@
       <!-- ====================================================
            8. SECCIÓN: PREGUNTAS FRECUENTES (FAQ)
            ==================================================== -->
+      <!-- ====================================================
+           8. SECCIÓN: PREGUNTAS FRECUENTES (FAQ)
+           ==================================================== -->
       <section id="section-faq" class="content-section">
-        <div class="card" style="max-width: 900px; margin: 0 auto;">
-          <div class="card-header">
+        <div class="card" style="max-width: 1020px; margin: 0 auto;">
+          <div class="card-header" style="flex-wrap: wrap; gap: 1rem;">
             <div>
-              <h3>Preguntas Frecuentes &amp; Manual Operativo</h3>
-              <p class="card-subtitle">Guía de procedimientos estándar para lavandería y sastrería.</p>
+              <h3 style="font-size: 1.15rem; font-weight: 800; color: #0F172A;">Preguntas Frecuentes &amp; Manual Operativo</h3>
+              <p class="card-subtitle">Guía de procedimientos estándar para lavandería, sastrería, cobros y operaciones.</p>
             </div>
-            <input type="text" id="faqSearchInput" class="form-input" placeholder="Buscar en preguntas..." style="width: 250px;" oninput="filterFaq(this.value)" />
+            <div style="display: flex; gap: .75rem; align-items: center; width: 100%; max-width: 380px;">
+              <input type="text" id="faqSearchInput" class="form-input" placeholder="Buscar preguntas o palabras clave..." oninput="filterFaq(this.value)" style="width: 100%;" />
+            </div>
+          </div>
+
+          <!-- Pestañas de Filtrado Rápido por Categoría -->
+          <div class="fortexa-subnav-bar" style="margin-bottom: 1.25rem;">
+            <button type="button" class="fortexa-subnav-btn active" onclick="filterFaqCategory('todas', this)">
+              <span>Todas</span>
+            </button>
+            <button type="button" class="fortexa-subnav-btn" onclick="filterFaqCategory('pos', this)">
+              <span>Recepción &amp; POS</span>
+            </button>
+            <button type="button" class="fortexa-subnav-btn" onclick="filterFaqCategory('operaciones', this)">
+              <span>Lavado &amp; Taller</span>
+            </button>
+            <button type="button" class="fortexa-subnav-btn" onclick="filterFaqCategory('facturacion', this)">
+              <span>Facturas &amp; Cobros</span>
+            </button>
+            <button type="button" class="fortexa-subnav-btn" onclick="filterFaqCategory('clientes', this)">
+              <span>Clientes &amp; Hoteles</span>
+            </button>
+            <button type="button" class="fortexa-subnav-btn" onclick="filterFaqCategory('sistema', this)">
+              <span>Impresoras &amp; Sistema</span>
+            </button>
           </div>
 
           <div class="faq-list" id="faqListContainer">
-            <div class="faq-item">
+            
+            <!-- CATEGORÍA: POS / RECEPCIÓN -->
+            <div class="faq-item" data-category="pos">
               <button class="faq-question" onclick="toggleFaq(this)">
-                <span>¿Cómo registrar especificaciones y medidas para el taller de sastrería?</span>
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-blue" style="font-size: .65rem; padding: 2px 6px;">Punto de Venta</span>
+                  <span>¿Cómo registrar especificaciones y medidas para el taller de sastrería?</span>
+                </div>
                 <span class="faq-toggle">+</span>
               </button>
               <div class="faq-answer">
-                Al seleccionar el servicio "Sastrería" en el Punto de Venta (POS), se despliega automáticamente el cajón de especificaciones donde se indica el tipo de arreglo (ej. ruedo, cambio de zipper, entalle) y las medidas en centímetros o pulgadas. Estos datos se imprimen directamente en el ticket térmico con código de barras.
+                Al seleccionar el servicio "Sastrería" en el Punto de Venta (POS), se despliega automáticamente el cajón de especificaciones donde se indica el tipo de arreglo (ej. ruedo, cambio de zipper, entalle) y las medidas en centímetros o pulgadas. Estos datos se imprimen directamente en el ticket térmico con código de barras y se reflejan en la ficha de taller de la prenda.
               </div>
             </div>
 
-            <div class="faq-item">
+            <div class="faq-item" data-category="pos">
               <button class="faq-question" onclick="toggleFaq(this)">
-                <span>¿Cómo personalizar el precio de lavado y planchado por piezas?</span>
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-blue" style="font-size: .65rem; padding: 2px 6px;">Punto de Venta</span>
+                  <span>¿Cómo personalizar el precio de lavado y planchado por piezas?</span>
+                </div>
                 <span class="faq-toggle">+</span>
               </button>
               <div class="faq-answer">
-                Al hacer clic en cualquier prenda o escribir una nueva, el campo "Precio Unitario Personalizado (RD$)" se mantiene completamente editable. Puedes asignar cualquier valor exacto que desees para esa prenda o servicio particular.
+                Al hacer clic en cualquier prenda del catálogo o al escribir un ítem nuevo, el campo "Precio Unitario Personalizado (RD$)" se mantiene completamente editable. Puedes asignar cualquier valor exacto que desees para esa prenda o servicio particular antes de agregarla al detalle.
               </div>
             </div>
+
+            <div class="faq-item" data-category="pos">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-blue" style="font-size: .65rem; padding: 2px 6px;">Punto de Venta</span>
+                  <span>¿Cómo aplicar un recargo de Entrega Urgente / Express (+25%)?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                En el Paso 1 de la orden (POS), marca la casilla de verificación "Servicio Urgente / Entrega Express". El sistema aplicará automáticamente un recargo del 25% sobre el total y priorizará la orden resaltándola en color ámbar en el tablero de Operaciones para su tratamiento inmediato.
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="pos">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-blue" style="font-size: .65rem; padding: 2px 6px;">Punto de Venta</span>
+                  <span>¿Cómo registrar defectos, manchas previas o roturas al recibir la prenda?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                En el formulario de detalle de la prenda (POS), utiliza el campo "Defectos / Observaciones de Recepción" para detallar cualquier desperfecto existente (ej. 'Mancha de café en cuello', 'Botón suelto', 'Tela desgastada'). Esto protege al negocio de reclamaciones y queda impreso en el comprobante del cliente.
+              </div>
+            </div>
+
+            <!-- CATEGORÍA: OPERACIONES & TALLER -->
+            <div class="faq-item" data-category="operaciones">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-amber" style="font-size: .65rem; padding: 2px 6px;">Operaciones</span>
+                  <span>¿Cómo funciona el flujo de trabajo de 4 etapas (Recepción ➔ Lavado ➔ Listo ➔ Entregar)?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                Cada orden ingresa en etapa 'Recepción'. Al pasar a máquinas o tina, el operario hace clic en 'Iniciar Lavado'. Al concluir el secado, planchado y doblado, se hace clic en 'Marcar Listo' (lo que genera la notificación de entrega). Cuando el cliente recoge en mostrador y se valida el cobro, se hace clic en 'Entregar'.
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="operaciones">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-amber" style="font-size: .65rem; padding: 2px 6px;">Operaciones</span>
+                  <span>¿Cómo localizar rápidamente una prenda lista en el mostrador?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                Puedes escanear el código de barras del ticket con una pistola lectora láser o escribir el número de ticket (ej. FAC-001005) o nombre del cliente en el buscador de 'Operaciones &amp; Taller'. La tarjeta correspondiente se filtrará al instante mostrando su percha y estado de pago.
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="operaciones">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-amber" style="font-size: .65rem; padding: 2px 6px;">Operaciones</span>
+                  <span>¿Qué hacer si una prenda requiere un segundo ciclo de desmanchado o planchado?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                Si durante el control de calidad la prenda no está perfecta, el operario puede retroceder el estado a 'Lavado &amp; Proceso' desde la vista de Operaciones antes de marcarla como lista, garantizando la máxima calidad antes de la entrega al cliente.
+              </div>
+            </div>
+
+            <!-- CATEGORÍA: FACTURACIÓN & COBROS -->
+            <div class="faq-item" data-category="facturacion">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-emerald" style="font-size: .65rem; padding: 2px 6px;">Facturación</span>
+                  <span>¿Cómo registrar abonos parciales y cobros pendientes?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                En el módulo 'Facturas &amp; Cobros', ubica la factura con saldo pendiente y haz clic en 'Cobrar / Abonar'. Ingresa el monto entregado por el cliente, selecciona el método de pago (Efectivo, Tarjeta o Transferencia) y el sistema recalculará el balance restante en tiempo real, registrando el movimiento de caja.
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="facturacion">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-emerald" style="font-size: .65rem; padding: 2px 6px;">Facturación</span>
+                  <span>¿Cómo reimprimir una factura o ticket térmico de una fecha anterior?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                Dirígete a 'Facturas &amp; Cobros', busca la orden por número de factura o nombre de cliente y haz clic en el botón 'Ver Ticket / Imprimir'. Se abrirá el modal térmico interactivo desde donde puedes imprimir directamente en tu impresora de recibos.
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="facturacion">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-emerald" style="font-size: .65rem; padding: 2px 6px;">Facturación</span>
+                  <span>¿Cómo exportar el historial de ventas y facturas a Microsoft Excel?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                Tanto en 'Facturas &amp; Cobros' como en 'Reportes Financieros', haz clic en el botón 'Exportar Excel / CSV'. Se descargará inmediatamente una hoja de cálculo formateada con codificación UTF-8 BOM que incluye clientes, tickets, métodos de pago, montos, ITBIS y saldos.
+              </div>
+            </div>
+
+            <!-- CATEGORÍA: CLIENTES & HOTELES -->
+            <div class="faq-item" data-category="clientes">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-blue" style="font-size: .65rem; padding: 2px 6px;">Clientes</span>
+                  <span>¿Cómo registrar y configurar un cliente hotelero o corporativo?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                En la sección 'Clientes &amp; Hoteles', haz clic en '+ Nuevo Cliente'. Marca la casilla 'Cliente Corporativo / Hotel', asigna su RNC fiscal y define un límite de crédito aprobado (ej. RD$50,000). Esto permite emitir órdenes a crédito acumuladas y conciliar pagos periódicos.
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="clientes">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-blue" style="font-size: .65rem; padding: 2px 6px;">Clientes</span>
+                  <span>¿Cómo consultar el balance deudor y cuentas por cobrar de un cliente?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                En 'Clientes &amp; Hoteles', cada cliente muestra su saldo acumulado en color rojo si tiene facturas pendientes de cobro. Al hacer clic en su ficha, puedes consultar su historial completo de órdenes y pagos realizados.
+              </div>
+            </div>
+
+            <!-- CATEGORÍA: SISTEMA & IMPRESORAS -->
+            <div class="faq-item" data-category="sistema">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-amber" style="font-size: .65rem; padding: 2px 6px;">Sistema</span>
+                  <span>¿Cómo configurar la impresora térmica de recibos (EPSON TM-T20II)?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                En 'Configuración' ➔ pestaña 'Impresora EPSON', selecciona el ancho de papel deseado (80mm estándar o 58mm compacto) y haz clic en 'Imprimir Ticket de Prueba'. El sistema enviará el formato con código de barras Code128, corte automático y datos fiscales de la tienda.
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="sistema">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-amber" style="font-size: .65rem; padding: 2px 6px;">Sistema</span>
+                  <span>¿Cómo descargar y resguardar una copia de seguridad (Backup SQLite)?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                Como Administrador, entra a 'Configuración' ➔ pestaña 'Copias de Seguridad' y presiona 'Generar y Descargar Backup SQLite'. Se descargará inmediatamente un archivo `.db` con todas las facturas, clientes, insumos y catálogo intactos.
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="sistema">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <div style="display: flex; align-items: center; gap: .65rem;">
+                  <span class="badge-pill bg-amber" style="font-size: .65rem; padding: 2px 6px;">Sistema</span>
+                  <span>¿Cómo crear cuentas para nuevos cajeros u operarios?</span>
+                </div>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                Accede a 'Gestión de Usuarios' ➔ 'Registrar Nuevo Usuario'. Ingresa su nombre, correo electrónico, contraseña temporal y selecciona el rol correspondiente ('Cajero / Ventas' u 'Operario / Taller'). Al iniciar sesión, el sistema adaptará la interfaz ocultando automáticamente las funciones administrativas.
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -1471,10 +1963,12 @@
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeReportPdfModal()">Cerrar</button>
         <button class="btn btn-outline" onclick="exportFinancialSummaryExcel()" style="border-color: #10B981; color: #047857; font-weight: 700;">
-          📊 Descargar Excel
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Descargar Excel
         </button>
         <button class="btn btn-primary" onclick="printFinancialReportDocument()" style="background: #2563EB;">
-          📄 Imprimir / Guardar como PDF
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+          Imprimir / Guardar como PDF
         </button>
       </div>
     </div>
@@ -1647,6 +2141,29 @@
       </div>
       <form id="editInvoiceForm" onsubmit="saveEditInvoice(event)" style="padding: 1.25rem;">
         <input type="hidden" id="editOrderId" />
+        <input type="hidden" id="editInvoiceProcessStatus" value="Recibido" />
+
+        <!-- FLUJO OPERATIVO DE LAVADO & ENTREGA -->
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 1rem; margin-bottom: 1.15rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: .65rem;">
+            <label class="field-label" style="font-weight: 800; color: #0F172A; margin: 0;">Estado del Servicio / Lavado:</label>
+            <span id="editProcessBadgeLabel" class="badge-pill bg-blue" style="font-size: .75rem;">📥 Recibido</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: .4rem;" id="editProcessStepper">
+            <button type="button" class="btn-step-tracker active" data-step="Recibido" onclick="setEditProcessStatus('Recibido')">
+              📥 Recibido
+            </button>
+            <button type="button" class="btn-step-tracker" data-step="EnProceso" onclick="setEditProcessStatus('EnProceso')">
+              🔄 En Lavado
+            </button>
+            <button type="button" class="btn-step-tracker" data-step="Listo" onclick="setEditProcessStatus('Listo')">
+              ✨ Listo
+            </button>
+            <button type="button" class="btn-step-tracker" data-step="Entregado" onclick="setEditProcessStatus('Entregado')">
+              ✅ Entregado
+            </button>
+          </div>
+        </div>
 
         <div class="form-row-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-bottom: .75rem;">
           <div>
@@ -1765,6 +2282,10 @@
               <span>Descuento:</span>
               <span id="tktDiscount">RD$0.00</span>
             </div>
+            <div class="tkt-tot-row" id="tktItbisRow" style="display: none;">
+              <span>ITBIS (18%):</span>
+              <span id="tktItbis">RD$0.00</span>
+            </div>
             <div class="tkt-total-highlight-box">
               <span>TOTAL GENERAL:</span>
               <span id="tktTotal" class="tkt-big-amount font-mono">RD$0.00</span>
@@ -1775,9 +2296,13 @@
             </div>
             
             <!-- Balance Pendiente en Blanco y Negro Puro -->
-            <div class="tkt-balance-due-box">
+            <div class="tkt-balance-due-box" id="tktBalanceRow">
               <span>SALDO PENDIENTE:</span>
               <span id="tktBalance" class="font-mono tkt-bold">RD$0.00</span>
+            </div>
+            <div class="tkt-balance-due-box" id="tktCambioRow" style="display: none;">
+              <span>CAMBIO ENTREGADO:</span>
+              <span id="tktCambio" class="font-mono tkt-bold">RD$0.00</span>
             </div>
           </div>
 
@@ -1929,10 +2454,11 @@
             <input type="password" id="modalUsuarioPassword" class="form-input" placeholder="Mínimo 8 caracteres" minlength="8" required />
           </div>
           <div class="form-group">
-            <label>Rol</label>
+            <label>Rol de Acceso *</label>
             <select id="modalUsuarioRol" class="form-input">
-              <option value="Empleado">Empleado / Cajero</option>
-              <option value="Administrador">Administrador</option>
+              <option value="Cajero" selected>Cajero / Ventas (POS & Operaciones)</option>
+              <option value="Empleado">Operario / Taller</option>
+              <option value="Administrador">Administrador General (Acceso Total)</option>
             </select>
           </div>
         </div>
@@ -1942,6 +2468,69 @@
         <div class="modal-footer" style="padding: 1rem 0 0; background: transparent;">
           <button type="button" class="btn btn-outline" onclick="closeUsuarioModal()">Cancelar</button>
           <button type="submit" class="btn btn-primary">Crear Usuario</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: REGISTRAR / EDITAR SERVICIO O PRENDA DEL CATÁLOGO -->
+  <div class="modal-overlay" id="catalogoModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="catalogoModalTitle">Registrar Nuevo Servicio</h3>
+        <button class="btn-close" onclick="closeCatalogoModal()">✕</button>
+      </div>
+      <form onsubmit="saveCatalogoModal(event)" style="padding: 1.5rem;">
+        <input type="hidden" id="modalCatalogoId" />
+        
+        <div class="form-group">
+          <label>Nombre del Artículo o Servicio *</label>
+          <div style="display: flex; gap: .65rem; align-items: center;">
+            <div id="modalCatalogoIconPreview" style="width: 42px; height: 42px; border-radius: 10px; background: #EFF6FF; border: 1px solid #DBEAFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" title="Ícono asignado automáticamente">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+            </div>
+            <input type="text" id="modalCatalogoNombre" class="form-input" placeholder="Ej. Camisa de Vestir, Ruedo de Pantalón, Suavizante Downy, Pelvorato, Torre..." required oninput="onCatalogoNombreInput(this.value)" style="flex: 1;" />
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Categoría *</label>
+            <select id="modalCatalogoCategoria" class="form-input" onchange="onCategoriaSelectChange(this.value)">
+              <option value="Lavandería">Lavandería &amp; Secado</option>
+              <option value="Sastrería">Sastrería &amp; Taller</option>
+              <option value="Autoservicio">Autoservicio &amp; Máquinas</option>
+              <option value="Hotelería">Hotelería &amp; Corporativo</option>
+              <option value="__nueva__">+ Nueva Categoría Personalizada...</option>
+            </select>
+          </div>
+          <div class="form-group" id="groupNuevaCategoria" style="display: none;">
+            <label>Nombre de Nueva Categoría *</label>
+            <input type="text" id="modalCatalogoNuevaCategoria" class="form-input" placeholder="Ej. Calzado, Tintorería, Cortinas" />
+          </div>
+          <div class="form-group">
+            <label>Tipo de Flujo de Servicio</label>
+            <select id="modalCatalogoServicio" class="form-input">
+              <option value="Lavandería">Lavandería Estándar</option>
+              <option value="Sastrería">Sastrería (Habilita campo de arreglo y medidas)</option>
+              <option value="Autoservicio">Autoservicio / Autoservicio Asistido</option>
+              <option value="General">Servicio General</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Precio Base por Defecto (RD$) *</label>
+          <div style="position: relative; display: flex; align-items: center;">
+            <span style="position: absolute; left: 12px; font-weight: 800; font-size: .84rem; color: #64748B; font-family: 'JetBrains Mono', monospace; pointer-events: none;">RD$</span>
+            <input type="number" id="modalCatalogoPrecio" class="form-input font-mono font-bold" placeholder="0.00" min="0" step="0.01" style="padding-left: 2.65rem;" required />
+          </div>
+          <span style="font-size: .74rem; color: #64748B; margin-top: 4px; display: block;">Podrás modificar libremente este precio al momento de facturar en el POS.</span>
+        </div>
+
+        <div class="modal-footer" style="padding: 1rem 0 0; background: transparent;">
+          <button type="button" class="btn btn-outline" onclick="closeCatalogoModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveCatalogo">Guardar Servicio</button>
         </div>
       </form>
     </div>

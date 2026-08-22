@@ -6,6 +6,14 @@ public enum EstadoOrden
     Pagada
 }
 
+public enum EstadoProceso
+{
+    Recibido,
+    EnProceso,
+    Listo,
+    Entregado
+}
+
 public enum MetodoPago
 {
     Efectivo,
@@ -23,11 +31,13 @@ public class OrdenServicio : BaseEntity
     public Cliente? Cliente { get; set; }
 
     public EstadoOrden Estado { get; set; } = EstadoOrden.Pendiente;
+    public EstadoProceso EstadoProceso { get; set; } = EstadoProceso.Recibido;
     public DateTime FechaRecepcion { get; set; } = DateTime.UtcNow;
     public DateTime FechaPromesaEntrega { get; set; }
 
     public decimal Subtotal { get; set; }
     public decimal Descuento { get; set; }
+    public decimal ImpuestoItbis { get; set; }
     public decimal Total { get; set; }
     public decimal Pagado { get; set; }
     public decimal Saldo => Math.Max(0, Total - Pagado);

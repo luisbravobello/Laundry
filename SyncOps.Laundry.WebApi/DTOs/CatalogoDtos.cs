@@ -32,4 +32,11 @@ public record InsumoResponse(
 
 public record AjusteStockRequest(decimal Delta);
 
+public record CatalogoItemRequest(
+    [Required, MaxLength(150)] string Nombre,
+    [Required, MaxLength(60)] string Categoria,
+    [Required, MaxLength(60)] string Servicio,
+    [Range(0, 1000000)] decimal Precio
+);
+
 public record CatalogoResponse(Guid Id, string Nombre, string Categoria, string Servicio, decimal Precio);
