@@ -1,19 +1,23 @@
-# .NET & Visual Studio
+# Build de .NET
 bin/
 obj/
 *.user
 *.suo
-*.userosscache
-*.sln.docstates
+
+# Herramientas / IDE
 .vs/
-.vscode/
+.vscode/*
+!.vscode/extensions.json
 
-# Build & Logs
-*.log
-*.tmp
-TestResults/
-
-# Databases
+# Bases de datos locales (SQLite) — nunca se sube data real
 *.db
 *.db-shm
 *.db-wal
+
+# Secretos (nunca deben versionarse; usa dotnet user-secrets en su lugar)
+appsettings.Development.json
+appsettings.*.local.json
+
+# Sistema operativo
+.DS_Store
+Thumbs.db

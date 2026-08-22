@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acceso Administrador — SyncOps Dashboard</title>
+  
+  <!-- Google Fonts: Inter + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="login-page-exact">
+
+  <!-- Fondo Geométrico Split -->
+  <div class="login-bg-split">
+    <div class="split-white-side"></div>
+    <div class="split-blue-side"></div>
+  </div>
+
+  <!-- Tarjeta Central -->
+  <div class="exact-login-container">
+    <div class="exact-login-card">
+      
+      <!-- ==============================================
+           LADO IZQUIERDO: BRANDING SYNCOPS (BLANCO)
+           ============================================== -->
+      <div class="exact-brand-side">
+        <!-- Logo Stylized Sync Flame -->
+        <div class="exact-brand-logo">
+          <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
+            <rect width="80" height="80" rx="18" fill="#EFF6FF" />
+            <path d="M40 18C34 26 31 35 34 45C36 38 41 33 46 29C44 42 35 52 40 62C45 54 48 45 45 35C43 42 38 47 33 51C35 38 44 28 40 18Z" fill="url(#logoBlueGrad)" />
+            <defs>
+              <linearGradient id="logoBlueGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+                <stop offset="0%" stop-color="#2563EB" />
+                <stop offset="100%" stop-color="#1D4ED8" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <h1 class="exact-brand-title">SYNCOPS DASHBOARD</h1>
+        <p class="exact-brand-sub" id="brandSubText">Suite de Gestión para Lavanderías &amp; Sastrería</p>
+
+        <div class="exact-brand-divider"></div>
+
+        <p class="exact-no-account-text" id="toggleQuestionText">¿Ya tienes una cuenta de administrador?</p>
+        
+        <button type="button" class="exact-btn-create-account" onclick="toggleAuthMode()">
+          <span id="btnCreateText">Iniciar Sesión</span>
+        </button>
+      </div>
+
+      <!-- ==============================================
+           LADO DERECHO: FORMULARIO REGISTRO / ACCESO
+           ============================================== -->
+      <div class="exact-form-side">
+        <h2 class="exact-form-title" id="authHeaderTitle">Registro de Administrador</h2>
+        <p class="exact-form-sub" id="authHeaderSub">Crea tu cuenta de administrador para iniciar el sistema limpio</p>
+
+        <form id="exactLoginForm" onsubmit="handleAuthSubmit(event)">
+          
+          <!-- Campo: Nombre del Administrador -->
+          <div class="exact-field-group" id="groupNameField">
+            <label class="exact-field-label">Nombre Completo del Administrador</label>
+            <input type="text" id="exactAuthName" class="exact-field-input" placeholder="Ej. Luis Bravo" required />
+          </div>
+
+          <!-- Campo: Nombre de la Tienda (Solo en registro) -->
+          <div class="exact-field-group" id="groupStoreField">
+            <label class="exact-field-label">Nombre de la Tienda / Negocio</label>
+            <input type="text" id="exactStoreName" class="exact-field-input" placeholder="Ej. SyncOps Laundry & Suite" value="SyncOps Laundry &amp; Suite" />
+          </div>
+
+          <!-- Campo: Correo Electrónico -->
+          <div class="exact-field-group">
+            <label class="exact-field-label">Correo Electrónico</label>
+            <input type="email" id="exactAuthEmail" class="exact-field-input" required placeholder="admin@syncopslaundry.do" />
+          </div>
+
+          <!-- Campo: Contraseña con Toggle Ojo -->
+          <div class="exact-field-group">
+            <label class="exact-field-label">Contraseña</label>
+            <div class="password-input-container">
+              <input type="password" id="exactAuthPassword" class="exact-field-input" required placeholder="Crea una contraseña segura" style="padding-right: 42px;" />
+              <button type="button" class="btn-toggle-eye" onclick="togglePasswordVisibility()" title="Mostrar / Ocultar contraseña">
+                <svg id="eyeIconOpen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg id="eyeIconClosed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="exact-options-row">
+            <label class="exact-checkbox-label">
+              <input type="checkbox" id="exactRemember" checked />
+              <span>Recordar sesión</span>
+            </label>
+            <a href="#" id="forgotPasswordLink" onclick="openForgotPasswordModal(event)" style="font-size: .82rem; font-weight: 600; color: #2563EB; text-decoration: none;">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <!-- Botón Simple y Limpio -->
+          <button type="submit" class="exact-btn-simple" id="exactBtnSubmit">
+            <span>Registrarme como Administrador &amp; Acceder</span>
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: OLVIDÉ MI CONTRASEÑA -->
+  <div class="modal-overlay" id="forgotPasswordModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Recuperar Contraseña</h3>
+        <button class="btn-close" onclick="closeForgotPasswordModal()">✕</button>
+      </div>
+      <form onsubmit="handleForgotPasswordSubmit(event)" style="padding: 1.5rem;">
+        <p class="card-subtitle" style="margin: 0 0 1rem;">Ingresa tu correo. Si tiene una cuenta registrada, se generará un enlace de recuperación válido por 30 minutos.</p>
+        <div class="form-group">
+          <label>Correo Electrónico *</label>
+          <input type="email" id="forgotPasswordEmail" class="form-input" placeholder="admin@syncopslaundry.do" required />
+        </div>
+        <div class="modal-footer" style="padding: 1rem 0 0; background: transparent;">
+          <button type="button" class="btn btn-outline" onclick="closeForgotPasswordModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="forgotPasswordSubmitBtn">Enviar Enlace</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="api.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Modo por defecto: Iniciar Sesión. El registro solo funciona una vez
+    // (el backend responde 409 si ya existe un administrador), así que ya
+    // no hace falta -ni es seguro- decidir el modo leyendo localStorage.
+    let isRegisterMode = false;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateFormView();
+    });
+
+    function togglePasswordVisibility() {
+      const pwdInput = document.getElementById('exactAuthPassword');
+      const eyeOpen = document.getElementById('eyeIconOpen');
+      const eyeClosed = document.getElementById('eyeIconClosed');
+
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+        eyeOpen.style.display = 'none';
+        eyeClosed.style.display = 'block';
+      } else {
+        pwdInput.type = 'password';
+        eyeOpen.style.display = 'block';
+        eyeClosed.style.display = 'none';
+      }
+    }
+
+    function toggleAuthMode() {
+      isRegisterMode = !isRegisterMode;
+      updateFormView();
+    }
+
+    function updateFormView() {
+      const nameGroup = document.getElementById('groupNameField');
+      const storeGroup = document.getElementById('groupStoreField');
+      const headerTitle = document.getElementById('authHeaderTitle');
+      const headerSub = document.getElementById('authHeaderSub');
+      const submitBtnSpan = document.getElementById('exactBtnSubmit').querySelector('span');
+      const toggleQ = document.getElementById('toggleQuestionText');
+      const btnCreateText = document.getElementById('btnCreateText');
+
+      if (isRegisterMode) {
+        nameGroup.style.display = 'block';
+        storeGroup.style.display = 'block';
+        document.getElementById('exactAuthName').required = true;
+        headerTitle.innerText = 'Registro de Administrador';
+        headerSub.innerText = 'Crea tu cuenta de administrador para iniciar el sistema limpio';
+        submitBtnSpan.innerText = 'Registrarme como Administrador & Acceder';
+        toggleQ.innerText = '¿Ya tienes una cuenta de administrador?';
+        btnCreateText.innerText = 'Iniciar Sesión';
+        document.getElementById('forgotPasswordLink').style.display = 'none';
+      } else {
+        nameGroup.style.display = 'none';
+        storeGroup.style.display = 'none';
+        document.getElementById('exactAuthName').required = false;
+        headerTitle.innerText = 'Iniciar Sesión';
+        headerSub.innerText = 'Ingresa con tus credenciales de administrador';
+        submitBtnSpan.innerText = 'Iniciar Sesión';
+        toggleQ.innerText = '¿Deseas configurar un nuevo administrador?';
+        document.getElementById('forgotPasswordLink').style.display = 'inline';
+        btnCreateText.innerText = 'Crear Administrador';
+      }
+    }
+
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('exactAuthEmail').value.trim();
+      const password = document.getElementById('exactAuthPassword').value.trim();
+      const submitBtn = document.getElementById('exactBtnSubmit');
+
+      if (!email || !password) {
+        showToast('Completa todos los campos obligatorios.', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+
+      try {
+        if (isRegisterMode) {
+          const name = document.getElementById('exactAuthName').value.trim();
+          const store = document.getElementById('exactStoreName').value.trim() || 'SyncOps Laundry & Suite';
+
+          if (!name) {
+            showToast('Ingresa tu nombre completo de administrador.', 'error');
+            return;
+          }
+
+          const resp = await api.register(name, email, password, store);
+          setAccessToken(resp.accessToken);
+          showToast(`¡Administrador ${resp.nombreCompleto} registrado con éxito!`, 'success');
+          setTimeout(() => { window.location.href = 'index.html'; }, 350);
+
+        } else {
+          const resp = await api.login(email, password);
+          setAccessToken(resp.accessToken);
+          showToast(`Bienvenido de nuevo, ${resp.nombreCompleto}`, 'success');
+          setTimeout(() => { window.location.href = 'index.html'; }, 300);
+        }
+      } catch (err) {
+        // Si intentaba registrar y ya existe un admin, lo mandamos a login
+        // en vez de dejarlo insistiendo contra un endpoint bloqueado.
+        if (isRegisterMode && /administrador registrado/i.test(err.message)) {
+          isRegisterMode = false;
+          updateFormView();
+        }
+        showToast(err.message || 'No se pudo completar la operación.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+      }
+    }
+
+    function openForgotPasswordModal(e) {
+      e.preventDefault();
+      document.getElementById('forgotPasswordEmail').value = document.getElementById('exactAuthEmail').value.trim();
+      document.getElementById('forgotPasswordModal').classList.add('active');
+    }
+
+    function closeForgotPasswordModal() {
+      document.getElementById('forgotPasswordModal').classList.remove('active');
+    }
+
+    async function handleForgotPasswordSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('forgotPasswordEmail').value.trim();
+      const btn = document.getElementById('forgotPasswordSubmitBtn');
+      btn.disabled = true;
+
+      try {
+        const resp = await api.forgotPassword(email);
+        // El backend siempre responde con el mismo mensaje genérico, exista
+        // o no la cuenta — así el propio mensaje no delata cuentas.
+        showToast(resp.message, 'success');
+        closeForgotPasswordModal();
+      } catch (err) {
+        showToast(err.message || 'No se pudo procesar la solicitud.', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SyncOps — Laundry, Tailoring &amp; Billing Suite</title>
+
+  <!-- Google Fonts: Inter + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="app-body">
+
+  <!-- ==============================================
+       BARRA LATERAL DE NAVEGACIÓN
+       ============================================== -->
+  <aside class="sidebar">
+    <!-- Brand Header -->
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+      </div>
+      <span class="brand-name">SyncOps</span>
+      <span class="brand-badge">PRO</span>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">
+        <span>OPERACIONES</span>
+      </div>
+      
+      <button class="nav-item active" onclick="switchSection('dashboard', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+          <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+          <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+          <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+        </svg>
+        <span>Panel Principal</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('pos', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Punto de Venta / POS</span>
+        <span class="nav-badge-pill">4</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('facturacion', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        <span>Facturas &amp; Cobros</span>
+      </button>
+
+      <div class="nav-section-label">
+        <span>FINANZAS Y REPORTES</span>
+        <span class="badge-live">En vivo</span>
+      </div>
+
+      <button class="nav-item" onclick="switchSection('reportes', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+        <span>Reportes Financieros</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('inventario', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+        </svg>
+        <span>Inventario Insumos</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('clientes', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        <span>Clientes &amp; Hoteles</span>
+      </button>
+
+      <div class="nav-section-label">
+        <span>SISTEMA</span>
+      </div>
+
+      <button class="nav-item" onclick="switchSection('configuracion', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        <span>Configuración</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('faq', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span>Preguntas Frecuentes</span>
+      </button>
+
+      <button class="nav-item" onclick="switchSection('ayuda', this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+        </svg>
+        <span>Ayuda &amp; QA</span>
+      </button>
+
+      <button class="nav-item" id="navUsuariosBtn" onclick="switchSection('usuarios', this)" style="display: none;">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M19 8v3M22.5 9.5h-7"></path>
+        </svg>
+        <span>Gestión de Usuarios</span>
+      </button>
+    </nav>
+
+    <!-- Footer de Usuario Estilo Fortexa ERP -->
+    <div class="sidebar-user-card">
+      <div class="sidebar-user-profile">
+        <div class="user-avatar-circle" id="userAvatar">L</div>
+        <div class="user-meta">
+          <strong id="userName">Luis Bravo</strong>
+          <span id="userEmailText">luisbravobello@gmail.com</span>
+        </div>
+      </div>
+      <div class="sidebar-user-links">
+        <button type="button" class="sidebar-user-action-btn" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[5])">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Personalizar Menú</span>
+        </button>
+        <button type="button" class="sidebar-user-action-btn btn-logout-action" onclick="logout()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          <span>Cerrar Sesión</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==============================================
+       MAIN LAYOUT & TOPBAR (FORTEXA ERP)
+       ============================================== -->
+  <div class="main-layout">
+    
+    <header class="topbar">
+      <!-- Izquierda: Sidebar Toggle & Breadcrumbs -->
+      <div class="topbar-left">
+        <button class="btn-sidebar-toggle" title="Contraer barra lateral" onclick="document.querySelector('.sidebar').classList.toggle('collapsed')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        </button>
+        <div class="breadcrumbs">
+          <a href="#" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Inicio</span>
+          </a>
+          <span class="breadcrumbs-sep">&gt;</span>
+          <span>SyncOps</span>
+          <span class="breadcrumbs-sep">&gt;</span>
+          <span class="breadcrumbs-current" id="currentSectionTitle">Panel Principal</span>
+        </div>
+      </div>
+
+      <!-- Derecha: Selector de Empresa + Search + Badges + Notificaciones -->
+      <div class="topbar-right">
+        <div class="org-selector-pill" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[5])">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>
+          <span id="topbarOrgName">Laundry</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+
+        <div class="topbar-search-box" onclick="openSpotlight()" style="cursor: pointer;">
+          <svg class="search-icon-fixed" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="globalSearchInput" class="topbar-search-input" placeholder="Buscar... Ctrl K" readonly onclick="openSpotlight()" style="cursor: pointer;" />
+          <span class="search-shortcut-badge">Ctrl K</span>
+        </div>
+
+        <button class="topbar-action-btn" title="Asistente de Productividad" onclick="showToast('Asistente SyncOps activo y sincronizado.', 'info')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+        </button>
+
+        <button class="topbar-action-btn" title="Notificaciones" onclick="showToast('Bandeja de notificaciones limpia. No hay alertas pendientes.', 'info')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+
+        <button class="topbar-action-btn" title="Configuración de la Tienda" onclick="switchSection('configuracion', document.querySelectorAll('.nav-item')[5])">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+
+      <!-- ====================================================
+           1. SECCIÓN: DASHBOARD (PANEL PRINCIPAL FORTEXA ERP)
+           ==================================================== -->
+      <section id="section-dashboard" class="content-section active">
+        
+        <!-- HEADER DE PÁGINA FORTEXA -->
+        <div class="fortexa-page-header">
+          <div>
+            <button class="btn-back-link" onclick="history.back()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Volver</span>
+            </button>
+            <div class="fortexa-title-box">
+              <h1 class="fortexa-title">Panel Principal</h1>
+              <span class="badge-live-pill"><span style="color: #2563EB;">●</span> EN VIVO</span>
+            </div>
+            <p class="fortexa-sub" id="dashboardGreeting">Gestiona tu catálogo de operaciones, facturación y clientes</p>
+          </div>
+
+          <!-- BOTONES DE ACCIÓN FORTEXA ERP -->
+          <div class="fortexa-actions-group">
+            <button class="btn-fortexa-outline" onclick="testEpsonT20II()" title="Descargar plantilla de prueba">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Plantilla</span>
+            </button>
+            <button class="btn-fortexa-outline" onclick="exportToExcel('facturas')" title="Exportar reporte de facturas">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Importar Excel</span>
+            </button>
+            <button class="btn-fortexa-outline" onclick="exportToExcel('facturas')" title="Compartir XLSX">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              <span>Compartir XLSX</span>
+            </button>
+            <button class="btn-fortexa-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>+ Nueva Factura POS</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- FILA DE 5 TARJETAS KPI (FORTEXA ERP) -->
+        <div class="fortexa-kpi-row">
+          
+          <!-- Card 1: Total Clientes -->
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number" id="kpiClientesCount">0</div>
+              <div class="fortexa-kpi-label">Total Clientes</div>
+            </div>
+          </div>
+
+          <!-- Card 2: Particulares -->
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-green">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number" id="kpiParticularesCount">0</div>
+              <div class="fortexa-kpi-label">Nacionales / Particulares</div>
+            </div>
+          </div>
+
+          <!-- Card 3: Hoteles & Corporativos -->
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>
+            </div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number" id="kpiHotelesCount">0</div>
+              <div class="fortexa-kpi-label">Hoteles &amp; Empresas</div>
+            </div>
+          </div>
+
+          <!-- Card 4: Cuentas por Cobrar Pendiente -->
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-amber">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number font-mono text-amber" id="kpiCxPPendiente">RD$0.00</div>
+              <div class="fortexa-kpi-label">CxP Pendiente (<span id="kpiFacturasPendientesCount">0</span>)</div>
+            </div>
+          </div>
+
+          <!-- Card 5: Total Facturado / Cobrado -->
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number font-mono text-blue" id="kpiVentasHoy">RD$0.00</div>
+              <div class="fortexa-kpi-label">Total Facturado</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TARJETA DE BÚSQUEDA Y FILTRADO FORTEXA ERP -->
+        <div class="fortexa-filter-card">
+          <div class="fortexa-filter-title">Buscar Registro / Factura</div>
+          <div class="fortexa-filter-row">
+            <div class="fortexa-filter-input-box">
+              <svg class="fortexa-filter-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" class="fortexa-filter-input" placeholder="Nombre, RNC, Ticket o Email..." oninput="handleGlobalSearch(this.value)" />
+            </div>
+            <button class="btn-fortexa-outline" onclick="renderDashboard()" title="Actualizar datos">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              <span>Actualizar</span>
+            </button>
+            <button class="btn-fortexa-outline" onclick="exportToExcel('dashboard')" title="Exportar vista actual">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Exportar vista</span>
+            </button>
+            <button class="btn-fortexa-outline" onclick="showToast('Vista de columnas optimizada.', 'info')" title="Ajustar columnas">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+              <span>Columnas</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. TARJETA FORTEXA: VENTAS MENSUALES (BAR CHART) -->
+        <div class="fortexa-analytics-card">
+          <div class="fortexa-chart-header">
+            <div>
+              <h3 class="fortexa-chart-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                <span>Ventas Mensuales</span>
+              </h3>
+              <p class="fortexa-chart-sub">Facturación e-CF &amp; Servicios • Últimos 12 meses</p>
+            </div>
+            <div class="fortexa-period-tabs">
+              <button type="button" class="fortexa-period-tab" onclick="changeSalesPeriod('3M', this)">3M</button>
+              <button type="button" class="fortexa-period-tab" onclick="changeSalesPeriod('6M', this)">6M</button>
+              <button type="button" class="fortexa-period-tab active" onclick="changeSalesPeriod('12M', this)">12M</button>
+              <button type="button" class="fortexa-period-tab" onclick="changeSalesPeriod('Año', this)">Año</button>
+            </div>
+          </div>
+
+          <div class="fortexa-bar-chart-wrapper" id="monthlySalesChartContainer">
+            <!-- Renderizado dinámicamente -->
+          </div>
+        </div>
+
+        <!-- 2. TARJETA FORTEXA: INGRESOS & SERVICIOS POR CATEGORÍA (DONUT CHART) -->
+        <div class="fortexa-analytics-card">
+          <div class="fortexa-chart-header">
+            <div>
+              <h3 class="fortexa-chart-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9333EA" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                <span>Ingresos &amp; Facturación por Categoría</span>
+              </h3>
+              <p class="fortexa-chart-sub">Distribución porcentual de servicios prestados</p>
+            </div>
+            <div class="fortexa-period-tabs">
+              <button type="button" class="fortexa-period-tab" onclick="changeCategoryPeriod('3M', this)">3M</button>
+              <button type="button" class="fortexa-period-tab" onclick="changeCategoryPeriod('6M', this)">6M</button>
+              <button type="button" class="fortexa-period-tab active" onclick="changeCategoryPeriod('12M', this)">12M</button>
+              <button type="button" class="fortexa-period-tab" onclick="changeCategoryPeriod('Año', this)">Año</button>
+            </div>
+          </div>
+
+          <div class="fortexa-donut-layout">
+            <div class="fortexa-donut-svg-box" id="categoryDonutChartContainer">
+              <!-- Renderizado SVG circular dinámico -->
+            </div>
+            <div class="fortexa-category-list" id="categoryBreakdownList">
+              <!-- Lista de categorías renderizada dinámicamente -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLAS DEL DASHBOARD -->
+        <div class="grid-2col">
+          <div class="card">
+            <div class="card-header">
+              <h3>Facturas Recientes</h3>
+              <button class="btn-link" onclick="switchSection('facturacion', document.querySelectorAll('.nav-item')[2])">Ver Todas las Facturas →</button>
+            </div>
+            <div class="table-responsive">
+              <table class="table" id="tableRecentOrders">
+                <thead>
+                  <tr>
+                    <th>FACTURA</th>
+                    <th>CLIENTE</th>
+                    <th>ESTADO PAGO</th>
+                    <th style="text-align: right;">TOTAL</th>
+                    <th>ACCIONES</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Alertas de Insumos Críticos</h3>
+              <button class="btn-link" onclick="switchSection('inventario', document.querySelectorAll('.nav-item')[4])">Inventario →</button>
+            </div>
+            <div class="alerts-list" id="dashboardAlertsList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           2. SECCIÓN: PUNTO DE VENTA (POS FORTEXA ERP)
+           ==================================================== -->
+      <section class="content-section" id="section-pos">
+        
+        <!-- CABECERA FORTEXA ERP POS -->
+        <div class="fortexa-page-header">
+          <div class="fortexa-header-left">
+            <button type="button" class="btn-fortexa-back" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Volver al Panel Principal</span>
+            </button>
+            <div class="fortexa-title-row">
+              <h2 class="fortexa-title">Punto de Venta &amp; Emisión POS</h2>
+              <span class="badge-live-pill">((•)) EN VIVO</span>
+            </div>
+            <p class="fortexa-subtitle">Terminal POS 01 • Facturación rápida de prendas, máquinas y autoservicio</p>
+          </div>
+          <div class="fortexa-actions-group">
+            <button type="button" class="btn-fortexa-outline" onclick="resetPosOrder()" title="Limpiar orden">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              <span>Reiniciar Orden</span>
+            </button>
+            <button type="button" class="btn-fortexa-outline" onclick="openNewClientModal()" title="Registrar nuevo cliente">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+              <span>+ Registrar Cliente</span>
+            </button>
+            <button type="button" class="btn-fortexa-outline" onclick="testEpsonT20II()" title="Prueba de impresión TM-T20II">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+              <span>Probar TM-T20II</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- BARRA DE MINI SECCIONES Y FLUJO DE PROCESO (POS) -->
+        <div class="fortexa-subnav-bar">
+          <button type="button" class="fortexa-subnav-btn active" onclick="switchPosSubTab('emision', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span>1. Emisión Rápida &amp; POS</span>
+            <span class="fortexa-subnav-badge">Principal</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="switchPosSubTab('autoservicio', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="20" x="3" y="2" rx="2"/><circle cx="12" cy="13" r="5"/><path d="M12 18a5 5 0 0 0 5-5"/></svg>
+            <span>2. Autoservicio &amp; Máquinas</span>
+            <span class="fortexa-subnav-badge">Fichas</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="switchPosSubTab('sastreria', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+            <span>3. Sastrería &amp; Taller</span>
+            <span class="fortexa-subnav-badge">Medidas</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="switchPosSubTab('entrega', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+            <span>4. Entrega &amp; Retiro de Prendas</span>
+            <span class="fortexa-subnav-badge">Despacho</span>
+          </button>
+        </div>
+
+        <div class="pos-layout">
+          
+          <!-- LADO IZQUIERDO: CLIENTE, CATÁLOGO Y PERSONALIZACIÓN DE PRENDAS -->
+          <div class="pos-left">
+            
+            <!-- PASO 1: DATOS DE LA FACTURA & CLIENTE -->
+            <div class="pos-step-card">
+              <div class="pos-step-header">
+                <div class="pos-step-badge">01</div>
+                <div>
+                  <h4 class="pos-step-title">Cliente &amp; Número de Factura</h4>
+                  <p class="pos-step-sub">Secuencia correlativa y datos de recepción de prendas</p>
+                </div>
+                <button class="btn-fortexa-outline" style="margin-left: auto; padding: .35rem .75rem; font-size: .76rem;" onclick="openNewClientModal()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                  <span>+ Registrar Cliente</span>
+                </button>
+              </div>
+
+              <!-- Fila de Entradas Paso 1 -->
+              <div class="pos-step1-grid">
+                <div class="form-group">
+                  <label class="field-label">Nº de Factura Actual:</label>
+                  <input type="text" id="posInvoiceNumber" class="form-input font-mono font-bold text-blue" style="background: #EFF6FF; border-color: #BFDBFE;" placeholder="FAC-001001" readonly />
+                </div>
+                <div class="form-group">
+                  <label class="field-label">Seleccionar Cliente:</label>
+                  <select id="posClientSelect" class="form-input" onchange="handleClientSelect(this)"></select>
+                </div>
+                <div class="form-group">
+                  <label class="field-label">Fecha / Hora de Entrega:</label>
+                  <input type="datetime-local" id="posDeliveryDate" class="form-input" />
+                </div>
+              </div>
+
+              <div class="pos-urgent-row">
+                <label class="checkbox-label" style="color: #E11D48; font-weight: 700; font-size: .82rem; display: flex; align-items: center; gap: 8px;">
+                  <input type="checkbox" id="posIsUrgent" onchange="calculatePosTotal()" />
+                  <span>⚡ Servicio Prioritario / Urgente (+15% Recargo por Entrega Inmediata)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- PASO 2: CATÁLOGO Y PERSONALIZACIÓN DE PRECIOS -->
+            <div class="pos-step-card">
+              <div class="pos-step-header">
+                <div class="pos-step-badge">02</div>
+                <div>
+                  <h4 class="pos-step-title">Catálogo de Servicios &amp; Máquinas</h4>
+                  <p class="pos-step-sub">Haz clic en cualquier servicio para cargarlo y personalizar su precio</p>
+                </div>
+              </div>
+
+              <!-- Pestañas de Categoría Limpias Fortexa ERP -->
+              <div class="catalog-tabs">
+                <button class="catalog-tab active" onclick="filterCatalog('Todos', this)">Todos</button>
+                <button class="catalog-tab" onclick="filterCatalog('Lavandería', this)">Lavandería &amp; Secado</button>
+                <button class="catalog-tab" onclick="filterCatalog('Sastrería', this)">Sastrería &amp; Taller</button>
+                <button class="catalog-tab" onclick="filterCatalog('Autoservicio', this)">Autoservicio &amp; Máquinas</button>
+              </div>
+
+              <!-- Cuadrícula de Ítems Clickeables -->
+              <div class="catalog-grid" id="posCatalogGrid"></div>
+
+              <!-- Formulario de Configuración del Ítem con Precio Personalizado -->
+              <div class="item-builder-box">
+                <div class="item-builder-header">
+                  <div style="display: flex; align-items: center; gap: .5rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    <span id="builderItemName" style="font-weight: 800; color: #0F172A; font-size: .88rem;">Personalización del Artículo / Servicio</span>
+                  </div>
+                  <span class="badge-pill bg-blue" style="font-size: .72rem; font-weight: 800;">Precio Editable al Instante</span>
+                </div>
+
+                <div class="form-row-3" style="display: grid; grid-template-columns: 1.5fr 1fr 0.8fr; gap: .75rem; margin-bottom: .75rem;">
+                  <div class="form-group">
+                    <label class="field-label">Descripción / Prenda:</label>
+                    <input type="text" id="builderDesc" class="form-input" placeholder="Ej. Camisa de Lino / Vestido" />
+                  </div>
+                  <div class="form-group">
+                    <label class="field-label">Categoría / Servicio:</label>
+                    <select id="builderService" class="form-input" onchange="toggleTailoringDrawer(this.value)">
+                      <option value="Lavandería">Lavandería (Lavado &amp; Planchado)</option>
+                      <option value="Sastrería">Sastrería / Arreglo</option>
+                      <option value="Autoservicio">Autoservicio / Máquinas (Torres &amp; Industrial)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="field-label">Cantidad / Peso:</label>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                      <input type="number" id="builderQty" class="form-input font-mono font-bold" value="1" min="1" step="1" style="text-align: center;" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .75rem; margin-bottom: .85rem;">
+                  <!-- PRECIO PERSONALIZABLE POR EL USUARIO -->
+                  <div class="form-group">
+                    <label class="field-label" style="color: #1D4ED8; font-weight: 800;">Precio Unitario Personalizado (RD$) *</label>
+                    <input type="number" id="builderPrice" class="form-input font-mono font-bold" value="180" style="border: 2px solid #2563EB; background: #EFF6FF; color: #1D4ED8; font-size: 1.05rem;" />
+                  </div>
+                  <div class="form-group">
+                    <label class="field-label">Color / Tipo de Tela:</label>
+                    <input type="text" id="builderColor" class="form-input" placeholder="Ej. Azul Marino / Lino" />
+                  </div>
+                  <div class="form-group">
+                    <label class="field-label">Observaciones / Detalles:</label>
+                    <input type="text" id="builderDefects" class="form-input" placeholder="Ej. Mancha previa, botón extra" />
+                  </div>
+                </div>
+
+                <div class="tailoring-drawer" id="tailoringDrawer" style="display: none;">
+                  <div class="drawer-header">Especificaciones de Sastrería &amp; Taller</div>
+                  <div class="form-row-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: .75rem;">
+                    <div class="form-group">
+                      <label class="field-label">Tipo de Arreglo:</label>
+                      <input type="text" id="tailorAlterationType" class="form-input" placeholder="Ej. Dobladillo / Ruedo a 38 pulgadas" />
+                    </div>
+                    <div class="form-group">
+                      <label class="field-label">Medidas / Indicaciones:</label>
+                      <input type="text" id="tailorMeasurements" class="form-input" placeholder="Ej. Reducir 2cm en cintura" />
+                    </div>
+                  </div>
+                </div>
+
+                <button type="button" class="btn-fortexa-primary" onclick="addItemToOrder()" style="width: 100%; padding: .8rem; font-size: .88rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: .5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span>Agregar Artículo a la Factura</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- LADO DERECHO: RESUMEN DE FACTURA, TOTALES & COBRO (FORTEXA ERP) -->
+          <div class="pos-right">
+            <div class="pos-summary-card">
+              <div class="card-header" style="border-bottom: 1px solid #E2E8F0; padding-bottom: .85rem;">
+                <div>
+                  <h3 style="font-size: 1rem; font-weight: 800; color: #0F172A; margin: 0;">Factura en Curso</h3>
+                  <span style="font-size: .74rem; color: #64748B;">Comprobante y cobro en vivo</span>
+                </div>
+                <span class="badge-pill bg-blue" id="posItemsCount">0 artículos</span>
+              </div>
+
+              <!-- Lista de Prendas Agregadas -->
+              <div class="pos-items-list" id="posItemsList">
+                <div class="empty-state-pos" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 2.2rem 1rem;">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.8" style="margin-bottom: 4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                  <strong style="color: #475569; font-size: .84rem;">No hay artículos agregados</strong>
+                  <span style="font-size: .74rem; color: #94A3B8;">Haz clic en cualquier servicio del catálogo</span>
+                </div>
+              </div>
+
+              <!-- Desglose de Totales -->
+              <div class="pos-totals-box">
+                <div class="total-row">
+                  <span style="font-weight: 600; color: #475569;">Subtotal:</span>
+                  <strong id="posSubtotal" class="font-mono font-bold" style="color: #0F172A; font-size: .95rem;">RD$0.00</strong>
+                </div>
+                <div class="total-row" style="margin-bottom: .65rem;">
+                  <span style="font-weight: 600; color: #475569;">Descuento Especial:</span>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: .78rem; font-weight: 700; color: #64748B; font-family: 'JetBrains Mono', monospace;">RD$</span>
+                    <input type="number" id="posDiscount" class="input-inline font-mono font-bold" value="0" min="0" oninput="calculatePosTotal()" />
+                  </div>
+                </div>
+                
+                <!-- TOTAL GENERAL DESTACADO FORTEXA ERP -->
+                <div class="total-row-highlight">
+                  <span>TOTAL GENERAL:</span>
+                  <strong id="posTotal" class="font-mono">RD$0.00</strong>
+                </div>
+
+                <!-- Método de Pago con Íconos SVG Limpios -->
+                <div style="margin-top: .85rem;">
+                  <label class="field-label" style="font-size: .74rem; font-weight: 800; color: #64748B; text-transform: uppercase;">Método de Cobro:</label>
+                  <div class="pos-payment-methods">
+                    <button type="button" class="btn-pay-method active" onclick="selectPaymentMethod('Efectivo', this)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+                      <span>Efectivo</span>
+                    </button>
+                    <button type="button" class="btn-pay-method" onclick="selectPaymentMethod('Tarjeta', this)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                      <span>Tarjeta POS</span>
+                    </button>
+                    <button type="button" class="btn-pay-method" onclick="selectPaymentMethod('Transferencia', this)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3v18M17 3l4 4M17 3l-4 4M7 21V3M7 21l-4-4M7 21l4-4"/></svg>
+                      <span>Transferencia</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Monto Cobrado / Abono con Prefijo RD$ -->
+                <div class="form-group" style="margin-top: .85rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <label class="field-label" style="font-weight: 700; margin-bottom: 0;">Monto Cobrado / Abono:</label>
+                    <button type="button" class="btn-link" style="font-size: .74rem; font-weight: 800; color: #1D4ED8;" onclick="payFullOrder()">Pagar Total Completo</button>
+                  </div>
+                  <div style="position: relative; display: flex; align-items: center;">
+                    <span style="position: absolute; left: 12px; font-weight: 800; font-size: .84rem; color: #64748B; font-family: 'JetBrains Mono', monospace; pointer-events: none;">RD$</span>
+                    <input type="number" id="posAmountPaid" class="form-input font-mono font-bold" value="0" min="0" oninput="calculatePosTotal()" style="padding-left: 2.65rem; font-size: 1.05rem; color: #0F172A; height: 42px;" />
+                  </div>
+                </div>
+
+                <!-- Saldo Pendiente -->
+                <div class="total-row" style="margin-top: .65rem; padding-top: .5rem; border-top: 1px dashed #E2E8F0;">
+                  <span style="font-weight: 800; color: #E11D48; font-size: .84rem;">Saldo Pendiente por Cobrar:</span>
+                  <strong id="posBalanceDue" class="font-mono text-rose font-bold" style="font-size: 1.05rem; color: #E11D48;">RD$0.00</strong>
+                </div>
+
+                <!-- Botón Principal: Generar Factura e Imprimir -->
+                <button type="button" class="btn-emit-ticket-fortexa" onclick="saveAndPrintOrder()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                  <span>EMITIR FACTURA &amp; IMPRIMIR TICKET</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           3. SECCIÓN: FACTURACIÓN & HISTORIAL DE FACTURAS (FORTEXA ERP)
+           ==================================================== -->
+      <section id="section-facturacion" class="content-section">
+        <!-- HEADER DE PÁGINA FORTEXA -->
+        <div class="fortexa-page-header">
+          <div class="fortexa-header-left">
+            <button type="button" class="btn-fortexa-back" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Volver al Panel Principal</span>
+            </button>
+            <div class="fortexa-title-row">
+              <h1 class="fortexa-title">Historial de Facturas &amp; Cobros</h1>
+              <span class="badge-live-pill">((•)) EN VIVO</span>
+            </div>
+            <p class="fortexa-subtitle">Monitorea facturas emitidas, saldos pendientes y cobros registrados</p>
+          </div>
+
+          <!-- BOTONES DE ACCIÓN FORTEXA ERP -->
+          <div class="fortexa-actions-group">
+            <button type="button" class="btn-fortexa-outline" onclick="exportToExcel('facturas')" title="Exportar reporte de facturas">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+              <span>Exportar Excel</span>
+            </button>
+            <button type="button" class="btn-fortexa-primary" onclick="switchSection('pos', document.querySelectorAll('.nav-item')[1])">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>+ Nueva Factura POS</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- BARRA DE MINI SECCIONES Y FLUJO DE FACTURACIÓN (FORTEXA ERP) -->
+        <div class="fortexa-subnav-bar">
+          <button type="button" class="fortexa-subnav-btn active" onclick="setFacturacionFilter('todas', this)" id="tabFilterTodas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            <span>Todas las Facturas</span>
+            <span class="fortexa-subnav-badge" id="countFactTodas">0</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="setFacturacionFilter('pendientes', this)" id="tabFilterPendientes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>Saldos Pendientes (CxC)</span>
+            <span class="fortexa-subnav-badge" id="countFactPendientes" style="color: #E11D48; background: #FFE4E6;">0</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="setFacturacionFilter('pagadas', this)" id="tabFilterPagadas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Facturas Pagadas</span>
+            <span class="fortexa-subnav-badge" id="countFactPagadas" style="color: #059669; background: #ECFDF5;">0</span>
+          </button>
+        </div>
+
+        <!-- TARJETA DE BÚSQUEDA Y FILTRADO FORTEXA ERP -->
+        <div class="fortexa-filter-card">
+          <div class="fortexa-filter-title">Buscar Factura / Cliente</div>
+          <div class="fortexa-filter-row">
+            <div class="fortexa-filter-input-box">
+              <svg class="fortexa-filter-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="facturacionSearchInput" class="fortexa-filter-input" placeholder="Buscar factura, cliente, teléfono..." oninput="filterFacturacion(this.value)" />
+            </div>
+            <button type="button" class="btn-fortexa-outline" onclick="renderFacturacion()" title="Actualizar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              <span>Actualizar</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card" style="border-radius: var(--r-lg); border: 1px solid var(--border);">
+          <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: .85rem;">
+            <div>
+              <h3 style="font-size: 1.05rem; font-weight: 800; color: #0F172A;">Registro de Comprobantes Emitidos</h3>
+              <p style="font-size: .76rem; color: #64748B; margin-top: 2px;">Visualiza y edita facturas con el botón de lápiz ✏️</p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="tableFacturas">
+              <thead>
+                <tr>
+                  <th>Nº FACTURA</th>
+                  <th>CLIENTE</th>
+                  <th>FECHA</th>
+                  <th>TOTAL</th>
+                  <th>ABONO COBRADO</th>
+                  <th>SALDO PENDIENTE</th>
+                  <th>ESTADO</th>
+                  <th>ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody id="facturacionTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           4. SECCIÓN: REPORTES & INGRESOS (DISEÑO FORTEXA ERP)
+           ==================================================== -->
+      <section id="section-reportes" class="content-section">
+        
+        <!-- HEADER DE PÁGINA FORTEXA -->
+        <div class="fortexa-page-header">
+          <div class="fortexa-header-left">
+            <button type="button" class="btn-fortexa-back" onclick="switchSection('dashboard', document.querySelectorAll('.nav-item')[0])">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+              <span>Volver al Panel Principal</span>
+            </button>
+            <div class="fortexa-title-row">
+              <h1 class="fortexa-title">Reportes Financieros &amp; Ingresos</h1>
+              <span class="badge-live-pill">((•)) EN VIVO</span>
+            </div>
+            <p class="fortexa-subtitle">Análisis de facturación, recaudación y exportación formal en PDF y Excel</p>
+          </div>
+
+          <!-- BOTONES DE ACCIÓN FORTEXA ERP -->
+          <div class="fortexa-actions-group">
+            <button type="button" class="btn-fortexa-outline" onclick="exportFinancialSummaryExcel()" title="Descargar Excel">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              <span>Descargar Excel (.xlsx)</span>
+            </button>
+            <button type="button" class="btn-fortexa-primary" onclick="openPrintFinancialReport()" title="Generar Reporte PDF">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Generar Reporte PDF</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- BARRA DE MINI SECCIONES DE REPORTES (FORTEXA ERP) -->
+        <div class="fortexa-subnav-bar">
+          <button type="button" class="fortexa-subnav-btn active" onclick="switchReportSubTab('resumen', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+            <span>Resumen Ejecutivo &amp; KPIs</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="switchReportSubTab('caja', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+            <span>Flujo de Caja Diario</span>
+          </button>
+          <button type="button" class="fortexa-subnav-btn" onclick="switchReportSubTab('servicios', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+            <span>Rentabilidad por Servicio</span>
+          </button>
+        </div>
+
+        <!-- 4 KPI Cards de Finanzas Fortexa -->
+        <div class="fortexa-kpi-row" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 1.5rem;">
+          
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number font-mono text-blue" id="repTotalFacturado">RD$0.00</div>
+              <div class="fortexa-kpi-label">Total Facturado</div>
+            </div>
+          </div>
+
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-green">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number font-mono text-green" id="repTotalCobrado">RD$0.00</div>
+              <div class="fortexa-kpi-label">Total Recaudado / Cobrado</div>
+            </div>
+          </div>
+
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-amber">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number font-mono text-amber" id="repTotalPendiente">RD$0.00</div>
+              <div class="fortexa-kpi-label">Cuentas por Cobrar (Saldos)</div>
+            </div>
+          </div>
+
+          <div class="fortexa-kpi-card">
+            <div class="fortexa-kpi-icon kpi-bg-purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            </div>
+            <div class="fortexa-kpi-info">
+              <div class="fortexa-kpi-number" id="repTotalFacturasCount">0</div>
+              <div class="fortexa-kpi-label">Total de Facturas</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Filtros Rápidos Fortexa ERP -->
+        <div class="fortexa-filter-card" style="margin-bottom: 1.5rem;">
+          <div class="fortexa-filter-title">Filtros de Análisis Financiero</div>
+          <div class="form-row-3" style="align-items: flex-end; margin-bottom: 0;">
+            <div class="form-group">
+              <label class="field-label">Período de Análisis:</label>
+              <select id="reportPeriodSelect" class="form-input" onchange="filterReportData()">
+                <option value="all">Todo el Historial</option>
+                <option value="today">Hoy</option>
+                <option value="week">Últimos 7 Días</option>
+                <option value="month">Este Mes</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="field-label">Estado de Pago:</label>
+              <select id="reportStatusSelect" class="form-input" onchange="filterReportData()">
+                <option value="all">Todas las Facturas</option>
+                <option value="paid">Sólo Pagadas</option>
+                <option value="pending">Sólo Pendientes</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="field-label">Buscar en Reporte:</label>
+              <input type="text" id="reportSearchInput" class="form-input" placeholder="Filtrar por cliente o factura..." oninput="filterReportData()" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla Detallada de Ingresos -->
+        <div class="card" style="border-radius: var(--r-lg); border: 1px solid var(--border);">
+          <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: .85rem;">
+            <div>
+              <h3 style="font-size: 1.1rem; font-weight: 800; color: #0F172A;">Detalle de Transacciones e Ingresos</h3>
+              <p style="font-size: .78rem; color: var(--text-muted); margin-top: 2px;">Comprobantes, recaudación y saldos calculados en tiempo real</p>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nº FACTURA</th>
+                  <th>CLIENTE</th>
+                  <th>FECHA</th>
+                  <th>MÉTODO</th>
+                  <th style="text-align: right;">TOTAL FACTURA</th>
+                  <th style="text-align: right;">MONTO COBRADO</th>
+                  <th style="text-align: right;">SALDO RESTANTE</th>
+                  <th>ESTADO</th>
+                </tr>
+              </thead>
+              <tbody id="reportTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           5. SECCIÓN: INVENTARIO & INSUMOS (CRUD COMPLETO)
+           ==================================================== -->
+      <section id="section-inventario" class="content-section">
+        <div class="grid-2col-wide">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Inventario de Insumos &amp; Suministros</h3>
+                <p class="card-subtitle">Detergentes, suavizantes, fundas plásticas, ganchos e insumos de taller.</p>
+              </div>
+              <button class="btn btn-primary" onclick="openNewInsumoModal()">+ Nuevo Insumo</button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>CÓDIGO</th>
+                    <th>NOMBRE DEL INSUMO</th>
+                    <th>CATEGORÍA</th>
+                    <th>STOCK ACTUAL</th>
+                    <th>STOCK MÍNIMO</th>
+                    <th>COSTO UNIT.</th>
+                    <th>ACCIONES</th>
+                  </tr>
+                </thead>
+                <tbody id="inventoryTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <div class="card">
+              <div class="card-header">
+                <h3>Entrada Rápida de Stock</h3>
+              </div>
+              <div class="form-group">
+                <label>Seleccionar Insumo:</label>
+                <select id="quickRestockSelect" class="form-input"></select>
+              </div>
+              <div class="form-group">
+                <label>Cantidad a Ingresar:</label>
+                <input type="number" id="quickRestockQty" class="form-input font-mono" value="5" min="1" />
+              </div>
+              <button class="btn btn-success btn-block" onclick="executeQuickRestock()">
+                <span>Registrar Entrada</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           6. SECCIÓN: CLIENTES & HOTELES (CRUD COMPLETO)
+           ==================================================== -->
+      <section id="section-clientes" class="content-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3>Directorio de Clientes &amp; Cuentas Hoteleras</h3>
+              <p class="card-subtitle">Clientes individuales y hoteles corporativos con facturación a crédito.</p>
+            </div>
+            <button class="btn btn-primary" onclick="openNewClientModal()">+ Registrar Cliente</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>NOMBRE / RAZÓN SOCIAL</th>
+                  <th>TELÉFONO</th>
+                  <th>TIPO DE CUENTA</th>
+                  <th>SALDO PENDIENTE</th>
+                  <th>LÍMITE CRÉDITO</th>
+                  <th>ÓRDENES</th>
+                  <th>ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody id="clientsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           7. SECCIÓN: CONFIGURACIÓN (CON SECUENCIA DE FACTURAS)
+           ==================================================== -->
+      <section id="section-configuracion" class="content-section">
+        
+        <div class="settings-page-header">
+          <h1 class="settings-main-title">Configuración</h1>
+          <p class="settings-main-subtitle">Administración de la tienda, secuencia de facturas, datos fiscales y perfil</p>
+        </div>
+
+        <div class="settings-layout-exact">
+          
+          <!-- LADO IZQUIERDO: MENÚ DE PESTAÑAS -->
+          <div class="settings-tabs-sidebar">
+            <button class="settings-tab-btn active" onclick="switchSettingsTab('tienda', this)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              <span>Datos de la Tienda</span>
+            </button>
+
+            <button class="settings-tab-btn" onclick="switchSettingsTab('perfil', this)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span>Perfil del Operador</span>
+            </button>
+
+            <button class="settings-tab-btn" onclick="switchSettingsTab('seguridad', this)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span>Seguridad</span>
+            </button>
+
+            <button class="settings-tab-btn" onclick="switchSettingsTab('impresora', this)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              <span>Impresora EPSON TM-T20II</span>
+            </button>
+
+            <div style="margin-top: 2.5rem;">
+              <button class="settings-tab-btn-danger" onclick="logout()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span>Cerrar Sesión</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- LADO DERECHO: CONTENIDO DE CONFIGURACIÓN -->
+          <div class="settings-content-card">
+            
+            <!-- PESTAÑA 1: DATOS DE LA TIENDA & SECUENCIA DE FACTURA -->
+            <div id="settings-tab-tienda" class="settings-tab-pane active">
+              <h4 class="settings-section-subtitle" style="margin-top: 0;">Configuración General &amp; Secuencia de Facturación</h4>
+              <p class="text-muted" style="margin-bottom: 1.5rem;">Personaliza el nombre de la tienda, datos fiscales y el número de factura actual.</p>
+
+              <form onsubmit="saveBusinessConfig(event)">
+                
+                <!-- Secuencia y Número de Factura -->
+                <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: var(--r-md); padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
+                  <strong style="color: #166534; font-size: .92rem;">Numeración &amp; Secuencia de Facturas</strong>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: .75rem;">
+                    <div>
+                      <label style="font-size: .78rem; font-weight: 700; color: #166534;">Prefijo de Factura (Ej. FAC, LAV, B02):</label>
+                      <input type="text" id="cfgInvoicePrefix" class="form-input font-mono font-bold" value="FAC" required />
+                    </div>
+                    <div>
+                      <label style="font-size: .78rem; font-weight: 700; color: #166534;">Número Siguiente / Actual:</label>
+                      <input type="number" id="cfgNextInvoiceNumber" class="form-input font-mono font-bold" value="1001" required />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                  <label>Nombre de la Tienda / Razón Social *</label>
+                  <input type="text" id="cfgBusinessName" class="form-input" value="SyncOps Laundry &amp; Tailoring Suite" required />
+                </div>
+
+                <div class="form-row-2" style="margin-bottom: 1.25rem;">
+                  <div class="form-group">
+                    <label>RNC / Identificación Fiscal *</label>
+                    <input type="text" id="cfgRnc" class="form-input font-mono" value="131-89745-1" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Número de Teléfono *</label>
+                    <input type="text" id="cfgPhone" class="form-input font-mono" value="(809) 555-7962" required />
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                  <label>Dirección Física de la Tienda *</label>
+                  <input type="text" id="cfgAddress" class="form-input" value="Av. Winston Churchill #102, Santo Domingo" required />
+                </div>
+
+                <div class="form-row-2" style="margin-bottom: 1.25rem;">
+                  <div class="form-group">
+                    <label>Correo Electrónico de Contacto</label>
+                    <input type="email" id="cfgStoreEmail" class="form-input" value="contacto@syncopslaundry.do" />
+                  </div>
+                  <div class="form-group">
+                    <label>Moneda de Facturación</label>
+                    <input type="text" class="form-input font-mono" value="DOP (RD$)" disabled style="background: var(--bg-hover);" />
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                  <label>Mensaje de Pie de Factura / Ticket</label>
+                  <textarea id="cfgTicketFooter" class="form-input" rows="2">Prendas no retiradas tras 30 días pasan a disposición legal. ¡Gracias por su preferencia!</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="background: #4F46E5; font-weight: 700; padding: .65rem 1.6rem; border-radius: 8px;">
+                  Guardar Configuración &amp; Secuencia
+                </button>
+              </form>
+            </div>
+
+            <!-- PESTAÑA 2: PERFIL DEL OPERADOR -->
+            <div id="settings-tab-perfil" class="settings-tab-pane" style="display: none;">
+              <div class="profile-header-banner">
+                <div class="profile-avatar-large" id="cfgAvatarCircle">LB</div>
+                <div class="profile-header-meta">
+                  <h3 id="cfgDisplayName">Luis Bravo</h3>
+                  <span id="cfgDisplayEmail">luisb@gmail.com</span>
+                </div>
+              </div>
+
+              <h4 class="settings-section-subtitle">Información del Operador</h4>
+
+              <form onsubmit="saveUserProfileExact(event)">
+                <div class="form-row-2" style="margin-bottom: 1.25rem;">
+                  <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" id="cfgFirstName" class="form-input" value="Luis" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Apellidos</label>
+                    <input type="text" id="cfgLastName" class="form-input" value="Bravo" required />
+                  </div>
+                </div>
+
+                <div class="form-row-2" style="margin-bottom: 1.5rem;">
+                  <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="cfgUserEmailExact" class="form-input" value="luisb@gmail.com" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Rol / Cargo</label>
+                    <input type="text" id="cfgJobTitle" class="form-input" value="Administrador General" />
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="background: #4F46E5; font-weight: 700; padding: .65rem 1.6rem; border-radius: 8px;">
+                  Guardar Cambios de Perfil
+                </button>
+              </form>
+            </div>
+
+            <!-- PESTAÑA 3: SEGURIDAD -->
+            <div id="settings-tab-seguridad" class="settings-tab-pane" style="display: none;">
+              <h4 class="settings-section-subtitle" style="margin-top: 0;">Seguridad y Contraseña</h4>
+              
+              <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label>Contraseña Actual</label>
+                <input type="password" class="form-input" placeholder="••••••••" />
+              </div>
+
+              <div class="form-row-2" style="margin-bottom: 1.5rem;">
+                <div class="form-group">
+                  <label>Nueva Contraseña</label>
+                  <input type="password" class="form-input" placeholder="Mínimo 8 caracteres" />
+                </div>
+                <div class="form-group">
+                  <label>Confirmar Nueva Contraseña</label>
+                  <input type="password" class="form-input" placeholder="Repite la contraseña" />
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-primary" onclick="showToast('Contraseña actualizada con éxito.', 'success')" style="background: #4F46E5; font-weight: 700; padding: .65rem 1.6rem; border-radius: 8px;">
+                Actualizar Contraseña
+              </button>
+            </div>
+
+            <!-- PESTAÑA 4: IMPRESORA POS (EPSON TM-T20II COMPATIBLE) -->
+            <div id="settings-tab-impresora" class="settings-tab-pane" style="display: none;">
+              <h4 class="settings-section-subtitle" style="margin-top: 0;">Parámetros de Impresora Térmica POS</h4>
+              
+              <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: var(--r-md); padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong style="color: #1E40AF; font-size: .95rem;">Impresora Configurada: EPSON TM-T20II (ESC/POS)</strong>
+                  <div style="font-size: .78rem; color: #3B82F6; margin-top: .15rem;">Modo de impresión térmica 80 mm • 203 DPI • Auto-corte compatible</div>
+                </div>
+                <span class="badge-pill bg-emerald">100% Compatible</span>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label>Modelo / Controlador de Impresora</label>
+                <select id="cfgPrinterModel" class="form-input">
+                  <option value="epson-t20ii" selected>EPSON TM-T20II / TM-T20III (80mm ESC/POS - Recomendada)</option>
+                  <option value="generic-80">Genérica Térmica 80mm ESC/POS</option>
+                  <option value="generic-58">Genérica Térmica 58mm (Compacta)</option>
+                </select>
+              </div>
+
+              <div class="form-row-2" style="margin-bottom: 1.5rem;">
+                <div class="form-group">
+                  <label>Ancho del Rollo</label>
+                  <select id="cfgPrinterWidth" class="form-input">
+                    <option value="80mm" selected>80 mm (72 mm área imprimible estándar TM-T20II)</option>
+                    <option value="58mm">58 mm (Con espaciador EPSON)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Corte Automático (Auto-Cutter)</label>
+                  <select class="form-input">
+                    <option selected>Corte Total / Parcial Habilitado</option>
+                    <option>Deshabilitado (Corte Manual)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: .75rem; flex-wrap: wrap;">
+                <button type="button" class="btn btn-primary" onclick="testEpsonT20II()" style="background: #2563EB; font-weight: 700;">
+                  🖨️ Probar Impresión EPSON TM-T20II
+                </button>
+                <button type="button" class="btn btn-outline" onclick="showToast('Controlador EPSON TM-T20II listo para imprimir.', 'success')">
+                  Verificar Driver EPSON
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ====================================================
+           8. SECCIÓN: PREGUNTAS FRECUENTES (FAQ)
+           ==================================================== -->
+      <section id="section-faq" class="content-section">
+        <div class="card" style="max-width: 900px; margin: 0 auto;">
+          <div class="card-header">
+            <div>
+              <h3>Preguntas Frecuentes &amp; Manual Operativo</h3>
+              <p class="card-subtitle">Guía de procedimientos estándar para lavandería y sastrería.</p>
+            </div>
+            <input type="text" id="faqSearchInput" class="form-input" placeholder="Buscar en preguntas..." style="width: 250px;" oninput="filterFaq(this.value)" />
+          </div>
+
+          <div class="faq-list" id="faqListContainer">
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>¿Cómo registrar especificaciones y medidas para el taller de sastrería?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                Al seleccionar el servicio "Sastrería" en el Punto de Venta (POS), se despliega automáticamente el cajón de especificaciones donde se indica el tipo de arreglo (ej. ruedo, cambio de zipper, entalle) y las medidas en centímetros o pulgadas. Estos datos se imprimen directamente en el ticket térmico con código de barras.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>¿Cómo personalizar el precio de lavado y planchado por piezas?</span>
+                <span class="faq-toggle">+</span>
+              </button>
+              <div class="faq-answer">
+                Al hacer clic en cualquier prenda o escribir una nueva, el campo "Precio Unitario Personalizado (RD$)" se mantiene completamente editable. Puedes asignar cualquier valor exacto que desees para esa prenda o servicio particular.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           9. SECCIÓN: AYUDA & DIAGNÓSTICO QA
+           ==================================================== -->
+      <section id="section-ayuda" class="content-section">
+        <div class="grid-2col">
+          <div class="card">
+            <div class="card-header">
+              <h3>Diagnóstico del Sistema &amp; QA</h3>
+              <span class="badge-pill bg-emerald">Estado: Saludable</span>
+            </div>
+
+            <div class="qa-metric-row">
+              <span>Impresora POS por Defecto:</span>
+              <strong class="font-mono text-blue">EPSON TM-T20II (80mm ESC/POS OK)</strong>
+            </div>
+            <div class="qa-metric-row">
+              <span>Exportación a Excel / CSV:</span>
+              <strong class="font-mono text-emerald">Activa (UTF-8 BOM Compatible)</strong>
+            </div>
+            <div class="qa-metric-row">
+              <span>Motor de Facturación:</span>
+              <strong class="font-mono">Secuencia Reactiva Dinámica</strong>
+            </div>
+            <div class="qa-metric-row">
+              <span>Persistencia de Datos:</span>
+              <strong class="font-mono text-blue">SyncOps.Laundry.WebApi (SQLite + JWT)</strong>
+            </div>
+
+            <div class="card-header-sm" style="margin-top: 1.5rem;">
+              <h4>Pruebas Rápidas de Aseguramiento de Calidad (QA)</h4>
+            </div>
+
+            <div class="qa-buttons-grid">
+              <button class="btn btn-outline" onclick="testEpsonT20II()">Test 1: Prueba Impresora EPSON TM-T20II</button>
+              <button class="btn btn-outline" onclick="exportToExcel('facturas')">Test 2: Exportar Facturas a Excel</button>
+              <button class="btn btn-outline" onclick="runQaTest('barcode')">Test 3: Validación Código de Barras</button>
+              <button class="btn btn-outline" onclick="runQaTest('reset')">Test 4: Restaurar Datos de Demostración</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Mesa de Ayuda &amp; Soporte Técnico</h3>
+            </div>
+
+            <form onsubmit="submitSupportTicket(event)">
+              <div class="form-group">
+                <label>Asunto de la Consulta / Incidencia:</label>
+                <input type="text" id="supportSubject" class="form-input" placeholder="Ej. Configuración de impresora EPSON" required />
+              </div>
+
+              <div class="form-group">
+                <label>Nivel de Prioridad:</label>
+                <select id="supportPriority" class="form-input">
+                  <option value="Baja">Baja — Consulta general</option>
+                  <option value="Media">Media — Duda operativa</option>
+                  <option value="Alta">Alta — Problema de facturación o pos</option>
+                  <option value="Critica">Crítica — Bloqueo de terminal</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Detalle del Mensaje:</label>
+                <textarea id="supportBody" class="form-input" rows="4" placeholder="Describe brevemente lo ocurrido..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block">
+                <span>Enviar Reporte a Soporte</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           SECCIÓN: GESTIÓN DE USUARIOS (SOLO ADMINISTRADOR)
+           ==================================================== -->
+      <section id="section-usuarios" class="content-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3>Gestión de Usuarios</h3>
+              <p class="card-subtitle">Cuentas con acceso al sistema — administradores y cajeros. Solo visible para administradores.</p>
+            </div>
+            <button class="btn btn-primary" onclick="openNewUsuarioModal()">+ Nuevo Usuario</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>NOMBRE</th>
+                  <th>CORREO</th>
+                  <th>ROL</th>
+                  <th>ESTADO</th>
+                  <th>ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody id="usuariosTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ==============================================
+       MODAL: REPORTE FINANCIERO IMPRIMIBLE / PDF
+       ============================================== -->
+  <div class="modal-overlay" id="reportPdfModal">
+    <div class="modal-card modal-lg" style="max-width: 880px;">
+      <div class="modal-header">
+        <h3>Reporte Financiero Oficial &amp; Exportación PDF</h3>
+        <button class="btn-close" onclick="closeReportPdfModal()">✕</button>
+      </div>
+      <div class="modal-body" id="reportPdfPrintArea" style="padding: 2.25rem;">
+        <div class="pdf-report-sheet">
+          <div class="pdf-report-header">
+            <div>
+              <h2 id="pdfStoreName" style="color: #1E3A8A; font-size: 1.4rem; font-weight: 900; margin: 0; letter-spacing: -0.5px;">SYNCOPS LAUNDRY &amp; TAILORING SUITE</h2>
+              <p id="pdfStoreMeta" style="color: #64748B; font-size: .84rem; margin: .35rem 0 0;">Av. Winston Churchill #102 • Tel: (809) 555-7962 • RNC: 131-89745-1</p>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge-pill bg-blue" style="font-size: .78rem; font-weight: 800; padding: .35rem .75rem;">REPORTE FINANCIERO OFICIAL</span>
+              <div id="pdfGeneratedDate" style="font-size: .78rem; color: #64748B; margin-top: .45rem;">Fecha de Emisión: 21/08/2026</div>
+            </div>
+          </div>
+
+          <div class="pdf-summary-grid">
+            <div class="pdf-summary-box">
+              <span>TOTAL FACTURADO</span>
+              <strong id="pdfKpiFacturado" class="font-mono">RD$0.00</strong>
+            </div>
+            <div class="pdf-summary-box">
+              <span>TOTAL RECAUDADO</span>
+              <strong id="pdfKpiCobrado" class="font-mono text-emerald">RD$0.00</strong>
+            </div>
+            <div class="pdf-summary-box">
+              <span>SALDOS PENDIENTES</span>
+              <strong id="pdfKpiPendiente" class="font-mono text-rose">RD$0.00</strong>
+            </div>
+            <div class="pdf-summary-box">
+              <span>CANT. FACTURAS</span>
+              <strong id="pdfKpiTotalDocs" class="font-mono">0</strong>
+            </div>
+          </div>
+
+          <h4 style="font-size: .95rem; font-weight: 800; color: #1E293B; margin: 1.75rem 0 .75rem 0;">Desglose Detallado de Facturas Emitidas:</h4>
+          
+          <table class="pdf-table">
+            <thead>
+              <tr>
+                <th>Nº FACTURA</th>
+                <th>CLIENTE</th>
+                <th>FECHA</th>
+                <th style="text-align: right;">TOTAL</th>
+                <th style="text-align: right;">COBRADO</th>
+                <th style="text-align: right;">PENDIENTE</th>
+                <th>ESTADO</th>
+              </tr>
+            </thead>
+            <tbody id="pdfTableBody"></tbody>
+          </table>
+
+          <div class="pdf-footer-signatures">
+            <div class="pdf-sig-line">
+              <div class="sig-border"></div>
+              <span>Elaborado por: <strong id="pdfSignOperator">Luis Bravo</strong></span>
+            </div>
+            <div class="pdf-sig-line">
+              <div class="sig-border"></div>
+              <span>Firma de Auditoría / Gerencia</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeReportPdfModal()">Cerrar</button>
+        <button class="btn btn-outline" onclick="exportFinancialSummaryExcel()" style="border-color: #10B981; color: #047857; font-weight: 700;">
+          📊 Descargar Excel
+        </button>
+        <button class="btn btn-primary" onclick="printFinancialReportDocument()" style="background: #2563EB;">
+          📄 Imprimir / Guardar como PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: REGISTRAR / EDITAR CLIENTE (CRUD) -->
+  <div class="modal-overlay" id="clientModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="clientModalTitle">Registrar Nuevo Cliente</h3>
+        <button class="btn-close" onclick="closeClientModal()">✕</button>
+      </div>
+      <form onsubmit="saveClientModal(event)" style="padding: 1.5rem;">
+        <input type="hidden" id="modalClientId" />
+        
+        <div class="form-group">
+          <label>Nombre Completo / Razón Social *</label>
+          <input type="text" id="modalClientName" class="form-input" placeholder="Ej. Hotel Boutique Colonial" required />
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Teléfono *</label>
+            <input type="text" id="modalClientPhone" class="form-input font-mono" placeholder="Ej. 809-555-1234" required />
+          </div>
+          <div class="form-group">
+            <label>Tipo de Cuenta</label>
+            <select id="modalClientIsHotel" class="form-input">
+              <option value="false">Particular (Sin Crédito)</option>
+              <option value="true">Hotel / Corporativo (Con Crédito)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Límite de Crédito (RD$)</label>
+          <input type="number" id="modalClientCreditLimit" class="form-input font-mono" value="0" min="0" />
+        </div>
+
+        <div class="modal-footer" style="padding: 1rem 0 0; background: transparent;">
+          <button type="button" class="btn btn-outline" onclick="closeClientModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Cliente</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: REGISTRAR / EDITAR INSUMO (CRUD) -->
+  <div class="modal-overlay" id="insumoModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="insumoModalTitle">Registrar Nuevo Insumo</h3>
+        <button class="btn-close" onclick="closeInsumoModal()">✕</button>
+      </div>
+      <form onsubmit="saveInsumoModal(event)" style="padding: 1.5rem;">
+        <input type="hidden" id="modalInsumoId" />
+        
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Código de Barras / SKU *</label>
+            <input type="text" id="modalInsumoCode" class="form-input font-mono" placeholder="746001008" required />
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="modalInsumoCategory" class="form-input">
+              <option value="Detergentes">Detergentes</option>
+              <option value="Suavizantes">Suavizantes</option>
+              <option value="Fundas & Ganchos">Fundas &amp; Ganchos</option>
+              <option value="Sastrería">Sastrería</option>
+              <option value="Químicos Especiales">Químicos Especiales</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Nombre del Insumo *</label>
+          <input type="text" id="modalInsumoName" class="form-input" placeholder="Ej. Quitamanchas Enzimático 5L" required />
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Stock Inicial</label>
+            <input type="number" id="modalInsumoStock" class="form-input font-mono" value="10" min="0" required />
+          </div>
+          <div class="form-group">
+            <label>Stock Mínimo</label>
+            <input type="number" id="modalInsumoMin" class="form-input font-mono" value="5" min="1" required />
+          </div>
+          <div class="form-group">
+            <label>Unidad</label>
+            <input type="text" id="modalInsumoUnit" class="form-input" value="Galones" required />
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Costo Unitario (RD$)</label>
+            <input type="number" id="modalInsumoCost" class="form-input font-mono" value="450" required />
+          </div>
+          <div class="form-group">
+            <label>Proveedor</label>
+            <input type="text" id="modalInsumoProvider" class="form-input" placeholder="Químicos del Caribe" required />
+          </div>
+        </div>
+
+        <div class="modal-footer" style="padding: 1rem 0 0; background: transparent;">
+          <button type="button" class="btn btn-outline" onclick="closeInsumoModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Insumo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: COBRAR SALDO PENDIENTE DE FACTURA (CRUD) -->
+  <div class="modal-overlay" id="payOrderModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Cobrar Saldo de Factura</h3>
+        <button class="btn-close" onclick="closePayOrderModal()">✕</button>
+      </div>
+      <form onsubmit="submitPayOrder(event)" style="padding: 1.5rem;">
+        <input type="hidden" id="payModalOrderId" />
+        
+        <div style="background: var(--bg-hover); padding: 1rem; border-radius: var(--r-md); margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: .25rem;">
+            <span>Nº Factura:</span>
+            <strong id="payModalTicket" class="font-mono text-blue">FAC-001001</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: .25rem;">
+            <span>Cliente:</span>
+            <strong id="payModalClient">Carlos Manuel Fernández</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; color: #DC2626; font-weight: 800; font-size: 1.05rem; border-top: 1px dashed var(--border); padding-top: .5rem; margin-top: .5rem;">
+            <span>Saldo Pendiente:</span>
+            <span id="payModalBalance" class="font-mono">RD$250.00</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Monto a Cobrar (RD$):</label>
+          <input type="number" id="payModalAmount" class="form-input font-mono font-bold font-lg" required />
+        </div>
+
+        <div class="form-group">
+          <label>Método de Pago:</label>
+          <select id="payModalMethod" class="form-input">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Tarjeta">Tarjeta POS</option>
+            <option value="Transferencia">Transferencia Bancaria</option>
+          </select>
+        </div>
+
+        <div class="modal-footer" style="padding: 1rem 0 0; background: transparent;">
+          <button type="button" class="btn btn-outline" onclick="closePayOrderModal()">Cancelar</button>
+          <button type="submit" class="btn btn-success">Registrar Cobro &amp; Actualizar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: EDITAR FACTURA (LÁPIZ) -->
+  <div class="modal-overlay" id="editInvoiceModal">
+    <div class="modal-card" style="max-width: 550px;">
+      <div class="modal-header">
+        <h3 style="display: flex; align-items: center; gap: .5rem;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+          Editar Factura
+        </h3>
+        <button class="btn-close" onclick="closeEditInvoiceModal()">✕</button>
+      </div>
+      <form id="editInvoiceForm" onsubmit="saveEditInvoice(event)" style="padding: 1.25rem;">
+        <input type="hidden" id="editOrderId" />
+
+        <div class="form-row-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-bottom: .75rem;">
+          <div>
+            <label class="field-label">Nº de Factura / Ticket</label>
+            <input type="text" id="editInvoiceTicket" class="form-input font-mono" required />
+          </div>
+          <div>
+            <label class="field-label">Fecha de Emisión</label>
+            <input type="text" id="editInvoiceDate" class="form-input" required />
+          </div>
+        </div>
+
+        <div class="form-row-2" style="display: grid; grid-template-columns: 1.4fr 1fr; gap: .75rem; margin-bottom: .75rem;">
+          <div>
+            <label class="field-label">Nombre del Cliente</label>
+            <input type="text" id="editInvoiceClient" class="form-input" required />
+          </div>
+          <div>
+            <label class="field-label">Teléfono</label>
+            <input type="text" id="editInvoicePhone" class="form-input" />
+          </div>
+        </div>
+
+        <div class="form-row-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .75rem; margin-bottom: .75rem;">
+          <div>
+            <label class="field-label">Monto Total (RD$)</label>
+            <input type="number" id="editInvoiceTotal" class="form-input font-mono" step="0.01" required oninput="calculateEditInvoiceBalance()" />
+          </div>
+          <div>
+            <label class="field-label">Monto Cobrado (RD$)</label>
+            <input type="number" id="editInvoicePaid" class="form-input font-mono" step="0.01" required oninput="calculateEditInvoiceBalance()" />
+          </div>
+          <div>
+            <label class="field-label">Saldo Pendiente (RD$)</label>
+            <input type="text" id="editInvoiceBalance" class="form-input font-mono" readonly style="background: var(--bg-hover); font-weight: 800; color: #DC2626;" />
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.25rem;">
+          <label class="field-label">Fecha / Hora Estimada de Entrega</label>
+          <input type="text" id="editInvoiceDelivery" class="form-input" />
+        </div>
+
+        <div class="modal-footer" style="padding: 1rem 0 0; background: transparent; display: flex; justify-content: flex-end; gap: .5rem;">
+          <button type="button" class="btn btn-outline" onclick="closeEditInvoiceModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE TICKET TÉRMICO IMPRIMIBLE (EPSON TM-T20II) -->
+  <div class="modal-overlay" id="ticketModal">
+    <div class="modal-card modal-ticket">
+      <div class="modal-header">
+        <h3>Comprobante / Ticket Térmico POS (EPSON TM-T20II 80mm)</h3>
+        <button type="button" class="btn-close" onclick="closeTicketModal()">✕</button>
+      </div>
+      <div class="modal-body" id="ticketPrintArea" style="background: #F8FAFC; padding: 1.5rem; display: flex; justify-content: center;">
+        <div class="thermal-ticket-pro">
+          
+          <!-- Cabecera de Empresa -->
+          <div class="tkt-brand-header">
+            <div class="tkt-brand-title" id="tktHeaderName">FULLTIME LAUNDRY</div>
+            <div class="tkt-brand-subtitle">LAVANDERÍA • SASTRERÍA • AUTOSERVICIO</div>
+            <div class="tkt-brand-info" id="tktHeaderAddress">Av. Winston Churchill #102, Santo Domingo</div>
+            <div class="tkt-brand-info" id="tktHeaderPhone">Tel: (809) 555-7962 • RNC: 131-89745-1</div>
+          </div>
+
+          <div class="tkt-line-solid"></div>
+
+          <!-- Metadatos de Orden / Cliente -->
+          <div class="tkt-meta-grid">
+            <div class="tkt-meta-row">
+              <span class="tkt-meta-label">FACTURA:</span>
+              <span class="tkt-meta-val tkt-bold font-mono" id="tktNum">FAC-001001</span>
+            </div>
+            <div class="tkt-meta-row">
+              <span class="tkt-meta-label">FECHA:</span>
+              <span class="tkt-meta-val" id="tktDate">21/08/2026 06:44 PM</span>
+            </div>
+            <div class="tkt-meta-row">
+              <span class="tkt-meta-label">ENTREGA:</span>
+              <span class="tkt-meta-val tkt-bold" id="tktDelivery">22/08/2026 10:44 PM</span>
+            </div>
+            <div class="tkt-meta-row">
+              <span class="tkt-meta-label">CLIENTE:</span>
+              <span class="tkt-meta-val tkt-bold" id="tktClient">Alexandra Bello</span>
+            </div>
+            <div class="tkt-meta-row">
+              <span class="tkt-meta-label">TELÉFONO:</span>
+              <span class="tkt-meta-val" id="tktPhone">(829) 760-2825</span>
+            </div>
+          </div>
+
+          <div class="tkt-line-solid"></div>
+
+          <!-- Tabla de Prendas / Servicios -->
+          <div class="tkt-table-header">
+            <span class="tkt-th-desc">CANT  DESCRIPCIÓN</span>
+            <span class="tkt-th-total">IMPORTE</span>
+          </div>
+          <div class="tkt-line-dashed"></div>
+
+          <div class="tkt-items-container" id="tktItemsBody"></div>
+
+          <div class="tkt-line-dashed"></div>
+
+          <!-- Desglose Financiero -->
+          <div class="tkt-totals-block">
+            <div class="tkt-tot-row">
+              <span>Subtotal:</span>
+              <span id="tktSubtotal">RD$0.00</span>
+            </div>
+            <div class="tkt-tot-row">
+              <span>Descuento:</span>
+              <span id="tktDiscount">RD$0.00</span>
+            </div>
+            <div class="tkt-total-highlight-box">
+              <span>TOTAL GENERAL:</span>
+              <span id="tktTotal" class="tkt-big-amount font-mono">RD$0.00</span>
+            </div>
+            <div class="tkt-tot-row">
+              <span>Monto Cobrado / Abono:</span>
+              <span id="tktPaid">RD$0.00</span>
+            </div>
+            
+            <!-- Balance Pendiente en Blanco y Negro Puro -->
+            <div class="tkt-balance-due-box">
+              <span>SALDO PENDIENTE:</span>
+              <span id="tktBalance" class="font-mono tkt-bold">RD$0.00</span>
+            </div>
+          </div>
+
+          <div class="tkt-line-solid"></div>
+
+          <!-- Código de Barras Vectorial -->
+          <div class="tkt-barcode-section">
+            <svg id="tktBarcodeSvg" width="220" height="38" style="display: block; margin: 0 auto;"></svg>
+            <div class="tkt-barcode-number" id="tktBarcode">*202608210001*</div>
+          </div>
+
+          <!-- Pie de Ticket Legal Único -->
+          <div class="tkt-footer-section">
+            <p id="tktFooterNote">Prendas no retiradas tras 30 días pasan a disposición legal.</p>
+            <p class="tkt-thanks">¡GRACIAS POR SU PREFERENCIA!</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeTicketModal()">Cerrar</button>
+        <button type="button" class="btn-fortexa-primary" onclick="printThermalTicket()" style="background: #000000; color: #FFFFFF; border-color: #000000;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+          <span>Imprimir en EPSON TM-T20II</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SPOTLIGHT COMMAND PALETTE (CTRL + K) EXACT MATCH -->
+  <div class="spotlight-overlay" id="spotlightModal" onclick="closeSpotlightOnBackdrop(event)" style="display: none;">
+    <div class="spotlight-card" onclick="event.stopPropagation()">
+      <!-- Search Input Header -->
+      <div class="spotlight-header">
+        <svg class="spotlight-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="spotlightInput" class="spotlight-input" placeholder="Buscar páginas, clientes, facturas, reportes..." oninput="handleSpotlightSearch(this.value)" autocomplete="off" />
+        <button type="button" class="spotlight-esc-badge" onclick="closeSpotlight()">
+          <span>Esc</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Body with sections -->
+      <div class="spotlight-body" id="spotlightBody">
+        <!-- Recientes -->
+        <div class="spotlight-section-title">RECIENTES</div>
+        <div class="spotlight-list" id="spotlightRecentsList">
+          <div class="spotlight-item active" onclick="navigateSpotlight('pos')">
+            <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg></div>
+            <div class="spotlight-item-meta">
+              <strong>Punto de Venta / POS</strong>
+              <span>Panel de Operaciones &amp; Cobros</span>
+            </div>
+            <svg class="spotlight-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+          <div class="spotlight-item" onclick="navigateSpotlight('facturacion')">
+            <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg></div>
+            <div class="spotlight-item-meta">
+              <strong>Historial de Facturas &amp; Cobros</strong>
+              <span>Panel de Facturación</span>
+            </div>
+          </div>
+          <div class="spotlight-item" onclick="navigateSpotlight('reportes')">
+            <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg></div>
+            <div class="spotlight-item-meta">
+              <strong>Reportes Financieros &amp; Ingresos</strong>
+              <span>Panel Financiero</span>
+            </div>
+          </div>
+          <div class="spotlight-item" onclick="navigateSpotlight('inventario')">
+            <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg></div>
+            <div class="spotlight-item-meta">
+              <strong>Inventario Insumos &amp; Suministros</strong>
+              <span>Panel de Operaciones</span>
+            </div>
+          </div>
+          <div class="spotlight-item" onclick="navigateSpotlight('clientes')">
+            <div class="spotlight-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg></div>
+            <div class="spotlight-item-meta">
+              <strong>Clientes Particulares &amp; Hoteles</strong>
+              <span>Panel de Clientes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Páginas -->
+        <div class="spotlight-section-title" style="margin-top: .75rem;">PÁGINAS</div>
+        <div class="spotlight-list">
+          <div class="spotlight-item" onclick="navigateSpotlight('dashboard')">
+            <div class="spotlight-item-icon-page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg></div>
+            <div class="spotlight-item-meta">
+              <strong>Dashboard Principal</strong>
+            </div>
+          </div>
+          <div class="spotlight-item" onclick="navigateSpotlight('facturacion')">
+            <div class="spotlight-item-icon-page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg></div>
+            <div class="spotlight-item-meta">
+              <strong>Facturas &amp; Cobros</strong>
+            </div>
+          </div>
+          <div class="spotlight-item" onclick="navigateSpotlight('clientes')">
+            <div class="spotlight-item-icon-page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg></div>
+            <div class="spotlight-item-meta">
+              <strong>Clientes</strong>
+            </div>
+          </div>
+          <div class="spotlight-item" onclick="navigateSpotlight('configuracion')">
+            <div class="spotlight-item-icon-page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg></div>
+            <div class="spotlight-item-meta">
+              <strong>Configuración de la Tienda</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Shortcuts -->
+      <div class="spotlight-footer">
+        <div style="display: flex; align-items: center; gap: .75rem;">
+          <span class="spotlight-key-hint"><strong>↑↓</strong> navegar</span>
+          <span class="spotlight-key-hint"><strong>Enter</strong> abrir</span>
+          <span class="spotlight-key-hint"><strong>Esc</strong> cerrar</span>
+        </div>
+        <span class="spotlight-results-count" id="spotlightCountBadge"># 14 resultados</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: NUEVO USUARIO (GESTIÓN DE USUARIOS) -->
+  <div class="modal-overlay" id="usuarioModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Registrar Nuevo Usuario</h3>
+        <button class="btn-close" onclick="closeUsuarioModal()">✕</button>
+      </div>
+      <form onsubmit="saveUsuarioModal(event)" style="padding: 1.5rem;">
+
+        <div class="form-group">
+          <label>Nombre Completo *</label>
+          <input type="text" id="modalUsuarioNombre" class="form-input" placeholder="Ej. Ana Pérez" required />
+        </div>
+
+        <div class="form-group">
+          <label>Correo Electrónico *</label>
+          <input type="email" id="modalUsuarioEmail" class="form-input" placeholder="ana@syncopslaundry.do" required />
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Contraseña Temporal *</label>
+            <input type="password" id="modalUsuarioPassword" class="form-input" placeholder="Mínimo 8 caracteres" minlength="8" required />
+          </div>
+          <div class="form-group">
+            <label>Rol</label>
+            <select id="modalUsuarioRol" class="form-input">
+              <option value="Empleado">Empleado / Cajero</option>
+              <option value="Administrador">Administrador</option>
+            </select>
+          </div>
+        </div>
+
+        <p class="card-subtitle" style="margin: -0.25rem 0 1rem;">Comparte esta contraseña de forma segura con la persona — puede cambiarla luego desde su propio perfil.</p>
+
+        <div class="modal-footer" style="padding: 1rem 0 0; background: transparent;">
+          <button type="button" class="btn btn-outline" onclick="closeUsuarioModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Crear Usuario</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="api.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
